@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giải Mã Code - STEAM 12A4</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <!-- Style chung -->
+    <link rel="stylesheet" href="style_gmc.css"> <!-- Style riêng -->
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR (Giữ nguyên) -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-wrapper">
+                    <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                </div>
+                <h2>STEAM 12A4</h2>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item" onclick="location.href='hub.html'"><i class="fas fa-arrow-left"></i> Kho Game</button>
+                <button class="nav-item active" onclick="location.reload()"><i class="fas fa-redo"></i> Chơi Lại</button>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content gmc-bg">
+            <div class="ide-container">
+                <!-- Header giả lập VS Code -->
+                <div class="ide-header">
+                    <div class="dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <div class="filename">bug_hunter.py</div>
+                    <div class="score-board">Điểm: <span id="score">0</span></div>
+                </div>
+
+                <!-- Khu vực hiển thị Code -->
+                <div class="code-editor">
+                    <div class="line-numbers">
+                        1<br>2<br>3<br>4<br>5<br>6
+                    </div>
+                    <div class="code-content" id="code-display">
+                        <!-- Code sẽ được JS chèn vào đây -->
+                    </div>
+                </div>
+
+                <!-- Khu vực câu hỏi & Đáp án -->
+                <div class="interaction-area">
+                    <div class="console-box">
+                        <i class="fas fa-terminal"></i> <span id="question-text">Tìm lỗi sai trong đoạn code trên?</span>
+                    </div>
+
+                    <div class="options-grid" id="options-container">
+                        <!-- Các nút đáp án -->
+                    </div>
+                </div>
+
+                <!-- Thông báo kết quả -->
+                <div id="feedback-overlay" class="hidden">
+                    <div class="feedback-box">
+                        <div id="feedback-icon"></div>
+                        <h2 id="feedback-title"></h2>
+                        <p id="feedback-msg"></p>
+                        <button onclick="nextQuestion()" class="next-btn">Tiếp Tục <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script_gmc.js"></script>
+</body>
+</html>

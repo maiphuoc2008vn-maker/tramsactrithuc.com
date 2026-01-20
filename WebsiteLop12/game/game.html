@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đuổi Hình Bắt Chữ - STEAM 12A4</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // Load Dark Mode cài đặt
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-wrapper">
+                    <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                </div>
+                <h2>STEAM 12A4</h2>
+                <p class="subtitle">THPT ĐẠM RI</p>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-item" onclick="location.href='hub.html'">
+                    <i class="fas fa-arrow-left"></i> Kho Game
+                </button>
+                <button class="nav-item active" onclick="location.reload()">
+                    <i class="fas fa-redo"></i> Chơi Lại
+                </button>
+                <button class="nav-item" onclick="window.location.href='bangxephang.html'">
+                    <i class="fas fa-trophy"></i> Xếp Hạng
+                </button>
+                <button id="theme-toggle" class="nav-item">
+                    <i class="fas fa-adjust"></i> Giao diện
+                </button>
+            </nav>
+            
+            <div class="footer"><p>© 2025-2026 Dev Team</p></div>
+        </aside>
+
+        <!-- MAIN GAME -->
+        <main class="main-content">
+            <div class="game-board">
+                <!-- Header Info -->
+                <div class="board-header">
+                    <div class="select-wrapper">
+                        <i class="fas fa-filter"></i>
+                        <select id="grade-select">
+                            <option value="10a1">Lớp 10</option>
+                            <option value="11a1">Lớp 11</option>
+                            <option value="12a1">Lớp 12</option>
+                        </select>
+                    </div>
+                    
+                    <div class="stats-group">
+                        <div class="stat-box time-box">
+                            <i class="fas fa-clock"></i> <span id="timer">60</span>s
+                        </div>
+                        <div class="stat-box score-box">
+                            <i class="fas fa-star"></i> <span id="score-value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h1 class="game-title">ĐUỔI HÌNH BẮT CHỮ</h1>
+
+                <div class="image-frame">
+                    <img id="current-image" src="" alt="Hình ảnh câu hỏi">
+                </div>
+
+                <div class="action-area">
+                    <button class="btn-hint" onclick="showCurrentHint()">
+                        <i class="fas fa-lightbulb"></i> Xem Gợi Ý
+                    </button>
+                </div>
+
+                <div id="answer-container" class="slots-area"></div>
+                <div id="keyboard-container" class="keyboard-area"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL THÔNG BÁO -->
+    <div id="custom-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon" id="modal-icon"></div>
+            <h3 class="modal-title" id="modal-title">Tiêu đề</h3>
+            <p class="modal-msg" id="modal-msg">Nội dung...</p>
+            <button class="modal-btn" id="modal-btn" onclick="closeModal()">Đóng</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const html = document.documentElement;
+            html.classList.toggle('dark-mode');
+            localStorage.setItem('theme', html.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+    </script>
+</body>
+</html>

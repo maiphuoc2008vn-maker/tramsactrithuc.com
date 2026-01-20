@@ -1,0 +1,116 @@
+/* Nền chính */
+.gmc-bg {
+    background: #0d1117; /* Màu đen xanh đậm GitHub */
+    display: flex; justify-content: center; align-items: center;
+    padding: 20px;
+}
+
+/* Khung giả lập IDE */
+.ide-container {
+    width: 100%; max-width: 900px;
+    background: #161b22;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid #30363d;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Header cửa sổ */
+.ide-header {
+    background: #010409;
+    padding: 10px 15px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #30363d;
+}
+
+.dots { display: flex; gap: 8px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
+
+.filename {
+    color: #8b949e; font-family: 'Fira Code', monospace; font-size: 14px;
+}
+
+.score-board {
+    color: #58a6ff; font-weight: bold;
+}
+
+/* Khu vực Code */
+.code-editor {
+    display: flex;
+    background: #0d1117;
+    padding: 20px 0;
+    min-height: 200px;
+    font-family: 'Fira Code', monospace;
+    font-size: 16px;
+    border-bottom: 1px solid #30363d;
+}
+
+.line-numbers {
+    width: 50px; text-align: right;
+    color: #484f58; padding-right: 15px;
+    border-right: 1px solid #30363d;
+    user-select: none; line-height: 1.6;
+}
+
+.code-content {
+    flex: 1; padding-left: 15px;
+    color: #e6edf3;
+    line-height: 1.6;
+    white-space: pre-wrap; /* Giữ nguyên xuống dòng */
+}
+
+/* Highlight cú pháp (Fake) */
+.kwd { color: #ff7b72; } /* Keyword: def, if... */
+.str { color: #a5d6ff; } /* String */
+.func { color: #d2a8ff; } /* Function */
+.num { color: #79c0ff; } /* Number */
+.cmt { color: #8b949e; font-style: italic; } /* Comment */
+
+/* Khu vực tương tác */
+.interaction-area { padding: 20px; background: #161b22; }
+
+.console-box {
+    background: #0d1117; border-left: 4px solid #238636;
+    padding: 10px 15px; margin-bottom: 20px;
+    color: #e6edf3; font-family: 'Fira Code', monospace;
+    border-radius: 4px;
+}
+
+.options-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+}
+
+.code-btn {
+    background: #21262d; border: 1px solid #30363d;
+    color: #c9d1d9; padding: 15px;
+    border-radius: 6px; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-weight: bold;
+    transition: all 0.2s; text-align: left;
+}
+
+.code-btn:hover { background: #30363d; border-color: #8b949e; }
+.code-btn.correct { background: #1f6feb !important; border-color: #58a6ff; color: white; }
+.code-btn.wrong { background: #da3633 !important; border-color: #f85149; color: white; }
+
+/* Feedback Overlay */
+#feedback-overlay {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(13, 17, 23, 0.95);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 100;
+}
+.hidden { display: none !important; }
+
+.feedback-box {
+    text-align: center; color: white; animation: popIn 0.3s;
+}
+#feedback-icon { font-size: 50px; margin-bottom: 10px; }
+.next-btn {
+    margin-top: 20px; padding: 10px 25px;
+    background: #238636; border: none; color: white;
+    border-radius: 5px; font-weight: bold; cursor: pointer;
+}
+
+@keyframes popIn { 0% {transform: scale(0.8); opacity: 0;} 100% {transform: scale(1); opacity: 1;} }

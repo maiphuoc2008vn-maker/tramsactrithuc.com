@@ -1,0 +1,233 @@
+/* Import Font chữ */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #4f46e5;
+    --primary-light: #818cf8;
+    --accent: #06b6d4;
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --text: #0f172a;
+    --gray: #64748b;
+    --border: rgba(226, 232, 240, 0.8);
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { 
+    font-family: 'Be Vietnam Pro', sans-serif; 
+    background: var(--bg); 
+    color: var(--text); 
+    overflow-x: hidden; 
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* NỀN NGHỆ THUẬT */
+.bg-art { position: fixed; inset: 0; z-index: -1; filter: blur(80px); opacity: 0.5; overflow: hidden; pointer-events: none; }
+.circle { position: absolute; border-radius: 50%; width: 600px; height: 600px; animation: float 20s infinite alternate; }
+.c1 { background: linear-gradient(135deg, var(--primary), var(--accent)); top: -15%; left: -10%; }
+.c2 { background: linear-gradient(135deg, var(--accent), #818cf8); bottom: -15%; right: -10%; animation-delay: -5s; }
+
+@keyframes float {
+    from { transform: translate(0, 0); }
+    to { transform: translate(5%, 5%); }
+}
+
+/* NAVIGATION */
+.main-nav { 
+    position: fixed; top: 0; width: 100%; height: 75px; 
+    background: rgba(255, 255, 255, 0.8); 
+    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    z-index: 1000; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+}
+.nav-wrapper { max-width: 1200px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 30px; }
+
+/* FIX LỖI LOGO TO: Thêm style cho logo-img */
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; box-shadow: var(--shadow-sm); }
+.logo-text { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; }
+.logo-text span { color: var(--primary); }
+
+nav a { text-decoration: none; color: var(--gray); font-weight: 600; margin-left: 30px; font-size: 0.95rem; transition: 0.2s; }
+nav a.active, nav a:hover { color: var(--primary); }
+
+/* CONTENT AREA */
+.content-area { max-width: 1100px; margin: 120px auto 50px; padding: 0 25px; }
+.welcome-box h1 { font-size: 2.8rem; font-weight: 800; line-height: 1.2; margin-bottom: 10px; }
+.welcome-box p { font-weight: 400; color: var(--gray); }
+
+/* SEARCH & FILTER */
+.search-bar-container { display: flex; gap: 15px; margin: 40px 0; }
+.search-input-group { flex: 1; position: relative; }
+.search-input-group i { position: absolute; left: 20px; top: 20px; color: var(--gray); }
+.search-input-group input { 
+    width: 100%; padding: 18px 25px 18px 55px; border-radius: 20px; 
+    border: 1px solid var(--border); background: var(--surface); 
+    font-size: 1rem; box-shadow: var(--shadow-sm); transition: 0.3s;
+}
+
+.upload-trigger { 
+    background: var(--primary); color: #fff; border: none; padding: 0 35px; 
+    border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s;
+    box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3); display: flex; align-items: center; gap: 8px;
+}
+.upload-trigger:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(79, 70, 229, 0.4); }
+
+.filter-pills { display: flex; gap: 12px; margin-bottom: 45px; overflow-x: auto; padding-bottom: 10px; }
+.pill { 
+    padding: 10px 22px; border-radius: 14px; border: 1px solid var(--border); 
+    background: var(--surface); color: var(--gray); font-weight: 600; 
+    cursor: pointer; transition: 0.2s; font-size: 0.9rem; white-space: nowrap;
+}
+.pill.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3); }
+
+/* DOC CARDS */
+.doc-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+.doc-card { 
+    background: var(--surface); padding: 32px; border-radius: 28px; 
+    border: 1px solid var(--border); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+    position: relative; box-shadow: var(--shadow-md);
+}
+.doc-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+.file-icon { 
+    width: 50px; height: 50px; background: rgba(79, 70, 229, 0.1); 
+    display: flex; align-items: center; justify-content: center; 
+    border-radius: 14px; font-size: 1.5rem; color: var(--primary); margin-bottom: 20px; 
+}
+.doc-tag { font-size: 0.75rem; font-weight: 700; color: var(--primary); text-transform: uppercase; }
+.doc-card h3 { margin: 12px 0 8px; font-size: 1.2rem; font-weight: 700; color: var(--text); }
+.doc-meta { font-size: 0.85rem; color: var(--gray); }
+.btn-dl { 
+    margin-top: 25px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 20px; background: #f1f5f9; border-radius: 12px;
+    text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.85rem; transition: 0.3s;
+}
+.btn-dl:hover { background: var(--primary); color: #fff; }
+
+/* MODAL FIX: Thêm lại style cho Modal */
+.modal-blur { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
+.modal-blur.active { display: flex; }
+.modal-box { background: #fff; padding: 40px; border-radius: 30px; width: 100%; max-width: 480px; box-shadow: var(--shadow-lg); }
+.modal-head { text-align: center; margin-bottom: 30px; }
+.modal-head h3 { font-size: 1.5rem; font-weight: 800; }
+.field { margin-bottom: 20px; }
+.field label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; }
+.field input, .field select { width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 1rem; }
+.upload-zone { border: 2px dashed #cbd5e1; background: #f8fafc; padding: 30px; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.3s; }
+.upload-zone:hover { border-color: var(--primary); background: #f1f5f9; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; }
+.btn-ghost { background: none; border: none; font-weight: 700; color: var(--gray); cursor: pointer; }
+.btn-main { background: var(--primary); color: #fff; border: none; padding: 12px 30px; border-radius: 14px; font-weight: 800; cursor: pointer; }
+
+/* TOAST FIX: Thêm lại style cho Toast */
+.toast-container { position: fixed; top: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+.toast { background: #fff; padding: 15px 25px; border-radius: 15px; box-shadow: var(--shadow-lg); border-left: 6px solid var(--primary); display: flex; align-items: center; gap: 15px; font-weight: 700; animation: slideIn 0.5s ease forwards; }
+@keyframes slideIn { from { transform: translateX(120%); } to { transform: translateX(0); } }
+
+/* CHATBOT */
+/* --- PHẦN CHATBOT RE-DESIGN --- */
+.bot-area { 
+    position: fixed; bottom: 30px; right: 30px; z-index: 2000; 
+    perspective: 1000px;
+}
+
+/* Nút bấm mở chat sống động hơn */
+.bot-btn { 
+    width: 65px; height: 65px; border-radius: 50%; 
+    background: linear-gradient(135deg, var(--primary), var(--accent)); 
+    color: #fff; border: none; font-size: 1.8rem; cursor: pointer; 
+    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex; align-items: center; justify-content: center;
+}
+.bot-btn:hover { transform: scale(1.1) rotate(15deg); }
+.bot-btn i { transition: 0.3s; }
+
+/* Khung Chat Card hiện đại */
+.chat-card { 
+    position: absolute; bottom: 85px; right: 0; 
+    width: 360px; height: 550px; 
+    background: rgba(255, 255, 255, 0.95); 
+    backdrop-filter: blur(20px);
+    border-radius: 24px; border: 1px solid rgba(255,255,255,0.3);
+    display: none; flex-direction: column; 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+    overflow: hidden; 
+    transform-origin: bottom right;
+    animation: zoomIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.chat-card.active { display: flex; }
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.5) translateY(50px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Header Chat sang trọng */
+.chat-header { 
+    background: linear-gradient(135deg, #1e293b, #334155); 
+    color: #fff; padding: 20px; 
+    display: flex; align-items: center; gap: 15px;
+}
+.chat-header::before {
+    content: ''; width: 10px; height: 10px; background: #22c55e; 
+    border-radius: 50%; display: inline-block;
+    box-shadow: 0 0 10px #22c55e;
+}
+.header-info { text-align: left; }
+.header-info h4 { font-size: 1rem; font-weight: 700; margin: 0; }
+.header-info p { font-size: 0.75rem; opacity: 0.8; margin: 0; }
+
+/* Vùng tin nhắn mượt mà */
+.chat-msgs { 
+    flex: 1; padding: 20px; overflow-y: auto; 
+    display: flex; flex-direction: column; gap: 15px; 
+    background: #f8fafc; scroll-behavior: smooth;
+}
+
+/* Tin nhắn của Robot */
+.msg { 
+    padding: 12px 16px; border-radius: 18px; font-size: 0.92rem; 
+    max-width: 85%; line-height: 1.5; position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+.msg.bot { 
+    background: #fff; color: var(--text); align-self: flex-start; 
+    border-bottom-left-radius: 4px; border: 1px solid #e2e8f0;
+}
+
+/* Tin nhắn của Người dùng */
+.msg.user { 
+    background: linear-gradient(135deg, var(--primary), var(--primary-light)); 
+    color: #fff; align-self: flex-end; border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+
+/* Thanh nhập liệu nổi (Floating Input) */
+.chat-footer { 
+    padding: 15px; background: #fff; border-top: 1px solid #f1f5f9;
+    display: flex; gap: 10px; align-items: center;
+}
+.chat-footer input { 
+    flex: 1; border: 1px solid #e2e8f0; background: #f8fafc; 
+    padding: 12px 18px; border-radius: 15px; outline: none; 
+    transition: 0.3s; font-size: 0.9rem;
+}
+.chat-footer input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+
+#chat-send { 
+    background: var(--primary); color: white; border: none; 
+    width: 42px; height: 42px; border-radius: 12px; cursor: pointer; 
+    display: flex; align-items: center; justify-content: center;
+    transition: 0.3s;
+}
+#chat-send:hover { background: var(--accent); transform: scale(1.05); }
+
+/* Custom thanh cuộn cho chat */
+.chat-msgs::-webkit-scrollbar { width: 5px; }
+.chat-msgs::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }

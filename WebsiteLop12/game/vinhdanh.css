@@ -1,0 +1,167 @@
+/*  1. KHAI BÁO MÀU SẮC (HỖ TRỢ SÁNG/TỐI) */
+:root {
+    /* Chế độ TỐI (Mặc định) */
+    --hero-bg: #141e30;
+    --bg-color: #243b55;
+    --text-color: #ffffff;
+    --gold: #f1c40f;
+    --stand-bg: rgba(255, 255, 255, 0.1);
+    --table-bg: rgba(255, 255, 255, 0.1);
+    --table-hover: rgba(255, 255, 255, 0.2);
+    --shadow: rgba(0,0,0,0.5);
+}
+
+/* Chế độ SÁNG (Khi có class light-mode) */
+body.light-mode {
+    --hero-bg: #f5f7fa;  /* Trắng xám */
+    --bg-color: #c3cfe2; /* Xanh nhạt */
+    --text-color: #2c3e50; /* Chữ đen xanh */
+    --stand-bg: rgba(0, 0, 0, 0.1);
+    --table-bg: rgba(255, 255, 255, 0.8);
+    --table-hover: rgba(255, 255, 255, 1);
+    --shadow: rgba(0,0,0,0.1);
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--hero-bg);
+    color: var(--text-color);
+    transition: background 0.5s, color 0.5s; /* Chuyển màu mượt */
+}
+
+/*  2. HEADER & NAVIGATION */
+.main-header {
+    background: rgba(0, 0, 0, 0.85); /* Header luôn tối cho sang */
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-container { display: flex; align-items: center; gap: 15px; }
+.header-logo { height: 50px; width: 50px; border-radius: 50%; object-fit: cover; }
+.brand-name { font-size: 1.2rem; font-weight: bold; margin: 0; color: white; }
+
+.main-nav { display: flex; align-items: center; gap: 20px; }
+.nav-item { text-decoration: none; color: #ccc; font-weight: 500; transition: 0.3s; }
+.nav-item:hover, .nav-item.active { color: var(--gold); }
+
+/* Nút đổi giao diện */
+.theme-btn {
+    background: none; border: 1px solid #555;
+    color: #fff; padding: 5px 10px;
+    border-radius: 50%; cursor: pointer;
+    transition: 0.3s;
+}
+.theme-btn:hover { background: var(--gold); border-color: var(--gold); color: #000; }
+/*  3. MAIN CONTENT*/
+.vinhdanh-container {
+    padding: 20px;
+    background: linear-gradient(180deg, var(--hero-bg) 0%, var(--bg-color) 100%);
+    min-height: 100vh;
+}
+
+.page-title { text-align: center; margin: 30px 0 50px; }
+.page-title h1 { font-size: 2.5rem; text-shadow: 0 4px 10px var(--shadow); margin: 0; }
+.text-warning { color: var(--gold); }
+
+/* 4. HIỆU ỨNG PODIUM (BỤC VINH QUANG) */
+.podium-section {
+    display: flex; justify-content: center; align-items: flex-end;
+    gap: 15px; margin-bottom: 50px; padding-top: 60px;
+}
+
+.podium-col {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; position: relative;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/*  HIỆU ỨNG DI CHUỘT (HOVER)  */
+.podium-col:hover {
+    transform: translateY(-20px) scale(1.05); /* Bay lên */
+    z-index: 10;
+}
+.podium-col:hover .avatar-wrapper img {
+    box-shadow: 0 0 25px var(--gold); /* Avatar phát sáng */
+    border-color: #fff;
+}
+.podium-col:hover .podium-stand {
+    filter: brightness(1.2); /* Bục sáng lên */
+}
+
+/* Avatar Styles */
+.avatar-wrapper { position: relative; margin-bottom: 15px; z-index: 2; }
+.avatar-wrapper img {
+    width: 80px; height: 80px; border-radius: 50%;
+    border: 3px solid white; object-fit: cover;
+    background: #fff; box-shadow: 0 5px 15px var(--shadow);
+    transition: 0.3s;
+}
+
+/* Badge Styles */
+.badge-rank {
+    position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+    width: 25px; height: 25px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; color: white; border: 2px solid white; font-size: 12px;
+}
+.badge-rank.gold { background: #f1c40f; }
+.badge-rank.silver { background: #bdc3c7; }
+.badge-rank.bronze { background: #cd7f32; }
+
+/* Podium Stand Styles */
+.podium-stand {
+    width: 130px; border-radius: 10px 10px 0 0;
+    color: white; padding: 10px 5px;
+    box-shadow: 0 10px 20px var(--shadow);
+    transition: 0.3s;
+}
+
+.rank-2 .podium-stand { height: 150px; background: linear-gradient(to bottom, #bdc3c7, #7f8c8d); }
+.rank-3 .podium-stand { height: 120px; background: linear-gradient(to bottom, #e67e22, #a05315); }
+.rank-1 .podium-stand { 
+    height: 200px; width: 160px;
+    background: linear-gradient(to bottom, #f1c40f, #f39c12);
+    box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
+}
+.rank-1 .avatar-wrapper img { width: 110px; height: 110px; border-color: #f1c40f; }
+
+.rank-name { font-weight: bold; font-size: 0.95rem; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+.rank-score { font-size: 1.1rem; font-weight: 800; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+.winner-label { background: rgba(255,255,255,0.3); padding: 3px 10px; border-radius: 15px; font-size: 0.75rem; margin-bottom: 5px; display: inline-block; font-weight: bold; }
+
+/* Animation Cúp */
+.floating-reward { position: absolute; top: -75px; left: 50%; transform: translateX(-50%); }
+.trophy-anim { font-size: 3.5rem; color: #ffeb3b; animation: floatTrophy 3s ease-in-out infinite; filter: drop-shadow(0 0 15px rgba(255,215,0,0.6)); }
+@keyframes floatTrophy { 0%, 100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+
+
+    /*BẢNG XẾP HẠNG*/
+
+.leaderboard-section { max-width: 800px; margin: 0 auto; padding-bottom: 50px; }
+.table-container table {
+    width: 100%; border-collapse: collapse;
+    background: var(--table-bg);
+    border-radius: 10px; overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 15px var(--shadow);
+}
+.table-container th { background: rgba(0, 0, 0, 0.4); color: var(--gold); padding: 15px; text-align: left; }
+.table-container td { padding: 15px; border-bottom: 1px solid rgba(150,150,150,0.2); }
+.table-container tr { transition: 0.2s; }
+.table-container tr:hover { background: var(--table-hover); transform: scale(1.01); }
+.tag-title { background: #e74c3c; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
+
+/* Responsive Mobile */
+@media (max-width: 600px) {
+    .podium-section { align-items: flex-end; transform: scale(0.9); gap: 5px; }
+    .podium-stand { width: 90px; }
+    .rank-1 .podium-stand { width: 110px; }
+}

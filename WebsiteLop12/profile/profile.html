@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Của Tôi - STEAM 12A4</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+    <!-- 1. Background động -->
+    <div class="bg-animation"></div>
+
+    <div class="profile-container">
+        <button class="back-btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Quay lại</button>
+
+        <div class="profile-card">
+            <!-- Cột trái: Avatar -->
+            <div class="profile-left">
+                <div class="avatar-wrapper">
+                    <!-- Ảnh Avatar -->
+                    <img id="p-avatar" src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="Avatar">
+                    
+                    <!-- Hiệu ứng Loading (Mặc định ẩn) -->
+                    <div id="avatar-loader" class="loader-overlay">
+                        <div class="spinner"></div>
+                    </div>
+
+                    <!-- Nút Camera & Input ẩn -->
+                    <div class="camera-icon" onclick="document.getElementById('avatar-upload').click()">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                </div>
+
+                <h2 id="p-username">User</h2>
+                <span class="role-badge" id="display-class">12A4</span>
+            </div>
+
+            <!-- Cột phải: Form -->
+            <div class="profile-right">
+                <h3>Chỉnh sửa hồ sơ</h3>
+                <form id="profile-form">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Họ và Tên</label>
+                            <input type="text" id="inp-fullname" placeholder="Nhập tên thật...">
+                        </div>
+                        <div class="input-group">
+                            <label>Số điện thoại</label>
+                            <input type="text" id="inp-phone" placeholder="09xxxx...">
+                        </div>
+                        <div class="input-group">
+                            <label>Lớp</label>
+                            <input type="text" id="inp-class" placeholder="Nhập lớp (VD: 12A4)">
+                        </div>
+                        <div class="input-group">
+                            <label>Ngày sinh</label>
+                            <input type="date" id="inp-dob" style="color-scheme: dark;">
+                        </div>
+                        <div class="input-group full-width">
+                            <label>Giới thiệu bản thân (Bio)</label>
+                            <textarea id="inp-bio" rows="3" placeholder="Viết gì đó ngầu ngầu..."></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="save-btn">Lưu Thay Đổi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Thông báo Toast đẹp (Thay alert) -->
+    <div id="toast-container"></div>
+
+    <script src="profile.js"></script>
+</body>
+</html>

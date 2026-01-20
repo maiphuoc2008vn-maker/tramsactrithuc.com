@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trạm Sạc Tri Thức</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tailieu.css">
+</head>
+<body>
+
+    <!-- Nền loang màu nghệ thuật -->
+    <div class="bg-art">
+        <div class="circle c1"></div>
+        <div class="circle c2"></div>
+    </div>
+
+    <!-- Hệ thống thông báo Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <header class="main-nav">
+        <div class="nav-wrapper">
+            <div class="logo">
+                <img src="../images/logotruongdung.jpg" alt="Logo" class="logo-img">
+                <div class="logo-text"> <span>Trạm Sạc Tri Thức</span></div>
+            </div>
+            <nav>
+                <a href="../trangchu/index.html">Trang chủ</a>
+                <a href="../game/vinhdanh.html">Vinh danh</a>
+                <a href="#" class="active">Tài liệu</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="content-area">
+        <section class="welcome-box">
+            <h1>Chào bạn <span>Học gì hôm nay?</span></h1>
+            <p>Tìm kiếm và chia sẻ tài liệu ôn thi nhanh chóng nhất.</p>
+        </section>
+
+        <div class="search-bar-container">
+            <div class="search-input-group">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Tìm đề thi, bài giảng, bí kíp...">
+            </div>
+            <button class="upload-trigger" id="btnOpenUpload">
+                <i class="fas fa-plus"></i> Đóng góp file
+            </button>
+        </div>
+
+        <div class="filter-pills">
+            <button class="pill active" data-filter="all">Tất cả</button>
+            <button class="pill" data-filter="toan">Toán học</button>
+            <button class="pill" data-filter="ly">Vật lý</button>
+            <button class="pill" data-filter="hoa">Hóa học</button>
+            <button class="pill" data-filter="anh">Tiếng Anh</button>
+            <button class="pill" data-filter="van">Ngữ văn</button>
+        </div>
+
+        <div class="doc-container" id="doc-list-container">
+            <!-- Tài liệu hiện ở đây -->
+        </div>
+    </main>
+
+    <!-- Modal Upload Hiện Đại -->
+    <div id="upload-modal" class="modal-blur">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h3>Đóng góp tài liệu</h3>
+                <p>Cùng nhau xây dựng kho kiến thức 12A4</p>
+            </div>
+            <form id="uploadForm">
+                <div class="field">
+                    <label>Tiêu đề</label>
+                    <input type="text" name="title" required placeholder="VD: Đề thi thử Toán HK2...">
+                </div>
+                <div class="field">
+                    <label>Môn học</label>
+                    <select name="category" required>
+                        <option value="toan">Toán học</option>
+                        <option value="ly">Vật lý</option>
+                        <option value="hoa">Hóa học</option>
+                        <option value="anh">Tiếng Anh</option>
+                        <option value="van">Ngữ văn</option>
+                        <option value="khac">Khác</option>
+                    </select>
+                </div>
+                <div class="upload-zone" id="dropZone" onclick="document.getElementById('docFile').click()">
+                    <input type="file" id="docFile" name="files[]" required hidden multiple>
+                    <div class="zone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <p>Chọn hoặc kéo thả nhiều file vào đây</p>
+                    <div id="fileListPreview" class="preview-text"></div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="btnCloseUpload" class="btn-ghost">Để sau</button>
+                    <button type="submit" id="btnSubmitUpload" class="btn-main">Bắt đầu tải lên</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chatbot Robot -->
+    <div class="bot-area">
+        <button id="chatbot-toggle" class="bot-btn">
+            <i class="fas fa-robot"></i>
+        </button>
+        <div id="chat-window" class="chat-card">
+            <div class="chat-header">Trợ lý 12A4</div>
+            <div id="chat-body" class="chat-msgs"></div>
+            <div class="chat-footer">
+                <input type="text" id="chat-input" placeholder="Hỏi robot...">
+                <button id="chat-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="tailieu.js"></script>
+</body>
+</html>
