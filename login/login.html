@@ -3,97 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - 12A4 Squad</title>
-    <!-- Font chữ Nunito -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Icon FontAwesome -->
+    <title>Đăng nhập - STEAM 12A4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- CSS -->
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
-    <!-- HIỆU ỨNG 1: HẠT BAY LẤP LÁNH (PARTICLES) -->
-    <ul class="circles">
-        <li></li><li></li><li></li><li></li><li></li>
-        <li></li><li></li><li></li><li></li><li></li>
-    </ul>
+    <!-- NỀN ĐỘNG VỚI CÁC ICON BAY -->
+    <div class="bg-animation">
+        <div class="icon-float"><i class="fas fa-gamepad"></i></div>
+        <div class="icon-float"><i class="fas fa-book"></i></div>
+        <div class="icon-float"><i class="fas fa-trophy"></i></div>
+        <div class="icon-float"><i class="fas fa-atom"></i></div>
+        <div class="orb"></div>
+    </div>
 
-    <!-- KHUNG CHÍNH -->
-    <div class="container" id="container">
-        
-        <!-- FORM ĐĂNG KÝ -->
-        <div class="form-container sign-up-container">
-            <form action="#">
-                <h1>Tạo Tài Khoản</h1>
-                <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google"></i></a>
-                    <a href="#" class="social"><i class="fab fa-tiktok"></i></a>
-                </div>
-                <span>hoặc đăng ký bằng email</span>
-                
-                <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="reg-name" placeholder="Tên hiển thị (Nickname)" required />
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="reg-email" placeholder="Email" required />
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="reg-pass" placeholder="Mật khẩu (trên 6 ký tự)" required />
-                </div>
-                
-                <button id="btn-register">Đăng Ký Ngay</button>
-            </form>
-        </div>
-
-        <!-- FORM ĐĂNG NHẬP -->
-        <div class="form-container sign-in-container">
-            <form action="#">
-                <h1>Chào bạn! 👋</h1>
-                <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google"></i></a>
-                    <a href="#" class="social"><i class="fab fa-tiktok"></i></a>
-                </div>
-                <span>Đăng nhập để vào "Trạm Sạc"</span>
-                
-                <div class="input-group">
-                    <i class="fas fa-envelope"></i>
-                    <!-- ID login-name giữ nguyên để khớp code cũ, nhưng placeholder nhắc nhập Email -->
-                    <input type="email" id="login-name" placeholder="Nhập Email của bạn" required />
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="login-pass" placeholder="Mật khẩu" required />
-                </div>
-                
-                <a href="#" class="forgot-pass">Quên mật khẩu?</a>
-                <button id="btn-login">Vào Lớp Ngay</button>
-            </form>
-        </div>
-
-        <!-- LỚP PHỦ CHUYỂN ĐỔI (OVERLAY) -->
-        <div class="overlay-container">
-            <div class="overlay">
-                <div class="overlay-panel overlay-left">
-                    <h1>Thành viên cũ?</h1>
-                    <p>Quay lại để tiếp tục leo Rank bảng xếp hạng nào!</p>
-                    <button class="ghost" id="signIn">Đăng Nhập</button>
-                </div>
-                <div class="overlay-panel overlay-right">
-                    <h1>Thành viên mới?</h1>
-                    <p>Gia nhập biệt đội 12A4 để cùng học, cùng chơi nhé!</p>
-                    <button class="ghost" id="signUp">Đăng Ký</button>
-                </div>
+    <div class="main-card">
+        <!-- PHẦN LOGO BÊN TRÁI -->
+        <div class="card-side info-side">
+            <div class="logo-area">
+                <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                <h2>STEAM 12A4</h2>
             </div>
+            <div class="welcome-text">
+                <h3>Trạm Sạc Tri Thức</h3>
+                <p>Nơi kết nối đam mê, thử thách trí tuệ và vinh danh những cá nhân xuất sắc nhất.</p>
+            </div>
+        </div>
+
+        <!-- PHẦN FORM BÊN PHẢI -->
+        <div class="card-side form-side">
+            
+            <!-- FORM ĐĂNG NHẬP -->
+            <form id="loginForm" class="auth-form active">
+                <h2>Đăng Nhập</h2>
+                <p class="sub-h">Chào mừng chiến binh quay trở lại!</p>
+                
+                <div class="input-box">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="login-name" placeholder="Email đăng nhập" required>
+                </div>
+                <div class="input-box">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="login-pass" placeholder="Mật khẩu" required>
+                </div>
+                
+                <div class="options">
+                    <label><input type="checkbox"> Nhớ tôi</label>
+                    <a href="#">Quên mật khẩu?</a>
+                </div>
+
+                <button type="submit" id="btn-login" class="btn-glow">VÀO LỚP NGAY <i class="fas fa-arrow-right"></i></button>
+                
+                <div class="switch-text">
+                    Chưa có tài khoản? <span onclick="switchForm('register')">Đăng ký ngay</span>
+                </div>
+            </form>
+
+            <!-- FORM ĐĂNG KÝ -->
+            <form id="registerForm" class="auth-form">
+                <h2>Tạo Tài Khoản</h2>
+                <p class="sub-h">Gia nhập biệt đội 12A4 ngay hôm nay</p>
+                
+                <div class="input-box">
+                    <i class="fas fa-user-astronaut"></i>
+                    <input type="text" id="reg-name" placeholder="Tên hiển thị (Nickname)" required>
+                </div>
+                <div class="input-box">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="reg-email" placeholder="Email của bạn" required>
+                </div>
+                <div class="input-box">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="reg-pass" placeholder="Mật khẩu (Trên 6 ký tự)" required>
+                </div>
+
+                <button type="submit" id="btn-register" class="btn-glow purple">ĐĂNG KÝ <i class="fas fa-rocket"></i></button>
+                
+                <div class="switch-text">
+                    Đã có tài khoản? <span onclick="switchForm('login')">Đăng nhập</span>
+                </div>
+            </form>
+
         </div>
     </div>
 
-    <!-- SCRIPT FIREBASE & HIỆU ỨNG -->
+    <!-- Script kết nối -->
     <script type="module" src="login.js"></script>
+    
+    <!-- Script hiệu ứng chuyển form đơn giản -->
+    <script>
+        function switchForm(type) {
+            const loginF = document.getElementById('loginForm');
+            const regF = document.getElementById('registerForm');
+            
+            if(type === 'register') {
+                loginF.classList.remove('active');
+                setTimeout(() => regF.classList.add('active'), 300);
+            } else {
+                regF.classList.remove('active');
+                setTimeout(() => loginF.classList.add('active'), 300);
+            }
+        }
+        // Gán vào window để HTML gọi được
+        window.switchForm = switchForm;
+    </script>
 </body>
 </html>
