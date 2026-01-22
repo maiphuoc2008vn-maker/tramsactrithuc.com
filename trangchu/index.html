@@ -4,23 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STEAM 12A4 - Trang Chủ</title>
-    <!-- Icon FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Font chữ đẹp -->
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- KẾT NỐI FILE CSS -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Lùi lại lấy file style ở thư mục gốc -->
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
-    <!-- --- 1. MÀN HÌNH CHÀO --- -->
     <div id="intro-overlay">
         <div class="intro-content">
             <div class="logo-box-intro">
-                <!-- Sửa đường dẫn ảnh cho đúng với thư mục gốc -->
-                <img src="images/logotruongdung.jpg" alt="Logo" class="intro-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                <!-- THÊM ../ ĐỂ LÙI RA NGOÀI LẤY ẢNH -->
+                <img src="../images/logotruongdung.jpg" alt="Logo" class="intro-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
             <h1 class="intro-title">Chào mừng đến với <br> <span>Trạm Sạc Tri Thức</span></h1>
             <p class="intro-subtitle">Kết nối tri thức - Chinh phục tương lai</p>
@@ -31,30 +27,27 @@
         </div>
     </div>
 
-    <!-- --- 2. NỀN ĐỘNG --- -->
     <div class="background-animation">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
         <div class="blob blob-3"></div>
     </div>
 
-    <!-- --- 3. CÁC NÚT ĐIỀU KHIỂN GÓC PHẢI --- -->
     <div class="top-controls">
         <button id="theme-toggle" class="btn-float glass-btn"><i class="fas fa-moon"></i></button>
     </div>
 
-    <!-- --- 4. HERO SECTION --- -->
     <section class="hero-section">
         <div class="hero-bg-wrapper">
             <div class="overlay-gradient"></div>
-            <!-- Sửa đường dẫn ảnh nền -->
-            <img id="hero-bg-slider" src="images/bg1.jpg" onerror="this.src='images/congtruong.jpg'" alt="Background" class="hero-bg-img">
+            <!-- THÊM ../ ĐỂ LÙI RA NGOÀI LẤY ẢNH -->
+            <img id="hero-bg-slider" src="../images/bg1.jpg" onerror="this.src='../images/congtruong.jpg'" alt="Background" class="hero-bg-img">
         </div>
 
         <div class="hero-content reveal-text centered-content">
             <div class="hero-logo-area">
-                <!-- Sửa đường dẫn logo -->
-                <img src="images/logotruongdung.jpg" alt="Logo Trường" class="big-hero-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                <!-- THÊM ../ ĐỂ LÙI RA NGOÀI LẤY ẢNH -->
+                <img src="../images/logotruongdung.jpg" alt="Logo Trường" class="big-hero-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
 
             <h1 class="hero-title big-title">
@@ -72,11 +65,9 @@
         </div>
     </section>
 
-    <!-- --- 5. FEATURES --- -->
     <section class="features-section">
         <div class="cards-grid">
             
-            <!-- GAME HUB -->
             <div class="tilt-card" onclick="protectAccess('game', 'hub.html')">
                 <div class="card-content">
                     <div class="card-icon color-1"><i class="fas fa-gamepad"></i></div>
@@ -86,7 +77,6 @@
                 </div>
             </div>
 
-            <!-- VINH DANH (Đã trỏ đúng file vinhdanh.html) -->
             <div class="tilt-card" onclick="protectAccess('game', 'vinhdanh.html')">
                 <div class="card-content">
                     <div class="card-icon color-2"><i class="fas fa-trophy"></i></div>
@@ -96,7 +86,6 @@
                 </div>
             </div>
 
-            <!-- TÀI LIỆU -->
             <div class="tilt-card" onclick="protectAccess('tailieu', 'tailieu.html')">
                 <div class="card-content">
                     <div class="card-icon color-3"><i class="fas fa-book-open"></i></div>
@@ -109,12 +98,10 @@
         </div>
     </section>
     
-    <!-- --- 6. CHATBOT --- -->
     <div class="chatbot-float" id="chatbot-toggle">
         <i class="fas fa-comment"></i>
     </div>
 
-    <!-- --- 7. MODAL --- -->
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-icon">
@@ -125,15 +112,15 @@
             
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeLoginModal()">Để sau</button>
-                <!-- Sửa đường dẫn Login cho đúng với thư mục gốc -->
-                <button class="btn-confirm" onclick="window.location.href='login/login.html'">
+                <!-- Đăng nhập cũng phải lùi ra ngoài rồi mới vào folder login -->
+                <button class="btn-confirm" onclick="window.location.href='../login/login.html'">
                     Đăng nhập <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- KẾT NỐI SCRIPT -->
-    <script src="script.js"></script>
+    <!-- Lùi lại lấy script ở thư mục gốc -->
+    <script src="../script.js"></script>
 </body>
 </html>
