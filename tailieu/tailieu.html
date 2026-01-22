@@ -117,29 +117,29 @@
 
     <!-- Firebase SDK Modules -->
     <script type="module">
-        // Import các thư viện cần thiết
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // CẤU HÌNH FIREBASE CỦA BẠN (Lấy từ Project Settings trên Firebase)
+        // Cấu hình dự án weblop12a4 của bạn (Đã kiểm tra từ ảnh bạn gửi)
         const firebaseConfig = {
-            apiKey: "AIzaSy...", 
-            authDomain: "tramsactrithuc-4faae.firebaseapp.com",
-            projectId: "tramsactrithuc-4faae",
-            storageBucket: "tramsactrithuc-4faae.appspot.com",
-            messagingSenderId: "...",
-            appId: "..."
+            apiKey: "AIzaSyCnN_0kgFDy_6EFYcA7InggGgjd9xiNMM",
+            authDomain: "weblop12a4.firebaseapp.com",
+            projectId: "weblop12a4",
+            storageBucket: "weblop12a4.firebasestorage.app",
+            messagingSenderId: "221434734607",
+            appId: "1:221434734607:web:82f40a065df5725749b7a"
         };
 
         // Khởi tạo Firebase
         const app = initializeApp(firebaseConfig);
-        window.fb_storage = getStorage(app);
+        
+        // Chỉ dùng Database (Firestore), không dùng Storage để tránh bị đòi thẻ ngân hàng
         window.fb_db = getFirestore(app);
-        console.log("Firebase đã sẵn sàng!");
+        
+        console.log("Firebase Database đã sẵn sàng!");
     </script>
 
-    <!-- Lưu ý: Thêm type="module" cho tailieu.js -->
+    <!-- File xử lý logic tải lên Cloudinary và lưu vào Firebase -->
     <script type="module" src="tailieu.js"></script>
 </body>
 </html>
