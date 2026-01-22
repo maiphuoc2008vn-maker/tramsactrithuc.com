@@ -6,12 +6,12 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase
 // --- QUAN TRỌNG: DÁN MÃ TỪ FIREBASE CONSOLE VÀO ĐÂY ---
 // (Vào Firebase -> Project Settings -> Kéo xuống dưới copy config)
 const firebaseConfig = {
-     apiKey: "AIzaSyAag7aoIhAMWFkkd_ubM0WrPrOmWo3VBkE",
-  authDomain: "tramsactrithuc-4faae.firebaseapp.com",
-  projectId: "tramsactrithuc-4faae",
-  storageBucket: "tramsactrithuc-4faae.firebasestorage.app",
-  messagingSenderId: "384378012486",
-  appId: "1:384378012486:web:877c64923c1f7fb6bb5b47"
+  apiKey: "AIzaSyBO4Z7X3t_lNiUOGl1A74mYlbfcamzxP-s",
+  authDomain: "tram-sac-12a4-final.firebaseapp.com",
+  projectId: "tram-sac-12a4-final",
+  storageBucket: "tram-sac-12a4-final.firebasestorage.app",
+  messagingSenderId: "81252342287",
+  appId: "1:81252342287:web:475bc6898d58565f3ca17a"
 };
 // ------------------------------------------------------
 
