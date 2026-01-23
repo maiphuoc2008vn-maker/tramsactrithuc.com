@@ -45,7 +45,7 @@ let score = 0;
 let canPlay = true;
 let timerInterval;
 let timeLeft = 60;
-let isScoreSaved = false; // Cờ kiểm tra để tránh lưu điểm nhiều lần
+let isScoreSaved = false;
 
 const els = {
     grade: document.getElementById("grade-select"),
@@ -56,22 +56,37 @@ const els = {
     timer: document.getElementById("timer")
 };
 
+// --- HÀM XÁO TRỘN MẢNG (Shuffle) ---
+// Đây là công thức Fisher-Yates Shuffle chuẩn
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 function init() {
-    // Lấy điểm hiện tại từ LocalStorage (nếu load lại trang)
     score = parseInt(localStorage.getItem("gameScore")) || 0;
     if(els.score) els.score.innerText = score;
     
     if(els.grade) {
         els.grade.addEventListener("change", (e) => loadGrade(e.target.value));
-        loadGrade("10a1"); // Mặc định lớp 10
+        loadGrade("10a1"); // Mặc định chạy lớp 10
+    } else {
+        loadGrade("10a1");
     }
 }
 
 function loadGrade(grade) {
-    currentQuestions = questionDatabase[grade] || questionDatabase["10a1"];
+    // 1. Lấy dữ liệu gốc của lớp đó
+    const originalData = questionDatabase[grade] || questionDatabase["10a1"];
+    
+    // 2. Tạo một bản copy (dùng [...]) để không làm hỏng dữ liệu gốc
+    // 3. Xáo trộn bản copy đó
+    currentQuestions = shuffleArray([...originalData]);
+    
     currentIndex = 0;
-    // Reset điểm khi đổi lớp để công bằng (tùy chọn)
-    // score = 0; localStorage.setItem("gameScore", 0); if(els.score) els.score.innerText = 0;
     loadQuestion();
 }
 
@@ -80,30 +95,32 @@ function loadQuestion() {
     canPlay = true;
     isScoreSaved = false;
     
-    // Nếu hết câu hỏi -> Thắng game
-    if (currentIndex >= currentQuestions.length) {
+    // Kiểm tra hết câu hỏi
+    if (!currentQuestions || currentIndex >= currentQuestions.length) {
         endGame();
         return;
     }
 
     const q = currentQuestions[currentIndex];
     
-    // Hiệu ứng load ảnh
+    // Xử lý hiển thị ảnh (có code chống lỗi ảnh)
     if(els.img) {
         els.img.style.opacity = 0;
-        document.querySelector('.loading-spinner').style.display = 'block';
+        const spinner = document.querySelector('.loading-spinner');
+        if(spinner) spinner.style.display = 'block';
+
+        els.img.src = q.image;
         
-        setTimeout(() => {
-            els.img.src = q.image;
-            els.img.onload = () => {
-                els.img.style.opacity = 1;
-                document.querySelector('.loading-spinner').style.display = 'none';
-            };
-        }, 150);
+        els.img.onload = () => {
+            els.img.style.opacity = 1;
+            if(spinner) spinner.style.display = 'none';
+        };
         
         els.img.onerror = () => {
+            console.log("Ảnh lỗi, dùng ảnh thay thế: " + q.image);
             els.img.src = `https://via.placeholder.com/400x200?text=${q.answer}`;
-            document.querySelector('.loading-spinner').style.display = 'none';
+            els.img.style.opacity = 1;
+            if(spinner) spinner.style.display = 'none';
         };
     }
     
@@ -113,9 +130,8 @@ function loadQuestion() {
     startTimer();
 }
 
-// --- LOGIC ĐẾM NGƯỢC THỜI GIAN & XỬ LÝ THUA ---
 function startTimer() {
-    timeLeft = 60; // 60 giây mỗi câu
+    timeLeft = 60;
     if(els.timer) els.timer.innerText = timeLeft;
     
     timerInterval = setInterval(() => {
@@ -125,13 +141,8 @@ function startTimer() {
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             canPlay = false;
-
-            // --- LƯU ĐIỂM KHI THUA (HẾT GIỜ) ---
             saveCurrentScore(); 
-            // -----------------------------------
-
-            showModal('lose', 'HẾT GIỜ!', `Rất tiếc! Bạn dừng lại ở <b>${score} điểm</b>.`, 'Chơi Lại', () => {
-                // Reset điểm về 0 để chơi ván mới
+            showModal('lose', 'HẾT GIỜ!', `Hết thời gian! Bạn dừng lại ở <b>${score} điểm</b>.`, 'Chơi Lại', () => {
                 localStorage.setItem("gameScore", 0);
                 location.reload();
             });
@@ -139,15 +150,11 @@ function startTimer() {
     }, 1000);
 }
 
-// --- HÀM LƯU ĐIỂM LÊN FIREBASE ---
 function saveCurrentScore() {
     if (score > 0 && !isScoreSaved) {
         if (window.saveScoreToFirebase) {
             window.saveScoreToFirebase(score);
-            isScoreSaved = true; // Đánh dấu đã lưu để không lưu trùng
-            console.log("Đang gửi điểm lên BXH:", score);
-        } else {
-            console.warn("Chưa tải được module saveScoreToFirebase");
+            isScoreSaved = true;
         }
     }
 }
@@ -206,17 +213,15 @@ function checkWin() {
         clearInterval(timerInterval);
         canPlay = false;
         
-        // Cộng 10 điểm cho câu trả lời đúng
         score += 10;
         if(els.score) els.score.innerText = score;
-        localStorage.setItem("gameScore", score); // Lưu tạm vào máy
+        localStorage.setItem("gameScore", score);
 
-        showModal('win', 'CHÍNH XÁC!', `Đáp án: <b>${correct}</b> (+10 điểm)`, 'Tiếp Tục', () => {
+        showModal('win', 'CHÍNH XÁC!', `Đáp án: <b>${correct}</b> (+10 điểm)`, 'Câu Tiếp', () => {
             currentIndex++;
             loadQuestion();
         });
     } else {
-        // Hiệu ứng sai
         if(els.slots) {
             els.slots.classList.add('shake-animation');
             setTimeout(() => els.slots.classList.remove('shake-animation'), 500);
@@ -229,22 +234,16 @@ function checkWin() {
         showModal('lose', 'SAI RỒI!', `Từ <b>${inputAnswer}</b> chưa đúng.`, 'Thử Lại', () => {
             userAnswer = Array(correct.length).fill("");
             renderSlots();
-            canPlay = true; // Cho phép nhập lại nhưng không reset giờ (để khó hơn)
-            startTimer(); // Chạy lại đồng hồ
+            canPlay = true; 
+            startTimer(); 
         });
     }
 }
 
-// --- KẾT THÚC GAME (HOÀN THÀNH TẤT CẢ CÂU) ---
 function endGame() {
     clearInterval(timerInterval);
-    
-    // --- LƯU ĐIỂM KHI THẮNG ---
     saveCurrentScore();
-    // --------------------------
-
-    showModal('win', 'CHÚC MỪNG!', `Bạn đã hoàn thành bộ câu hỏi!<br>Tổng điểm: <b>${score}</b>`, 'Về Menu', () => {
-        // Reset điểm sau khi đã lưu xong và về menu
+    showModal('win', 'CHÚC MỪNG!', `Bạn đã hoàn thành tất cả câu hỏi!<br>Tổng điểm: <b>${score}</b>`, 'Về Menu', () => {
         localStorage.setItem("gameScore", 0);
         window.location.href = 'hub.html';
     });
@@ -252,9 +251,6 @@ function endGame() {
 
 function showCurrentHint() {
     if(!canPlay) return;
-    // Trừ điểm khi dùng gợi ý (Optional - nếu muốn khó hơn)
-    // score = Math.max(0, score - 2); 
-    // els.score.innerText = score;
     showModal('hint', 'GỢI Ý', currentQuestions[currentIndex].hint, 'Đã Hiểu');
 }
 
@@ -269,8 +265,6 @@ function showModal(type, title, msg, btnText = "Đóng", callback = null) {
     }
     
     const iconMap = { 'win': '🎉', 'lose': '💔', 'hint': '💡' };
-    
-    // Set class type để đổi màu modal
     modal.className = `modal-overlay active type-${type}`;
     
     const iconEl = document.getElementById('modal-icon');
@@ -285,16 +279,22 @@ function showModal(type, title, msg, btnText = "Đóng", callback = null) {
     const btnEl = document.getElementById('modal-btn');
     if(btnEl) btnEl.innerText = btnText;
     
+    // Tự động đóng modal sau khi render để tránh lỗi
+    // (Dùng callback để xử lý click)
+    const newBtn = btnEl.cloneNode(true);
+    btnEl.parentNode.replaceChild(newBtn, btnEl);
+    
+    newBtn.onclick = () => {
+        closeModal();
+        if(callback) callback();
+    };
+    
     modalCallback = callback;
 }
 
 function closeModal() {
     document.getElementById('custom-modal').classList.remove('active');
-    if(modalCallback) { 
-        modalCallback(); 
-        modalCallback = null; 
-    }
 }
 
-// Chạy game
-init();
+// Khởi chạy game khi trang load xong
+document.addEventListener("DOMContentLoaded", init);
