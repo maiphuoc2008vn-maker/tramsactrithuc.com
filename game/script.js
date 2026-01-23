@@ -1,8 +1,8 @@
 /* ==========================================================================
-   GAME LOGIC - PHIÊN BẢN FULL CÂU HỎI LỚP 10, 11, 12
+   GAME LOGIC - FIX LỖI TREO & FULL CÂU HỎI LỚP 10, 11, 12
    ========================================================================== */
 
-// 1. DATA CÂU HỎI
+// 1. CƠ SỞ DỮ LIỆU CÂU HỎI
 const questionDatabase = {
     // --- LỚP 10: PHẦN CỨNG & HỆ ĐIỀU HÀNH ---
     "10a1": [
@@ -75,7 +75,7 @@ const els = {
     timer: getEl("timer")
 };
 
-// --- HÀM XÁO TRỘN CÂU HỎI ---
+// --- HÀM XÁO TRỘN CÂU HỎI (Shuffle) ---
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -88,23 +88,24 @@ function shuffleArray(array) {
 function init() {
     console.log("Game Start: Đang khởi tạo...");
     
-    // Lấy điểm cũ
+    // Lấy điểm cũ từ localStorage
     score = parseInt(localStorage.getItem("gameScore")) || 0;
     if(els.score) els.score.innerText = score;
     
     // Gắn sự kiện chọn lớp
     if(els.grade) {
         els.grade.addEventListener("change", (e) => loadGrade(e.target.value));
-        loadGrade("10a1"); 
+        loadGrade("10a1"); // Mặc định chạy lớp 10
     } else {
-        loadGrade("10a1"); // Chạy mặc định nếu không có nút chọn lớp
+        loadGrade("10a1"); 
     }
 }
 
 function loadGrade(grade) {
-    // Lấy dữ liệu và xáo trộn
+    // 1. Lấy dữ liệu theo lớp
     const rawData = questionDatabase[grade] || questionDatabase["10a1"];
-    currentQuestions = shuffleArray([...rawData]); // Copy và đảo
+    // 2. Tạo bản sao và xáo trộn để câu hỏi ngẫu nhiên
+    currentQuestions = shuffleArray([...rawData]); 
     
     currentIndex = 0;
     loadQuestion();
@@ -117,7 +118,7 @@ function loadQuestion() {
     
     // Kiểm tra các phần tử UI quan trọng
     if (!els.slots || !els.keyboard) {
-        console.error("LỖI: Không tìm thấy ID 'answer-container' hoặc 'keyboard-container' trong HTML");
+        console.error("LỖI: Không tìm thấy khung game trong HTML");
         return;
     }
 
@@ -130,7 +131,7 @@ function loadQuestion() {
     const q = currentQuestions[currentIndex];
     console.log("Đang tải câu:", q.answer);
 
-    // --- XỬ LÝ ẢNH (FIX LỖI TREO) ---
+    // --- XỬ LÝ ẢNH (QUAN TRỌNG: FIX LỖI TREO) ---
     if(els.img) {
         // Hiện spinner, làm mờ ảnh cũ
         els.img.style.opacity = 0.3; 
@@ -149,13 +150,14 @@ function loadQuestion() {
         // Khi ảnh lỗi -> Dùng ảnh thay thế -> KHÔNG ĐƯỢC TREO GAME
         els.img.onerror = () => {
             console.warn("Không tải được ảnh:", q.image);
+            // Dùng ảnh giữ chỗ online nếu ảnh thật bị lỗi
             els.img.src = `https://via.placeholder.com/400x200?text=${q.answer}`; 
             els.img.style.opacity = 1;
             if(spinner) spinner.style.display = 'none';
         };
     }
     
-    // --- VẼ GIAO DIỆN NGAY LẬP TỨC (Không chờ ảnh) ---
+    // --- VẼ GIAO DIỆN NGAY LẬP TỨC (Không chờ ảnh tải xong) ---
     userAnswer = Array(q.answer.length).fill("");
     renderSlots();
     renderKeyboard();
@@ -265,13 +267,13 @@ function checkWin() {
             s.style.color = "#ff7675"; 
         });
         
-        // Reset sau 1 giây (hoặc dùng modal nếu muốn)
+        // Reset màu sau 1 giây
         setTimeout(() => {
              document.querySelectorAll('.slot').forEach(s => { 
                 s.style.borderColor = "#b2bec3"; 
                 s.style.color = "#2d3436"; 
             });
-            renderSlots(); // Xóa đỏ
+            renderSlots(); 
         }, 1000);
     }
 }
