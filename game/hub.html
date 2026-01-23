@@ -6,106 +6,128 @@
     <title>Trung Tâm Giải Trí - STEAM 12A4</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- LIÊN KẾT FILE CSS RIÊNG -->
     <link rel="stylesheet" href="style_hub.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="sidebar-top">
-                <div class="logo-section">
-                    <div class="logo-wrapper">
-                        <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-                    </div>
-                    <h2>Trạm Sạc Tri Thức</h2>
-                    <p class="subtitle">THPT ĐẠM RI</p>
-                </div>
 
-                <nav class="nav-menu">
-                    <button class="nav-item active"><i class="fas fa-gamepad"></i> Kho Game</button>
-                    <button class="nav-item" onclick="location.href='../trangchu/index.html'"><i class="fas fa-home"></i> Trang Chủ</button>
-                    <button class="nav-item" onclick="window.location.href='vinhdanh.html'"><i class="fas fa-trophy"></i> Bảng Xếp Hạng</button>
-                    
-                    <button id="hub-theme-toggle" class="nav-item theme-switcher">
-                        <i class="fas fa-moon"></i> <span>Chế độ Tối</span>
-                    </button>
-                </nav>
+    <!-- Header / Navbar Mới -->
+    <header class="header">
+        <div class="logo-area" onclick="location.href='index.html'">
+            <!-- Logo trường -->
+            <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+            <div class="logo-text">
+                <h2>Trạm Sạc Tri Thức</h2>
+                <span>STEAM 12A4</span>
+            </div>
+        </div>
+
+        <!-- Menu Desktop (Sẽ ẩn trên Mobile) -->
+        <nav class="desktop-nav">
+            <a href="#" class="nav-link active"><i class="fas fa-gamepad"></i> Kho Game</a>
+            <a href="../trangchu/index.html" class="nav-link"><i class="fas fa-home"></i> Trang Chủ</a>
+            <a href="vinhdanh.html" class="nav-link"><i class="fas fa-trophy"></i> BXH</a>
+        </nav>
+
+        <div class="header-actions">
+            <!-- User Info (Desktop only) -->
+            <div class="user-chip" id="user-info-desktop" style="display: none;">
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="User">
+                <span id="display-username">User</span>
             </div>
 
-            <div class="sidebar-footer">
-                <div class="user-profile-card" id="user-info-area" style="display: none;">
-                    <div class="avatar-wrapper">
-                        <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="Avatar">
-                    </div>
-                    <div class="user-info">
-                        <h4 id="display-username">User</h4>
-                        <span class="status-badge">● Online</span>
-                    </div>
-                    <button class="btn-logout-mini" onclick="confirmLogout()" title="Đăng xuất">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                </div>
-                <div class="copyright"><p>© 2025-2026</p></div>
+            <!-- Nút đổi theme -->
+            <button id="theme-toggle" class="theme-btn" title="Chế độ Sáng/Tối">
+                <i class="fas fa-moon"></i>
+            </button>
+
+            <!-- Nút Logout (Desktop) -->
+            <button class="logout-btn desktop-only" onclick="confirmLogout()" title="Đăng xuất">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+
+            <!-- Nút Hamburger (Chỉ hiện trên Mobile) -->
+            <button class="hamburger-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu (Ẩn, trượt ra khi bấm Hamburger) -->
+    <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <!-- Thông tin User trên Mobile -->
+        <div class="user-chip-mobile" id="user-info-mobile">
+            <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="User">
+            <div class="user-details">
+                <span id="display-username-mobile">Khách</span>
+                <small>● Online</small>
             </div>
-        </aside>
-
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-            <div class="hub-header">
-                <h1>🎮 TRUNG TÂM TRÒ CHƠI</h1>
-                <p>Lựa chọn thử thách của bạn ngay hôm nay!</p>
-            </div>
-
-            <div class="game-grid">
-                <!-- GAME 1 -->
-                <div class="game-card card-dhbc" onclick="window.location.href='game.html'">
-                    <div class="card-icon"><i class="fas fa-search"></i></div>
-                    <div class="card-info">
-                        <h3>Đuổi Hình Bắt Chữ</h3>
-                        <p>Thử thách tư duy với những hình ảnh gợi ý hóc búa.</p>
-                        <span class="btn-play">Chơi Ngay</span>
-                    </div>
-                </div>
-
-                <!-- GAME 2 -->
-                <div class="game-card card-altp" onclick="window.location.href='ailatrieuphu.html'">
-                    <div class="card-icon"><i class="fas fa-sack-dollar"></i></div>
-                    <div class="card-info">
-                        <h3>Ai Là Triệu Phú</h3>
-                        <p>Chinh phục 15 câu hỏi trắc nghiệm kiến thức.</p>
-                        <span class="btn-play">Chơi Ngay</span>
-                    </div>
-                </div>
-
-                <!-- GAME 3 -->
-                <div class="game-card card-gmc" onclick="window.location.href='giaimacode.html'">
-                    <div class="card-icon"><i class="fas fa-laptop-code"></i></div>
-                    <div class="card-info">
-                        <h3>Giải Mã Code</h3>
-                        <p>Soi lỗi code Python/C++. Thử thách các Coder!</p>
-                        <span class="btn-play">Debug Ngay</span>
-                    </div>
-                </div> 
-
-                <!-- GAME 4 -->
-                <div class="game-card card-nv" onclick="window.location.href='ngheviet.html'">
-                    <div class="card-icon"><i class="fas fa-headphones-alt"></i></div>
-                    <div class="card-info">
-                        <h3>Nghe và Viết</h3>
-                        <p>Luyện kỹ năng nghe với bộ câu hỏi chuyên ngành.</p>
-                        <span class="btn-play">Nghe Ngay</span>
-                    </div>
-                </div>
-            </div>
-        </main>
+        </div>
+        
+        <div class="mobile-nav-list">
+            <a href="#" class="mobile-link active"><i class="fas fa-gamepad"></i> Kho Game</a>
+            <a href="../trangchu/index.html" class="mobile-link"><i class="fas fa-home"></i> Trang Chủ</a>
+            <a href="vinhdanh.html" class="mobile-link"><i class="fas fa-trophy"></i> Bảng Xếp Hạng</a>
+            <a href="#" onclick="confirmLogout()" class="mobile-link logout-mobile"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </div>
     </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="hub-header">
+            <h1>🎮 TRUNG TÂM TRÒ CHƠI</h1>
+            <p>Lựa chọn thử thách và chinh phục tri thức!</p>
+        </div>
+
+        <div class="game-grid">
+            <!-- GAME 1 -->
+            <div class="game-card card-dhbc" onclick="window.location.href='game.html'">
+                <div class="card-icon"><i class="fas fa-search"></i></div>
+                <div class="card-info">
+                    <h3>Đuổi Hình Bắt Chữ</h3>
+                    <p>Thử thách tư duy với những hình ảnh gợi ý hóc búa.</p>
+                    <span class="btn-play">Chơi Ngay</span>
+                </div>
+            </div>
+
+            <!-- GAME 2 -->
+            <div class="game-card card-altp" onclick="window.location.href='ailatrieuphu.html'">
+                <div class="card-icon"><i class="fas fa-sack-dollar"></i></div>
+                <div class="card-info">
+                    <h3>Ai Là Triệu Phú</h3>
+                    <p>Chinh phục 15 câu hỏi trắc nghiệm kiến thức.</p>
+                    <span class="btn-play">Chơi Ngay</span>
+                </div>
+            </div>
+
+            <!-- GAME 3 -->
+            <div class="game-card card-gmc" onclick="window.location.href='giaimacode.html'">
+                <div class="card-icon"><i class="fas fa-laptop-code"></i></div>
+                <div class="card-info">
+                    <h3>Giải Mã Code</h3>
+                    <p>Soi lỗi code Python/C++. Thử thách các Coder!</p>
+                    <span class="btn-play">Debug Ngay</span>
+                </div>
+            </div> 
+
+            <!-- GAME 4 -->
+            <div class="game-card card-nv" onclick="window.location.href='ngheviet.html'">
+                <div class="card-icon"><i class="fas fa-headphones-alt"></i></div>
+                <div class="card-info">
+                    <h3>Nghe và Viết</h3>
+                    <p>Luyện kỹ năng nghe với bộ câu hỏi chuyên ngành.</p>
+                    <span class="btn-play">Nghe Ngay</span>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <!-- CUSTOM MODAL -->
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-box">
-            <div class="modal-icon-wrapper"><i class="fas fa-bell"></i></div>
             <h3 id="modal-title">Thông báo</h3>
-            <p id="modal-message">Nội dung thông báo...</p>
+            <p id="modal-message">Nội dung...</p>
             <div class="modal-actions">
                 <button id="btn-cancel" class="modal-btn secondary">Hủy</button>
                 <button id="btn-confirm" class="modal-btn primary">Đồng ý</button>
@@ -114,35 +136,42 @@
     </div>
 
     <script>
-        // --- QUẢN LÝ GIAO DIỆN (DARK MODE) ---
+        // --- JAVASCRIPT LOGIC ---
+        
+        // 1. Quản lý Dark Mode
         const body = document.body;
-        const themeToggle = document.getElementById('hub-theme-toggle');
+        const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = themeToggle.querySelector('i');
-        const themeText = themeToggle.querySelector('span');
 
         function setTheme(isDark) {
             if (isDark) {
                 body.classList.add('dark-mode');
                 themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'Chế độ Sáng';
                 localStorage.setItem('theme', 'dark');
             } else {
                 body.classList.remove('dark-mode');
                 themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'Chế độ Tối';
                 localStorage.setItem('theme', 'light');
             }
         }
 
-        // Khởi tạo theme
         if (localStorage.getItem('theme') === 'dark') setTheme(true);
 
         themeToggle.addEventListener('click', () => {
             setTheme(!body.classList.contains('dark-mode'));
         });
 
-        // --- QUẢN LÝ MODAL ---
+        // 2. Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // 3. Modal & Login Check
         const modal = document.getElementById('custom-modal');
+
         function showModal(message, callback, isAlert = false) {
             document.getElementById('modal-message').textContent = message;
             modal.style.display = 'flex';
@@ -151,14 +180,15 @@
             
             btnCancel.style.display = isAlert ? 'none' : 'block';
             document.getElementById('modal-title').textContent = isAlert ? "Thông báo" : "Xác nhận";
-
+            
+            // Xóa event cũ
             const newConfirm = btnConfirm.cloneNode(true);
             btnConfirm.parentNode.replaceChild(newConfirm, btnConfirm);
+            
             newConfirm.onclick = () => { modal.style.display = 'none'; if(callback) callback(); };
             btnCancel.onclick = () => modal.style.display = 'none';
         }
 
-        // --- KIỂM TRA ĐĂNG NHẬP ---
         function checkLogin() {
             const userStr = localStorage.getItem('user_info_sql');
             if (!userStr) {
@@ -167,18 +197,22 @@
                 }, true);
             } else {
                 const user = JSON.parse(userStr);
-                document.getElementById('user-info-area').style.display = 'flex';
+                // Desktop
+                document.getElementById('user-info-desktop').style.display = 'flex';
                 document.getElementById('display-username').textContent = user.username;
+                // Mobile
+                document.getElementById('display-username-mobile').textContent = user.username;
             }
         }
 
         function confirmLogout() {
-            showModal("Bạn có chắc chắn muốn đăng xuất không?", () => {
+            showModal("Bạn có chắc chắn muốn đăng xuất?", () => {
                 localStorage.removeItem('user_info_sql');
                 window.location.href = '../login/login.html';
             });
         }
 
+        // Chạy kiểm tra đăng nhập
         checkLogin();
     </script>
 </body>
