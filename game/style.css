@@ -1,238 +1,72 @@
-/* ==========================================================================
-   1. GLOBAL & RESET (Cơ bản)
-   ========================================================================== */
+/* GLOBAL */
 * { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; font-family: 'Nunito', sans-serif; }
+:root { --bg-header: rgba(255, 255, 255, 0.95); --text-color: #2d3436; --primary: #3498db; }
+body { background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%); min-height: 100vh; color: var(--text-color); padding-top: 80px; }
+body.dark-mode { --bg-header: rgba(30, 39, 46, 0.95); --text-color: #dfe6e9; background: #2d3436; }
 
-:root {
-    --bg-header: rgba(255, 255, 255, 0.95);
-    --text-color: #2d3436;
-    --primary: #3498db;
-    --shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-body {
-    background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
-    min-height: 100vh;
-    color: var(--text-color);
-    overflow-x: hidden;
-    /* QUAN TRỌNG: Đẩy nội dung xuống để không bị Menu che mất */
-    padding-top: 80px; 
-}
-
-body.dark-mode {
-    --bg-header: rgba(30, 39, 46, 0.95);
-    --text-color: #dfe6e9;
-    background: #2d3436;
-}
-
-/* ==========================================================================
-   2. HEADER (MENU TRÊN CÙNG - KHẮC PHỤC LỖI VỠ HÌNH)
-   ========================================================================== */
-.header {
-    position: fixed; top: 0; left: 0; right: 0;
-    height: 70px;
-    background: var(--bg-header);
-    backdrop-filter: blur(10px);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 5%; 
-    z-index: 1000; /* Đảm bảo menu luôn nổi lên trên */
-    box-shadow: var(--shadow);
-    transition: background 0.3s;
-}
-
-/* Logo (Sửa lỗi logo khổng lồ) */
+/* HEADER */
+.header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: var(--bg-header); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 .logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.logo-area img { 
-    width: 45px; height: 45px; /* Giới hạn kích thước logo */
-    border-radius: 50%; 
-    border: 2px solid var(--primary); 
-    object-fit: cover;
-}
-.logo-text h2 { font-size: 1.1rem; font-weight: 800; line-height: 1.2; color: var(--text-color); margin: 0; }
-.logo-text span { font-size: 0.75rem; color: var(--primary); font-weight: 700; letter-spacing: 1px; }
-
-/* Menu Desktop (Sửa các nút bấm thô) */
+.logo-area img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+.logo-text h2 { font-size: 1.1rem; font-weight: 800; margin: 0; }
+.logo-text span { font-size: 0.75rem; color: var(--primary); font-weight: 700; }
 .desktop-nav { display: flex; gap: 10px; }
-.nav-link {
-    background: transparent; border: none;
-    padding: 10px 20px; border-radius: 25px;
-    font-weight: 700; font-size: 0.95rem; color: #7f8c8d;
-    cursor: pointer; transition: 0.3s;
-    display: flex; align-items: center; gap: 8px;
-}
+.nav-link { background: transparent; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 700; color: #7f8c8d; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
 .nav-link:hover, .nav-link.active { background: var(--primary); color: white; transform: translateY(-2px); }
-.nav-link i { font-size: 1rem; }
-
-/* Nút chức năng bên phải */
-.header-actions { display: flex; align-items: center; gap: 10px; }
-.icon-btn, .hamburger-btn {
-    width: 40px; height: 40px; border-radius: 50%;
-    border: 1px solid #dfe6e9; background: transparent;
-    color: var(--text-color); cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; transition: 0.3s;
-}
+.header-actions { display: flex; gap: 10px; }
+.icon-btn, .hamburger-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #dfe6e9; background: transparent; color: var(--text-color); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
 .icon-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-.hamburger-btn { display: none; } /* Ẩn nút 3 gạch trên máy tính */
+.hamburger-btn { display: none; }
 
-/* ==========================================================================
-   3. GAME BOARD (KHUNG GAME GIỮA MÀN HÌNH)
-   ========================================================================== */
-.app-container {
-    display: flex; justify-content: center; width: 100%;
-}
-
-.main-content {
-    width: 100%; display: flex; justify-content: center;
-    padding: 20px;
-}
-
-.game-board {
-    background: rgba(255, 255, 255, 0.9);
-    width: 100%; max-width: 750px;
-    padding: 30px; border-radius: 25px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-    text-align: center;
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.6);
-    display: flex; flex-direction: column; gap: 20px;
-}
-body.dark-mode .game-board { background: rgba(30, 39, 46, 0.95); border-color: #353b48; }
-
-/* Header Info (Timer, Score) */
+/* GAME BOARD */
+.app-container { display: flex; justify-content: center; width: 100%; }
+.main-content { width: 100%; display: flex; justify-content: center; padding: 20px; }
+.game-board { background: rgba(255, 255, 255, 0.9); width: 100%; max-width: 750px; padding: 30px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); text-align: center; backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 20px; min-height: 500px; }
+body.dark-mode .game-board { background: rgba(30, 39, 46, 0.95); }
 .board-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-.select-wrapper {
-    background: #f1f2f6; padding: 8px 15px; border-radius: 20px;
-    display: flex; align-items: center; gap: 8px;
-}
-body.dark-mode .select-wrapper { background: #353b48; color: white; }
-select { border: none; background: transparent; font-weight: 700; outline: none; color: inherit; font-size: 1rem; cursor: pointer; }
+.select-wrapper { background: #f1f2f6; padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 8px; }
+body.dark-mode .select-wrapper { background: #353b48; }
+select { border: none; background: transparent; font-weight: 700; outline: none; color: inherit; cursor: pointer; }
+.stat-box { padding: 8px 16px; border-radius: 12px; font-weight: bold; color: white; display: flex; align-items: center; gap: 6px; }
+.time-box { background: #ff7675; } .score-box { background: #00b894; }
 
-.stats-group { display: flex; gap: 10px; }
-.stat-box {
-    padding: 8px 16px; border-radius: 12px; font-weight: bold; color: white; font-size: 0.95rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 6px;
-}
-.time-box { background: #ff7675; }
-.score-box { background: #00b894; }
-
-/* Khung Ảnh */
-.image-frame {
-    width: 100%; height: 250px; background: #dfe6e9;
-    border-radius: 15px; position: relative;
-    border: 4px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    display: flex; justify-content: center; align-items: center; overflow: hidden;
-}
+/* IMAGE & SLOTS */
+.image-frame { width: 100%; height: 250px; background: #dfe6e9; border-radius: 15px; position: relative; border: 4px solid #fff; display: flex; justify-content: center; align-items: center; overflow: hidden; }
 body.dark-mode .image-frame { background: #353b48; border-color: #57606f; }
 .image-frame img { max-width: 100%; max-height: 100%; object-fit: contain; z-index: 2; transition: opacity 0.3s; }
 .loading-spinner { position: absolute; font-size: 30px; color: #b2bec3; z-index: 1; }
-
-/* Nút Gợi Ý */
-.btn-hint {
-    background: #fdcb6e; border: none; padding: 10px 30px;
-    border-radius: 50px; font-weight: 800; color: #2d3436;
-    cursor: pointer; box-shadow: 0 4px 0 #e17055; transition: 0.2s;
-    font-size: 1rem;
-}
+.btn-hint { background: #fdcb6e; border: none; padding: 10px 30px; border-radius: 50px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 #e17055; }
 .btn-hint:active { transform: translateY(4px); box-shadow: none; }
-
-/* Ô Chữ & Bàn Phím */
-.slots-area { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; min-height: 50px; margin-bottom: 10px; }
-.slot {
-    width: 45px; height: 50px; background: white; border: 2px solid #b2bec3;
-    border-radius: 10px; display: flex; justify-content: center; align-items: center;
-    font-size: 1.3rem; font-weight: 800; color: #2d3436; box-shadow: 0 4px 0 #b2bec3;
-    cursor: pointer; transition: 0.1s;
-}
+.slots-area { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; min-height: 50px; }
+.slot { width: 45px; height: 50px; background: white; border: 2px solid #b2bec3; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; font-weight: 800; color: #2d3436; box-shadow: 0 4px 0 #b2bec3; cursor: pointer; }
 body.dark-mode .slot { background: #353b48; color: white; border-color: #57606f; box-shadow: 0 4px 0 #2f3542; }
 .slot.filled { background: #74b9ff; color: white; border-color: #0984e3; box-shadow: 0 4px 0 #0984e3; }
-
 .keyboard-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
-.key-btn {
-    width: 40px; height: 45px; border: none; border-radius: 8px;
-    font-size: 1rem; font-weight: 700; background: white; color: #2d3436;
-    box-shadow: 0 3px 0 #b2bec3; cursor: pointer;
-}
+.key-btn { width: 40px; height: 45px; border: none; border-radius: 8px; font-weight: 700; background: white; color: #2d3436; box-shadow: 0 3px 0 #b2bec3; cursor: pointer; }
 body.dark-mode .key-btn { background: #353b48; color: white; box-shadow: 0 3px 0 #2f3542; }
-.key-btn:active { transform: translateY(3px); box-shadow: none; }
 .key-del { background: #fab1a0; color: #d63031; width: auto; padding: 0 15px; }
 
-/* ==========================================================================
-   4. MOBILE RESPONSIVE (Dành cho điện thoại)
-   ========================================================================== */
+/* MOBILE */
 @media (max-width: 900px) {
-    .desktop-nav { display: none; } /* Ẩn menu ngang trên điện thoại */
-    .hamburger-btn { display: flex; } /* Hiện nút 3 gạch */
-    .header { padding: 0 15px; } /* Căn lề header nhỏ lại */
-    
+    .desktop-nav { display: none; }
+    .hamburger-btn { display: flex; }
+    .header { padding: 0 15px; }
     .game-board { padding: 20px 15px; }
     .image-frame { height: 200px; }
 }
-
-/* Menu Mobile Trượt từ phải sang */
-.mobile-menu-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1001;
-    opacity: 0; visibility: hidden; transition: 0.3s;
-}
+.mobile-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1001; opacity: 0; visibility: hidden; transition: 0.3s; }
 .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
-
-.mobile-menu {
-    position: fixed; top: 0; right: -280px; width: 280px; height: 100vh;
-    background: white; z-index: 1002; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 20px;
-    display: flex; flex-direction: column;
-}
+.mobile-menu { position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: white; z-index: 1002; transition: 0.3s; padding: 20px; display: flex; flex-direction: column; }
 body.dark-mode .mobile-menu { background: #1e272e; }
 .mobile-menu.active { right: 0; }
-
-.menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.menu-header h3 { font-size: 1.2rem; font-weight: 800; color: var(--text-color); }
-.menu-header button { background: none; border: none; font-size: 1.5rem; color: #636e72; cursor: pointer; }
-
-.menu-list a {
-    display: flex; align-items: center; gap: 15px;
-    padding: 15px; border-radius: 10px; color: var(--text-color); font-weight: 700;
-    text-decoration: none; margin-bottom: 10px; background: #f1f2f6; transition: 0.2s;
-}
+.menu-header { display: flex; justify-content: space-between; margin-bottom: 30px; }
+.menu-list a { display: flex; gap: 15px; padding: 15px; border-radius: 10px; color: var(--text-color); font-weight: 700; text-decoration: none; background: #f1f2f6; margin-bottom: 10px; }
 body.dark-mode .menu-list a { background: #353b48; }
-.menu-list a:active { transform: scale(0.98); background: var(--primary); color: white; }
 
-/* Màn hình siêu nhỏ */
-@media (max-width: 400px) {
-    .image-frame { height: 160px; }
-    .slot { width: 34px; height: 40px; font-size: 1rem; }
-    .key-btn { width: 30px; height: 38px; font-size: 0.9rem; }
-    .logo-text { display: none; } /* Ẩn chữ logo nếu quá chật */
-}
-
-/* ==========================================================================
-   5. MODAL (Thông báo)
-   ========================================================================== */
-.modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
-    z-index: 2000; display: flex; justify-content: center; align-items: center;
-    opacity: 0; visibility: hidden; transition: 0.3s;
-}
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; }
 .modal-overlay.active { opacity: 1; visibility: visible; }
-.modal-box {
-    background: white; width: 90%; max-width: 350px; padding: 25px;
-    border-radius: 20px; text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3); transform: scale(0.8); transition: 0.3s;
-}
+.modal-box { background: white; width: 90%; max-width: 350px; padding: 25px; border-radius: 20px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 body.dark-mode .modal-box { background: #1e272e; color: white; }
-.modal-overlay.active .modal-box { transform: scale(1); }
-
-.modal-icon { font-size: 40px; margin-bottom: 15px; }
-.modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; }
-.modal-msg { color: #636e72; margin-bottom: 20px; font-size: 1rem; }
-body.dark-mode .modal-msg { color: #b2bec3; }
-
-.modal-btn {
-    width: 100%; padding: 12px; border: none; border-radius: 50px;
-    font-weight: 800; color: white; cursor: pointer; text-transform: uppercase;
-    background: #0984e3; box-shadow: 0 4px 10px rgba(9, 132, 227, 0.4);
-}
-
-.type-win .modal-btn { background: #00b894; } .type-win .modal-title { color: #00b894; }
-.type-lose .modal-btn { background: #ff7675; } .type-lose .modal-title { color: #ff7675; }
-.type-hint .modal-btn { background: #fdcb6e; color: #2d3436; } .type-hint .modal-title { color: #e17055; }
+.modal-btn { width: 100%; padding: 12px; border: none; border-radius: 50px; font-weight: 800; color: white; cursor: pointer; text-transform: uppercase; margin-top: 15px; }
+.type-win .modal-btn { background: #00b894; } .type-lose .modal-btn { background: #ff7675; } .type-hint .modal-btn { background: #fdcb6e; color: #2d3436; }
