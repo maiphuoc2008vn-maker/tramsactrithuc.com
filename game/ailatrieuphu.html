@@ -3,94 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ai Là Triệu Phú - STEAM 12A4</title>
+    <title>ALTP - STEAM 12A4</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style_altp.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- HEADER MENU -->
-        <header class="top-header">
-            <div class="header-left">
-                <img src="../images/logotruongdung.jpg" class="mini-logo" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-                <span class="brand-name">STEAM 12A4</span>
+    <div class="app-wrapper">
+        <!-- TOP NAV -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="brand">
+                    <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                    <span>STEAM 12A4</span>
+                </div>
+                <div class="nav-links" id="mainNav">
+                    <a href="hub.html" class="nav-btn"><i class="fas fa-home"></i> Kho Game</a>
+                    <a href="#" onclick="location.reload()" class="nav-btn active"><i class="fas fa-redo"></i> Chơi Lại</a>
+                </div>
+                <button class="menu-mobile" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
             </div>
-            
-            <button class="menu-toggle-btn" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
+        </nav>
 
-            <nav class="nav-menu" id="mainNav">
-                <button class="nav-item" onclick="location.href='hub.html'"><i class="fas fa-arrow-left"></i> Kho Game</button>
-                <button class="nav-item active" onclick="location.reload()"><i class="fas fa-redo"></i> Chơi Lại</button>
-            </nav>
-        </header>
-
-        <!-- MAIN GAME -->
-        <main class="main-content altp-bg">
-            <div class="game-container">
-                <!-- Thanh thông tin trên cùng (Trợ giúp & Tiền) -->
-                <div class="top-info">
+        <!-- GAME CONTENT -->
+        <main class="game-area">
+            <div class="main-card">
+                <!-- Status Badges -->
+                <div class="status-bar">
                     <div class="lifelines">
-                        <button id="help-5050" onclick="use5050()" title="50:50">50:50</button>
-                        <button id="help-call" onclick="useCall()" title="Gọi điện thoại"><i class="fas fa-phone"></i></button>
-                        <button id="help-crowd" onclick="useCrowd()" title="Ý kiến khán giả"><i class="fas fa-users"></i></button>
+                        <button id="help-5050" onclick="use5050()">50:50</button>
+                        <button id="help-call" onclick="useCall()"><i class="fas fa-phone"></i></button>
+                        <button id="help-crowd" onclick="useCrowd()"><i class="fas fa-users"></i></button>
                     </div>
-                    <div class="money-badge">
-                        <span id="q-index">Câu 1</span> - <span id="money-val">200.000 VNĐ</span>
-                    </div>
-                </div>
-
-                <!-- Đồng hồ & Câu hỏi -->
-                <div class="center-stage">
-                    <div class="timer-circle" id="timer">30</div>
-                    <div class="question-box" id="question-text">
-                        Đang tải dữ liệu...
+                    
+                    <div class="stats-group">
+                        <div class="badge money"><i class="fas fa-dollar-sign"></i> <span id="money-val">0</span></div>
+                        <div class="badge timer"><i class="far fa-clock"></i> <span id="timer">30</span></div>
                     </div>
                 </div>
 
-                <!-- 4 Đáp án -->
+                <!-- Question Section -->
+                <div class="question-container">
+                    <h3 id="q-index">CÂU HỎI 1</h3>
+                    <div class="question-text" id="question-text">Đang tải câu hỏi...</div>
+                </div>
+
+                <!-- Answer Grid -->
                 <div class="answers-grid">
-                    <button class="ans-btn" id="btn-0" onclick="chooseAnswer(0)">A: ...</button>
-                    <button class="ans-btn" id="btn-1" onclick="chooseAnswer(1)">B: ...</button>
-                    <button class="ans-btn" id="btn-2" onclick="chooseAnswer(2)">C: ...</button>
-                    <button class="ans-btn" id="btn-3" onclick="chooseAnswer(3)">D: ...</button>
+                    <button class="ans-item" id="btn-0" onclick="chooseAnswer(0)">A. Đang tải...</button>
+                    <button class="ans-item" id="btn-1" onclick="chooseAnswer(1)">B. Đang tải...</button>
+                    <button class="ans-item" id="btn-2" onclick="chooseAnswer(2)">C. Đang tải...</button>
+                    <button class="ans-item" id="btn-3" onclick="chooseAnswer(3)">D. Đang tải...</button>
                 </div>
+            </div>
 
-                <!-- Màn hình chờ bắt đầu -->
-                <div id="start-overlay" class="overlay">
+            <!-- Start Overlay -->
+            <div id="start-overlay" class="start-screen">
+                <div class="start-box">
                     <h1>AI LÀ TRIỆU PHÚ</h1>
-                    <p>Chọn kiến thức khối lớp để bắt đầu:</p>
+                    <p>Chọn khối lớp để thử thách kiến thức</p>
                     <select id="grade-select">
-                        <option value="10">Khối 10 (Hệ thống & Văn phòng)</option>
-                        <option value="11">Khối 11 (Lập trình & Thuật toán)</option>
-                        <option value="12">Khối 12 (CSDL & AI & Mạng)</option>
+                        <option value="10">Khối 10 (Hệ thống)</option>
+                        <option value="11">Khối 11 (Lập trình)</option>
+                        <option value="12">Khối 12 (CSDL & AI)</option>
                     </select>
-                    <button class="start-btn" onclick="startGame()">BẮT ĐẦU</button>
+                    <button class="btn-play" onclick="startGame()">BẮT ĐẦU CHƠI</button>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- MODAL THÔNG BÁO -->
+    <!-- Modal thông báo -->
     <div id="support-modal" class="modal-overlay hidden">
-        <div class="modal-box" id="modal-box-content">
-            <div class="modal-header">
-                <i id="modal-icon" class="fas fa-info-circle"></i>
-                <h2 id="modal-title">Tiêu đề</h2>
-            </div>
-            <div id="modal-body" class="modal-body"></div>
-            <button id="modal-btn-action" class="close-modal-btn" onclick="closeSupportModal()">ĐÃ HIỂU</button>
+        <div class="modal-card">
+            <i id="modal-icon" class="fas fa-info-circle"></i>
+            <h2 id="modal-title">Thông báo</h2>
+            <div id="modal-body" class="modal-content"></div>
+            <button class="btn-close" onclick="closeSupportModal()">ĐÃ HIỂU</button>
         </div>
     </div>
 
     <script src="script_altp.js"></script>
     <script>
-        // Hàm ẩn hiện menu
         function toggleMenu() {
-            const nav = document.getElementById('mainNav');
-            nav.classList.toggle('active');
+            document.getElementById('mainNav').classList.toggle('show');
         }
     </script>
 </body>
