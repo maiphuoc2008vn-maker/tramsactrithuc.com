@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DATA
+   DATA & CONFIG
    ========================================================================== */
 const questionDatabase = {
     "10a1": [
@@ -45,6 +45,7 @@ let score = 0;
 let canPlay = true;
 let timerInterval;
 let timeLeft = 60;
+let isScoreSaved = false; // Cờ kiểm tra để tránh lưu điểm nhiều lần
 
 const els = {
     grade: document.getElementById("grade-select"),
@@ -56,37 +57,54 @@ const els = {
 };
 
 function init() {
+    // Lấy điểm hiện tại từ LocalStorage (nếu load lại trang)
     score = parseInt(localStorage.getItem("gameScore")) || 0;
     if(els.score) els.score.innerText = score;
+    
     if(els.grade) {
         els.grade.addEventListener("change", (e) => loadGrade(e.target.value));
-        loadGrade("10a1");
+        loadGrade("10a1"); // Mặc định lớp 10
     }
 }
 
 function loadGrade(grade) {
     currentQuestions = questionDatabase[grade] || questionDatabase["10a1"];
     currentIndex = 0;
+    // Reset điểm khi đổi lớp để công bằng (tùy chọn)
+    // score = 0; localStorage.setItem("gameScore", 0); if(els.score) els.score.innerText = 0;
     loadQuestion();
 }
 
 function loadQuestion() {
     clearInterval(timerInterval);
     canPlay = true;
+    isScoreSaved = false;
     
+    // Nếu hết câu hỏi -> Thắng game
     if (currentIndex >= currentQuestions.length) {
         endGame();
         return;
     }
 
     const q = currentQuestions[currentIndex];
+    
+    // Hiệu ứng load ảnh
     if(els.img) {
         els.img.style.opacity = 0;
+        document.querySelector('.loading-spinner').style.display = 'block';
+        
         setTimeout(() => {
             els.img.src = q.image;
-            els.img.style.opacity = 1;
+            els.img.onload = () => {
+                els.img.style.opacity = 1;
+                document.querySelector('.loading-spinner').style.display = 'none';
+            };
         }, 150);
-        els.img.onerror = () => els.img.src = `https://via.placeholder.com/400x200?text=${q.answer}`;
+        
+        els.img.onerror = () => {
+            els.img.src = `https://via.placeholder.com/400x200?text=${q.answer}`;
+            document.querySelector('.loading-spinner').style.display = 'none';
+        };
     }
     
     userAnswer = Array(q.answer.length).fill("");
@@ -95,18 +113,43 @@ function loadQuestion() {
     startTimer();
 }
 
+// --- LOGIC ĐẾM NGƯỢC THỜI GIAN & XỬ LÝ THUA ---
 function startTimer() {
-    timeLeft = 60;
+    timeLeft = 60; // 60 giây mỗi câu
     if(els.timer) els.timer.innerText = timeLeft;
+    
     timerInterval = setInterval(() => {
         timeLeft--;
         if(els.timer) els.timer.innerText = timeLeft;
+        
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             canPlay = false;
-            showModal('lose', 'HẾT GIỜ!', 'Hết thời gian rồi!', 'Thử Lại', () => location.reload());
+
+            // --- LƯU ĐIỂM KHI THUA (HẾT GIỜ) ---
+            saveCurrentScore(); 
+            // -----------------------------------
+
+            showModal('lose', 'HẾT GIỜ!', `Rất tiếc! Bạn dừng lại ở <b>${score} điểm</b>.`, 'Chơi Lại', () => {
+                // Reset điểm về 0 để chơi ván mới
+                localStorage.setItem("gameScore", 0);
+                location.reload();
+            });
         }
     }, 1000);
+}
+
+// --- HÀM LƯU ĐIỂM LÊN FIREBASE ---
+function saveCurrentScore() {
+    if (score > 0 && !isScoreSaved) {
+        if (window.saveScoreToFirebase) {
+            window.saveScoreToFirebase(score);
+            isScoreSaved = true; // Đánh dấu đã lưu để không lưu trùng
+            console.log("Đang gửi điểm lên BXH:", score);
+        } else {
+            console.warn("Chưa tải được module saveScoreToFirebase");
+        }
+    }
 }
 
 function renderSlots() {
@@ -162,35 +205,56 @@ function checkWin() {
     if (inputAnswer === correct) {
         clearInterval(timerInterval);
         canPlay = false;
+        
+        // Cộng 10 điểm cho câu trả lời đúng
         score += 10;
-        els.score.innerText = score;
-        localStorage.setItem("gameScore", score);
+        if(els.score) els.score.innerText = score;
+        localStorage.setItem("gameScore", score); // Lưu tạm vào máy
 
-        showModal('win', 'CHÍNH XÁC!', `Đáp án là: <b>${correct}</b>`, 'Tiếp Tục', () => {
+        showModal('win', 'CHÍNH XÁC!', `Đáp án: <b>${correct}</b> (+10 điểm)`, 'Tiếp Tục', () => {
             currentIndex++;
             loadQuestion();
         });
     } else {
-        els.slots.classList.add('shake-animation');
-        setTimeout(() => els.slots.classList.remove('shake-animation'), 500);
-        document.querySelectorAll('.slot').forEach(s => { s.style.borderColor = "#ff7675"; s.style.color = "#ff7675"; });
+        // Hiệu ứng sai
+        if(els.slots) {
+            els.slots.classList.add('shake-animation');
+            setTimeout(() => els.slots.classList.remove('shake-animation'), 500);
+        }
+        document.querySelectorAll('.slot').forEach(s => { 
+            s.style.borderColor = "#ff7675"; 
+            s.style.color = "#ff7675"; 
+        });
         
         showModal('lose', 'SAI RỒI!', `Từ <b>${inputAnswer}</b> chưa đúng.`, 'Thử Lại', () => {
             userAnswer = Array(correct.length).fill("");
             renderSlots();
+            canPlay = true; // Cho phép nhập lại nhưng không reset giờ (để khó hơn)
+            startTimer(); // Chạy lại đồng hồ
         });
     }
 }
 
+// --- KẾT THÚC GAME (HOÀN THÀNH TẤT CẢ CÂU) ---
 function endGame() {
     clearInterval(timerInterval);
-    const currentUser = localStorage.getItem("currentUser") || "Bạn";
-    // Logic lưu điểm...
-    showModal('win', 'HOÀN THÀNH!', `Tổng điểm: ${score}`, 'Về Menu', () => window.location.href = 'hub.html');
+    
+    // --- LƯU ĐIỂM KHI THẮNG ---
+    saveCurrentScore();
+    // --------------------------
+
+    showModal('win', 'CHÚC MỪNG!', `Bạn đã hoàn thành bộ câu hỏi!<br>Tổng điểm: <b>${score}</b>`, 'Về Menu', () => {
+        // Reset điểm sau khi đã lưu xong và về menu
+        localStorage.setItem("gameScore", 0);
+        window.location.href = 'hub.html';
+    });
 }
 
 function showCurrentHint() {
     if(!canPlay) return;
+    // Trừ điểm khi dùng gợi ý (Optional - nếu muốn khó hơn)
+    // score = Math.max(0, score - 2); 
+    // els.score.innerText = score;
     showModal('hint', 'GỢI Ý', currentQuestions[currentIndex].hint, 'Đã Hiểu');
 }
 
@@ -198,21 +262,39 @@ function showCurrentHint() {
 let modalCallback = null;
 function showModal(type, title, msg, btnText = "Đóng", callback = null) {
     const modal = document.getElementById('custom-modal');
-    if(!modal) { alert(msg.replace(/<[^>]*>?/gm, '')); if(callback) callback(); return; }
+    if(!modal) { 
+        alert(msg.replace(/<[^>]*>?/gm, '')); 
+        if(callback) callback(); 
+        return; 
+    }
     
     const iconMap = { 'win': '🎉', 'lose': '💔', 'hint': '💡' };
-    document.getElementById('modal-icon').innerHTML = iconMap[type] || '🔔';
-    document.getElementById('modal-title').innerText = title;
-    document.getElementById('modal-msg').innerHTML = msg;
-    document.getElementById('modal-btn').innerText = btnText;
     
+    // Set class type để đổi màu modal
     modal.className = `modal-overlay active type-${type}`;
+    
+    const iconEl = document.getElementById('modal-icon');
+    if(iconEl) iconEl.innerHTML = iconMap[type] || '🔔';
+    
+    const titleEl = document.getElementById('modal-title');
+    if(titleEl) titleEl.innerText = title;
+    
+    const msgEl = document.getElementById('modal-msg');
+    if(msgEl) msgEl.innerHTML = msg;
+    
+    const btnEl = document.getElementById('modal-btn');
+    if(btnEl) btnEl.innerText = btnText;
+    
     modalCallback = callback;
 }
 
 function closeModal() {
     document.getElementById('custom-modal').classList.remove('active');
-    if(modalCallback) { modalCallback(); modalCallback = null; }
+    if(modalCallback) { 
+        modalCallback(); 
+        modalCallback = null; 
+    }
 }
 
+// Chạy game
 init();
