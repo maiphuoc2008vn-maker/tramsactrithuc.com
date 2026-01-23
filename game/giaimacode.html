@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="app-wrapper">
-        <!-- Header giống ảnh mẫu -->
+        <!-- Header -->
         <header class="main-header">
             <div class="header-left">
                 <img src="../images/logotruongdung.jpg" alt="Logo" class="logo-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
@@ -20,31 +20,28 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button class="btn-action btn-blue" onclick="location.reload()"><i class="fas fa-redo"></i> Chơi Lại</button>
-                <button class="btn-action btn-gray" onclick="location.href='hub.html'"><i class="fas fa-th"></i> Kho Game</button>
-                <button class="btn-action btn-gray" onclick="location.href='index.html'"><i class="fas fa-home"></i> Trang Chủ</button>
-            </div>
-            <div class="header-right">
-                <button class="theme-toggle"><i class="fas fa-moon"></i></button>
+                <button class="btn-action btn-blue" onclick="initGame()"><i class="fas fa-redo"></i> <span class="btn-text">Chơi Lại</span></button>
+                <button class="btn-action btn-gray" onclick="location.href='hub.html'"><i class="fas fa-th"></i> <span class="btn-text">Kho Game</span></button>
+                <button class="btn-action btn-gray hide-mobile" onclick="location.href='index.html'"><i class="fas fa-home"></i></button>
             </div>
         </header>
 
         <main class="game-container">
             <div class="game-card">
-                <!-- Các tag trạng thái -->
+                <!-- Status Tags -->
                 <div class="status-tags">
                     <div class="tag-level"><i class="fas fa-layer-group"></i> Khối 10 <i class="fas fa-chevron-down"></i></div>
                     <div class="stats-right">
-                        <div class="tag-stat tag-time"><i class="fas fa-clock"></i> <span id="timer">60</span></div>
+                        <div class="tag-stat tag-time" id="timer-box"><i class="fas fa-clock"></i> <span id="timer">60</span></div>
                         <div class="tag-stat tag-score"><i class="fas fa-star"></i> <span id="score">0</span></div>
                     </div>
                 </div>
 
-                <!-- Khu vực hiển thị Code (Giữ màu tối để dễ đọc code) -->
+                <!-- Code Editor Area -->
                 <div class="code-section">
                     <div class="ide-fake-header">
                         <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
-                        <span class="file-name">main.py</span>
+                        <span class="file-name">bug_hunter.py</span>
                     </div>
                     <div class="code-display-wrapper">
                         <div class="line-nums">1<br>2<br>3<br>4<br>5</div>
@@ -52,15 +49,15 @@
                     </div>
                 </div>
 
-                <!-- Câu hỏi -->
+                <!-- Question Area -->
                 <div class="question-section">
                     <button class="hint-btn"><i class="fas fa-lightbulb"></i> Gợi ý</button>
                     <h2 id="question-text">Đang tải câu hỏi...</h2>
                 </div>
 
-                <!-- Đáp án -->
+                <!-- Answer Options -->
                 <div class="options-grid" id="options-container">
-                    <!-- JS sẽ chèn các nút vào đây -->
+                    <!-- JS chèn nút vào đây -->
                 </div>
             </div>
         </main>
@@ -71,7 +68,7 @@
                 <div id="feedback-icon"></div>
                 <h2 id="feedback-title"></h2>
                 <p id="feedback-msg"></p>
-                <button onclick="nextQuestion()" class="next-btn">Tiếp Tục <i class="fas fa-arrow-right"></i></button>
+                <button onclick="nextQuestion()" id="next-btn-text" class="next-btn">Tiếp Tục <i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
     </div>
