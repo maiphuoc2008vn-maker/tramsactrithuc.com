@@ -13,7 +13,7 @@
 
     <!-- Header / Navbar Mới -->
     <header class="header">
-        <div class="logo-area" onclick="location.href='index.html'">
+        <div class="logo-area" onclick="location.href='../trangchu/index.html'">
             <!-- Logo trường -->
             <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             <div class="logo-text">
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <!-- Menu Desktop (Sẽ ẩn trên Mobile) -->
+        <!-- Menu Desktop -->
         <nav class="desktop-nav">
             <a href="#" class="nav-link active"><i class="fas fa-gamepad"></i> Kho Game</a>
             <a href="../trangchu/index.html" class="nav-link"><i class="fas fa-home"></i> Trang Chủ</a>
@@ -46,17 +46,16 @@
                 <i class="fas fa-sign-out-alt"></i>
             </button>
 
-            <!-- Nút Hamburger (Chỉ hiện trên Mobile) -->
+            <!-- Nút Hamburger (Mobile Only) -->
             <button class="hamburger-btn" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </header>
 
-    <!-- Mobile Menu (Ẩn, trượt ra khi bấm Hamburger) -->
+    <!-- Mobile Menu -->
     <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-menu" id="mobile-menu">
-        <!-- Thông tin User trên Mobile -->
         <div class="user-chip-mobile" id="user-info-mobile">
             <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="User">
             <div class="user-details">
@@ -120,6 +119,16 @@
                     <span class="btn-play">Nghe Ngay</span>
                 </div>
             </div>
+
+            <!-- GAME 5: ĐẤM BỐC TIN HỌC (MỚI THÊM) -->
+            <div class="game-card card-db" onclick="window.location.href='damboc.html'">
+                <div class="card-icon"><i class="fas fa-hand-fist"></i></div>
+                <div class="card-info">
+                    <h3>Đấm Bốc Tin Học</h3>
+                    <p>Trả lời đúng để tung cú đấm đo ván đối thủ.</p>
+                    <span class="btn-play">Đấu Ngay</span>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -136,8 +145,6 @@
     </div>
 
     <script>
-        // --- JAVASCRIPT LOGIC ---
-        
         // 1. Quản lý Dark Mode
         const body = document.body;
         const themeToggle = document.getElementById('theme-toggle');
@@ -154,12 +161,8 @@
                 localStorage.setItem('theme', 'light');
             }
         }
-
         if (localStorage.getItem('theme') === 'dark') setTheme(true);
-
-        themeToggle.addEventListener('click', () => {
-            setTheme(!body.classList.contains('dark-mode'));
-        });
+        themeToggle.addEventListener('click', () => setTheme(!body.classList.contains('dark-mode')));
 
         // 2. Mobile Menu Toggle
         function toggleMobileMenu() {
@@ -171,20 +174,15 @@
 
         // 3. Modal & Login Check
         const modal = document.getElementById('custom-modal');
-
         function showModal(message, callback, isAlert = false) {
             document.getElementById('modal-message').textContent = message;
             modal.style.display = 'flex';
             const btnConfirm = document.getElementById('btn-confirm');
             const btnCancel = document.getElementById('btn-cancel');
-            
             btnCancel.style.display = isAlert ? 'none' : 'block';
             document.getElementById('modal-title').textContent = isAlert ? "Thông báo" : "Xác nhận";
-            
-            // Xóa event cũ
             const newConfirm = btnConfirm.cloneNode(true);
             btnConfirm.parentNode.replaceChild(newConfirm, btnConfirm);
-            
             newConfirm.onclick = () => { modal.style.display = 'none'; if(callback) callback(); };
             btnCancel.onclick = () => modal.style.display = 'none';
         }
@@ -192,15 +190,11 @@
         function checkLogin() {
             const userStr = localStorage.getItem('user_info_sql');
             if (!userStr) {
-                showModal("Vui lòng đăng nhập để tiếp tục!", () => {
-                    window.location.href = '../login/login.html';
-                }, true);
+                showModal("Vui lòng đăng nhập để tiếp tục!", () => { window.location.href = '../login/login.html'; }, true);
             } else {
                 const user = JSON.parse(userStr);
-                // Desktop
                 document.getElementById('user-info-desktop').style.display = 'flex';
                 document.getElementById('display-username').textContent = user.username;
-                // Mobile
                 document.getElementById('display-username-mobile').textContent = user.username;
             }
         }
@@ -211,8 +205,6 @@
                 window.location.href = '../login/login.html';
             });
         }
-
-        // Chạy kiểm tra đăng nhập
         checkLogin();
     </script>
 </body>
