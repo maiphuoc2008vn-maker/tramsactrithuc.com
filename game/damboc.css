@@ -1,40 +1,53 @@
-body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #000; font-family: 'Arial', sans-serif; overflow: hidden; }
-
-.game-container {
-    width: 900px; height: 600px;
-    background: url('../images/san-dau.jpeg') center/cover no-repeat; /* Sửa đuôi thành .jpeg */
-    background-color: #222; /* Màu dự phòng nếu ảnh lỗi */
-    position: relative; border: 5px solid #333; overflow: hidden;
+:root {
+    --punch-dist: 120px; /* Khoảng cách đấm mặc định */
 }
 
-/* Thanh máu */
-.hp-section { display: flex; justify-content: space-between; padding: 15px; background: rgba(0,0,0,0.85); align-items: center; }
-.hp-wrapper { text-align: center; }
-.player-name { color: #00d2ff; font-weight: bold; display: block; margin-bottom: 5px; font-size: 0.9rem; }
-.hp-slots { display: flex; gap: 4px; }
-.slot { width: 40px; height: 15px; background: #2ecc71; border: 1px solid #fff; transition: 0.3s; }
-.slot.lost { background: #444; border-color: #666; }
-.vs-badge { font-size: 1.8rem; color: #fff; font-weight: 900; text-shadow: 0 0 10px red; }
+body { 
+    margin: 0; padding: 0; 
+    display: flex; justify-content: center; align-items: center; 
+    height: 100vh; background: #000; 
+    font-family: 'Segoe UI', Arial, sans-serif;
+    overflow: hidden; 
+}
 
-/* Nhân vật */
-.arena { height: 320px; display: flex; justify-content: space-around; align-items: flex-end; padding-bottom: 50px; }
+.game-container {
+    width: 100vw; height: 100vh;
+    max-width: 900px; max-height: 650px;
+    background: url('../images/san-dau.jpeg') center/cover no-repeat black;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+}
+
+/* Thanh máu co giãn */
+.hp-section {
+    display: flex; justify-content: space-around; align-items: center;
+    padding: 10px 5px; background: rgba(0,0,0,0.8);
+    z-index: 5;
+}
+.player-name { color: #00d2ff; font-weight: bold; font-size: 0.8rem; margin-bottom: 3px; display: block; }
+.hp-slots { display: flex; gap: 3px; }
+.slot { width: 30px; height: 12px; background: #2ecc71; border: 1px solid #fff; transition: 0.3s; }
+.slot.lost { background: #444; border-color: #666; }
+.vs-badge { color: gold; font-weight: 900; font-size: 1.2rem; }
+
+/* Arena - Nhân vật tự co lại trên màn hình nhỏ */
+.arena {
+    flex: 1; display: flex; justify-content: space-around; align-items: flex-end;
+    padding-bottom: 40px; position: relative;
+}
 .fighter {
-    width: 180px; height: 240px;
+    width: 35vw; max-width: 180px; 
+    height: 45vw; max-height: 240px;
     background-size: cover; background-position: center;
     border: 3px solid #fff; border-radius: 10px;
     transition: transform 0.2s, filter 0.2s;
-    background-color: #444; /* Màu nền nhân vật nếu ảnh lỗi */
 }
-
-/* Ảnh Ronaldo (Bạn) - Chú ý đổi đuôi file nếu cần */
 .ronaldo-img { background-image: url('../images/ronaldo.jpeg'); }
-
-/* Ảnh Messi (Đối thủ) - Chú ý đổi đuôi file nếu cần */
 .messi-img { background-image: url('../images/messi.jpeg'); transform: scaleX(-1); }
 
-/* Hiệu ứng Đấm */
-.player-punch { transform: translateX(180px) scale(1.1) !important; z-index: 5; }
-.enemy-punch { transform: translateX(-180px) scaleX(-1.1) !important; z-index: 5; }
+/* Hiệu ứng đấm */
+.player-punch { transform: translateX(var(--punch-dist)) scale(1.1) !important; z-index: 10; }
+.enemy-punch { transform: translateX(calc(var(--punch-dist) * -1)) scaleX(-1.1) !important; z-index: 10; }
 .hit-shake { animation: shake 0.3s; filter: brightness(2) sepia(1) hue-rotate(-50deg); }
 
 @keyframes shake {
@@ -43,14 +56,33 @@ body { margin: 0; display: flex; justify-content: center; align-items: center; h
     75% { transform: translate(10px, 0); }
 }
 
-/* Khu vực câu hỏi */
+/* Khu vực câu hỏi tối ưu Mobile */
 .quiz-container {
-    position: absolute; bottom: 0; width: 100%; background: #eee;
-    padding: 20px; box-sizing: border-box; border-top: 4px solid gold;
+    background: white; padding: 15px;
+    border-top: 4px solid gold; width: 100%; box-sizing: border-box;
 }
-.question-text { font-size: 1.2rem; font-weight: bold; color: #333; text-align: center; margin-bottom: 15px; }
-.answer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-button { padding: 12px; cursor: pointer; border: none; background: #2c3e50; color: white; border-radius: 5px; font-weight: bold; font-size: 1rem; }
-button:hover { background: #34495e; }
+.question-text { font-size: 1rem; font-weight: bold; color: #333; text-align: center; margin-bottom: 12px; }
+.answer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+button { 
+    padding: 12px 5px; font-size: 0.9rem; font-weight: bold;
+    background: #2c3e50; color: white; border: none; border-radius: 5px; 
+}
 
-.overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.95); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
+/* Overlay */
+.overlay { 
+    position: absolute; inset: 0; background: rgba(0,0,0,0.95); 
+    display: flex; flex-direction: column; justify-content: center; 
+    align-items: center; z-index: 100; color: white; text-align: center;
+}
+.game-title { font-size: 2rem; color: gold; margin-bottom: 20px; }
+
+/* MEDIA QUERIES CHO ĐIỆN THOẠI NHỎ */
+@media (max-width: 600px) {
+    :root { var(--punch-dist): 80px; }
+    .slot { width: 18px; height: 10px; }
+    .vs-badge { font-size: 1rem; }
+    .question-text { font-size: 0.9rem; }
+    button { font-size: 0.8rem; padding: 10px 2px; }
+    .fighter { width: 110px; height: 160px; }
+    .game-title { font-size: 1.5rem; }
+}
