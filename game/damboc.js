@@ -14,34 +14,34 @@ const questions = {
         { q: "Bàn phím và Chuột thuộc nhóm nào?", a: ["Thiết bị ra", "Thiết bị vào", "Bộ nhớ", "CPU"], c: 1 },
         { q: "Trong Tin học, Bit là gì?", a: ["Số thập phân", "Ký tự", "Đơn vị nhỏ nhất", "Tệp tin"], c: 2 },
         { q: "Phần mềm soạn thảo văn bản là?", a: ["Excel", "Windows", "Word", "Photoshop"], c: 2 },
-        { q: "Thành phần hiển thị hình ảnh là?", a: ["Chuột", "Bàn phím", "Màn hình", "Ổ cứng"], c: 2 },
         { q: "Virus máy tính thực chất là gì?", a: ["Vi khuẩn", "Một chương trình", "Bụi bẩn", "Lỗi phần cứng"], c: 1 },
         { q: "Mạng LAN kết nối trong phạm vi?", a: ["Toàn cầu", "Quốc gia", "Diện tích nhỏ", "Vũ trụ"], c: 2 },
         { q: "Thiết bị in văn bản ra giấy?", a: ["Màn hình", "Máy in", "Loa", "Máy quét"], c: 1 },
         { q: "Thùng rác trên Windows là?", a: ["Control Panel", "My Computer", "Recycle Bin", "Desktop"], c: 2 },
-        { q: "Đơn vị đo tốc độ xử lý CPU là?", a: ["Hz", "Byte", "Bit", "Kg"], c: 0 }
+        { q: "Đơn vị đo tốc độ xử lý CPU là?", a: ["Hz", "Byte", "Bit", "Kg"], c: 0 },
+        { q: "Phím tắt mở Task Manager?", a: ["Ctrl+Alt+Del", "Ctrl+Shift+Esc", "Alt+F4", "Cả A và B"], c: 3 }
     ],
     11: [
         { q: "Lệnh in trong Python là?", a: ["out()", "write()", "print()", "show()"], c: 2 },
         { q: "Kiểu số nguyên trong Python?", a: ["float", "str", "bool", "int"], c: 3 },
-        { q: "Dấu chú thích trong Python?", a: ["//", "/*", "#", "--"], c: 2 },
+        { q: "Dấu chú thích (#) dùng cho mấy dòng?", a: ["1 dòng", "Nhiều dòng", "Toàn bộ đề", "Không có"], c: 0 },
         { q: "Kết quả 10 % 3 là?", a: ["3", "1", "0", "3.3"], c: 1 },
         { q: "Vòng lặp biết trước số lần?", a: ["while", "for", "if", "else"], c: 1 },
-        { q: "Python là ngôn ngữ?", a: ["Bậc thấp", "Bậc cao", "Máy", "Hợp ngữ"], c: 1 },
         { q: "Lệnh input() mặc định là kiểu?", a: ["int", "float", "string", "bool"], c: 2 },
         { q: "Thêm phần tử vào list dùng?", a: ["add", "append", "push", "insert"], c: 1 },
-        { q: "10 // 3 bằng mấy?", a: ["3.33", "3", "1", "0"], c: 1 },
-        { q: "Thư viện vẽ biểu đồ là?", a: ["math", "time", "matplotlib", "random"], c: 2 },
-        { q: "Để thoát khỏi vòng lặp dùng lệnh?", a: ["exit", "stop", "break", "end"], c: 2 },
-        { q: "Đâu là tên biến Python đúng?", a: ["2name", "my-name", "my_name", "my name"], c: 2 },
-        { q: "Kết quả của 'Hello' * 2 là?", a: ["HelloHello", "Hello 2", "Lỗi", "Hello*2"], c: 0 },
-        { q: "Hàm tính độ dài danh sách là?", a: ["size()", "len()", "count()", "length()"], c: 1 },
-        { q: "Kiểu dữ liệu số thực trong Python?", a: ["int", "float", "string", "double"], c: 1 },
-        { q: "Cấu trúc rẽ nhánh trong Python?", a: ["if-else", "for-in", "while", "break"], c: 0 },
-        { q: "Lệnh range(5) tạo ra dãy số từ?", a: ["1 đến 5", "0 đến 5", "0 đến 4", "1 đến 4"], c: 2 },
+        { q: "Kết quả 'Ha'*3 là?", a: ["Ha3", "HaHaHa", "Lỗi", "Ha Ha Ha"], c: 1 },
+        { q: "Hàm len([1, 2, 3]) trả về?", a: ["1", "2", "3", "0"], c: 2 },
+        { q: "Kiểu dữ liệu Logic là?", a: ["int", "float", "bool", "str"], c: 2 },
+        { q: "Để thoát vòng lặp ngay lập tức?", a: ["continue", "break", "exit", "stop"], c: 1 },
         { q: "Python ra đời năm nào?", a: ["1989", "1991", "1995", "2000"], c: 1 },
-        { q: "Toán tử so sánh bằng trong Python là?", a: ["=", "==", "===", "equals"], c: 1 },
-        { q: "Lệnh nào dùng để khai báo hàm?", a: ["func", "function", "def", "define"], c: 2 }
+        { q: "Toán tử so sánh bằng?", a: ["=", "==", "===", "is"], c: 1 },
+        { q: "Khai báo hàm dùng từ khóa?", a: ["func", "function", "def", "define"], c: 2 },
+        { q: "List trong Python dùng ngoặc nào?", a: ["()", "{}", "[]", "<>"], c: 2 },
+        { q: "Chia lấy phần nguyên là toán tử?", a: ["/", "//", "%", "div"], c: 1 },
+        { q: "Range(1, 5) gồm các số?", a: ["1,2,3,4,5", "0,1,2,3,4", "1,2,3,4", "1,3,5"], c: 2 },
+        { q: "Python là ngôn ngữ thông dịch hay biên dịch?", a: ["Thông dịch", "Biên dịch", "Cả hai", "Không phải"], c: 0 },
+        { q: "Lệnh xóa phần tử list theo chỉ số?", a: ["remove", "del", "clear", "discard"], c: 1 },
+        { q: "Kiểu dữ liệu Tuple dùng ngoặc nào?", a: ["[]", "{}", "()", "||"], c: 2 }
     ],
     12: [
         { q: "CSDL là viết tắt của?", a: ["Cơ sở dữ liệu", "Cơ cấu dữ liệu", "Công sức", "Cổng số"], c: 0 },
@@ -54,16 +54,16 @@ const questions = {
         { q: "Sắp xếp tăng dần SQL dùng?", a: ["DESC", "ASC", "ORDER", "BY"], c: 1 },
         { q: "SQL là ngôn ngữ?", a: ["Lập trình", "Truy vấn", "Đồ họa", "Máy"], c: 1 },
         { q: "Lệnh SELECT * FROM hocsinh?", a: ["Xóa bảng", "Lấy tất cả", "Sửa bảng", "Thêm"], c: 1 },
-        { q: "Khóa ngoại dùng để làm gì?", a: ["Tạo mật khẩu", "Liên kết các bảng", "Xóa bảng", "Tính toán"], c: 1 },
-        { q: "Hệ quản trị CSDL viết tắt là?", a: ["DBMS", "OS", "HTML", "RAM"], c: 0 },
-        { q: "Bản ghi trong CSDL tương ứng với?", a: ["Cột", "Hàng", "Trang", "Tệp"], c: 1 },
-        { q: "Trường trong CSDL tương ứng với?", a: ["Hàng", "Cột", "Bảng", "Ô"], c: 1 },
-        { q: "Để thêm dữ liệu vào SQL dùng?", a: ["ADD", "PUT", "INSERT INTO", "CREATE"], c: 2 },
-        { q: "Mối quan hệ phổ biến trong CSDL?", a: ["1-1", "1-Nhiều", "Nhiều-Nhiều", "Tất cả"], c: 3 },
-        { q: "Dư thừa dữ liệu dẫn đến?", a: ["Nhanh hơn", "Lãng phí bộ nhớ", "Bảo mật hơn", "Dễ dùng"], c: 1 },
-        { q: "Lệnh UPDATE dùng để?", a: ["Xóa dữ liệu", "Thêm dữ liệu", "Sửa dữ liệu", "Tạo bảng"], c: 2 },
-        { q: "Thứ tự các cột trong CSDL gọi là?", a: ["Cấu trúc bảng", "Dữ liệu bảng", "Bản ghi", "Khóa"], c: 0 },
-        { q: "Điều kiện lọc trong SQL bắt đầu bằng?", a: ["IF", "WHERE", "WHEN", "FILTER"], c: 1 }
+        { q: "Hệ quản trị CSDL phổ biến?", a: ["MySQL", "Windows", "Python", "Java"], c: 0 },
+        { q: "Bản ghi tương ứng với?", a: ["Cột", "Hàng", "Trang", "Tệp"], c: 1 },
+        { q: "Khóa ngoại dùng để?", a: ["Liên kết bảng", "Khóa máy", "Mã hóa", "Xóa hàng"], c: 0 },
+        { q: "Mối quan hệ 1-Nhiều là?", a: ["1 lớp có nhiều HS", "1 HS có nhiều lớp", "Cả hai", "Không có"], c: 0 },
+        { q: "Địa chỉ IP gồm mấy số cách bởi dấu chấm?", a: ["2", "3", "4", "5"], c: 2 },
+        { q: "Tên miền .com dành cho?", a: ["Giáo dục", "Thương mại", "Chính phủ", "Quân đội"], c: 1 },
+        { q: "Giao thức truyền tải web?", a: ["FTP", "SMTP", "HTTP", "IP"], c: 2 },
+        { q: "Lệnh UPDATE dùng để?", a: ["Xóa", "Thêm", "Sửa", "Tạo"], c: 2 },
+        { q: "Hệ thống phân giải tên miền?", a: ["DHCP", "DNS", "FTP", "NAT"], c: 1 },
+        { q: "SQL viết tắt của từ gì?", a: ["Simple Question", "Structured Query Language", "Strong Query", "Small Queue"], c: 1 }
     ]
 };
 
@@ -72,30 +72,13 @@ let pHP = 5, eHP = 5, currentQs = [], qIdx = 0;
 function startGame(lv) {
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('quiz-area').style.display = 'block';
-    
-    // TRỘN CÂU HỎI
     currentQs = [...questions[lv]].sort(() => Math.random() - 0.5);
-    
     qIdx = 0; pHP = 5; eHP = 5;
-    resetHPDisplay();
     renderQuestion();
 }
 
-function resetHPDisplay() {
-    const pSlots = document.getElementById('player-hp-slots').children;
-    const eSlots = document.getElementById('enemy-hp-slots').children;
-    for (let i = 0; i < 5; i++) {
-        pSlots[i].classList.remove('lost');
-        eSlots[i].classList.remove('lost');
-    }
-}
-
 function renderQuestion() {
-    if (qIdx >= currentQs.length) {
-        alert("Bạn đã hoàn thành hết bộ câu hỏi!");
-        location.reload();
-        return;
-    }
+    if (qIdx >= currentQs.length) { alert("Hết câu hỏi!"); location.reload(); return; }
     const q = currentQs[qIdx];
     document.getElementById('question').innerText = q.q;
     const btnBox = document.getElementById('answers');
@@ -111,7 +94,6 @@ function renderQuestion() {
 function checkAnswer(isCorrect) {
     const ronaldo = document.getElementById('player');
     const messi = document.getElementById('enemy');
-
     if (isCorrect) {
         ronaldo.classList.add('player-punch');
         setTimeout(() => {
@@ -135,18 +117,30 @@ function checkAnswer(isCorrect) {
 
 function updateHP(id, val) {
     const slots = document.getElementById(id).children;
-    for (let i = 4; i >= val; i--) { 
-        if(slots[i]) slots[i].classList.add('lost'); 
-    }
+    for (let i = 4; i >= val; i--) { slots[i].classList.add('lost'); }
 }
 
 function checkEnd() {
-    if (eHP <= 0) {
-        setTimeout(() => { alert("RONALDO CHIẾN THẮNG! SIUUUUU!"); location.reload(); }, 300);
-    } else if (pHP <= 0) {
-        setTimeout(() => { alert("BẠN ĐÃ THUA! MESSI THẮNG."); location.reload(); }, 300);
+    if (eHP <= 0) showResult("win");
+    else if (pHP <= 0) showResult("lose");
+    else { qIdx++; renderQuestion(); }
+}
+
+function showResult(status) {
+    const screen = document.getElementById('result-screen');
+    const title = document.getElementById('result-title');
+    const img = document.getElementById('result-img');
+    const msg = document.getElementById('result-msg');
+    document.getElementById('quiz-area').style.display = 'none';
+
+    if (status === "win") {
+        title.innerText = "SIUUUUUUU!";
+        img.src = "../images/ronaldo-win.jpeg";
+        msg.innerText = "BẠN (RONALDO) ĐÃ THẮNG VÀ NHẬN CÚP C1!";
     } else {
-        qIdx++;
-        renderQuestion();
+        title.innerText = "THẤT BẠI!";
+        img.src = "../images/messi-win.jpeg";
+        msg.innerText = "MESSI ĐÃ THẮNG VÀ NHẬN CÚP THẾ GIỚI!";
     }
+    screen.style.display = "flex";
 }
