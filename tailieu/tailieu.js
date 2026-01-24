@@ -1,12 +1,12 @@
 /* 
-   tailieu.js - TRẠM SẠC TRI THỨC 12A4 
-   Sử dụng API Key mới: AIzaSyAvyPpso1f0-csKIwMNjk5GlIE53K9jJDY
+   tailieu.js - BẢN SỬA LỖI MODEL NOT FOUND
+   Sử dụng API v1 và Model Gemini 1.5 Flash chính thức
 */
 
 import { collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. CẤU HÌNH (GIỮ NGUYÊN CLOUDINARY + KEY MỚI) ---
+    // --- 1. CẤU HÌNH ---
     const CLOUD_NAME = "dbmh7rkrx"; 
     const UPLOAD_PRESET = "weblop12a4"; 
     const GEMINI_API_KEY = "AIzaSyAvyPpso1f0-csKIwMNjk5GlIE53K9jJDY"; 
@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkDB = setInterval(() => {
         if (window.fb_db) {
             clearInterval(checkDB);
-            console.log("Kết nối Database thành công!");
             loadDocuments(); 
         }
     }, 500);
@@ -38,12 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.files.length > 0) filePreview.innerHTML = `<b>Đã chọn:</b> ${this.files[0].name}`;
     };
 
-    // --- 2. HÀM TẢI TÀI LIỆU (CLOUDINARY + FIREBASE) ---
+    // --- 2. TẢI TÀI LIỆU ---
     uploadForm.onsubmit = async (e) => {
         e.preventDefault();
         const file = fileInput.files[0];
         if (!file) return alert("Vui lòng chọn file!");
-
         btnSubmit.disabled = true;
         btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải...';
 
@@ -51,11 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', UPLOAD_PRESET);
-
-            const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, {
-                method: 'POST',
-                body: formData
-            });
+            const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, { method: 'POST', body: formData });
             const cloudData = await cloudRes.json();
 
             await addDoc(collection(window.fb_db, "documents"), {
@@ -66,20 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 createdAt: new Date(),
                 uploader: "Thành viên 12A4"
             });
-
             alert("Tải lên thành công!");
             uploadModal.classList.remove('active');
-            uploadForm.reset();
             loadDocuments(); 
-        } catch (err) {
-            alert("Lỗi tải file: " + err.message);
-        } finally {
-            btnSubmit.disabled = false;
-            btnSubmit.innerHTML = 'Bắt đầu tải lên';
-        }
+        } catch (err) { alert("Lỗi: " + err.message); }
+        finally { btnSubmit.disabled = false; btnSubmit.innerHTML = 'Bắt đầu tải lên'; }
     };
 
-    // --- 3. HIỂN THỊ DANH SÁCH TÀI LIỆU ---
+    // --- 3. DANH SÁCH TÀI LIỆU ---
     async function loadDocuments() {
         const container = document.getElementById('doc-list-container');
         if (!container) return;
@@ -92,16 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.innerHTML += `
                 <div class="doc-card" data-category="${d.category}">
                     <div class="file-icon"><i class="fas fa-file-alt"></i></div>
-                    <div class="doc-tag">${d.category.toUpperCase()}</div>
                     <h3>${d.title}</h3>
                     <div class="doc-meta">Cỡ: ${d.file_size} • Ngày: ${d.createdAt.toDate().toLocaleDateString('vi-VN')}</div>
-                    <a href="${d.file_url}" target="_blank" class="btn-dl">Tải xuống tài liệu →</a>
+                    <a href="${d.file_url}" target="_blank" class="btn-dl">Tải xuống →</a>
                 </div>`;
             });
         } catch (e) { console.error(e); }
     }
 
-    // --- 4. BỘ LỌC MÔN HỌC ---
+    // --- 4. BỘ LỌC ---
     document.querySelectorAll('.pill').forEach(btn => {
         btn.onclick = function() {
             document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
@@ -113,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // --- 5. CHATBOT AI GEMINI (MODEL FLASH 1.5 - KEY MỚI) ---
+    // --- 5. CHATBOT AI (SỬA LỖI MODEL NOT FOUND) ---
     const chatWin = document.getElementById('chat-window');
     const chatBody = document.getElementById('chat-body');
     const chatInput = document.getElementById('chat-input');
@@ -127,53 +114,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
         appendMsg(userText, 'user');
         chatInput.value = "";
-
-        const botMsgId = "bot-" + Date.now();
-        appendMsg("AI 12A4 đang suy nghĩ...", 'bot', botMsgId);
-        chatBody.scrollTop = chatBody.scrollHeight;
+        const botId = "bot-" + Date.now();
+        appendMsg("AI đang trả lời...", 'bot', botId);
 
         try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+            // ĐÃ SỬA: Chuyển v1beta sang v1 để chạy ổn định hơn
+            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            
+            const response = await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: `Bạn là trợ lý học tập cho lớp 12A4 Nam Hà. 
-                                   Hãy trả lời thật thông minh, ngắn gọn. Câu hỏi: ${userText}`
-                        }]
-                    }]
+                    contents: [{ parts: [{ text: `Bạn là trợ lý 12A4 Nam Hà. Câu hỏi: ${userText}` }] }]
                 })
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                const errorDetail = data.error ? data.error.message : "Lỗi không xác định";
-                document.getElementById(botMsgId).innerText = "Lỗi AI: " + errorDetail;
-                return;
+                // Nếu vẫn lỗi model, hệ thống sẽ báo chính xác lỗi để xử lý
+                throw new Error(data.error ? data.error.message : "Lỗi hệ thống AI");
             }
 
-            if (data.candidates && data.candidates[0].content) {
-                const aiText = data.candidates[0].content.parts[0].text;
-                document.getElementById(botMsgId).innerText = aiText;
-            } else {
-                document.getElementById(botMsgId).innerText = "AI không có phản hồi phù hợp.";
-            }
+            const aiText = data.candidates[0].content.parts[0].text;
+            document.getElementById(botId).innerText = aiText;
 
         } catch (error) {
-            document.getElementById(botMsgId).innerText = "Không thể kết nối mạng tới Google AI!";
-            console.error(error);
+            document.getElementById(botId).innerText = "Lỗi: " + error.message;
         }
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    function appendMsg(text, sender, id = "") {
-        const div = document.createElement('div');
-        if (id) div.id = id;
-        div.className = `msg ${sender}`;
-        div.innerText = text;
-        chatBody.appendChild(div);
+    function appendMsg(t, s, id = "") {
+        const d = document.createElement('div');
+        if (id) d.id = id;
+        d.className = `msg ${s}`;
+        d.innerText = t;
+        chatBody.appendChild(d);
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
