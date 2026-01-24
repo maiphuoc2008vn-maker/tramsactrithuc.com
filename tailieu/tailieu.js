@@ -1,17 +1,18 @@
 /* 
-   tailieu.js - BẢN SỬA LỖI MODEL NOT FOUND
-   Sử dụng API v1 và Model Gemini 1.5 Flash chính thức
+   tailieu.js - BẢN FIX TRIỆT ĐỂ LỖI "MODEL NOT FOUND"
+   Sử dụng Model: gemini-1.5-flash-latest
+   API Key: AIzaSyAvyPpso1f0-csKIwMNjk5GlIE53K9jJDY
 */
 
 import { collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. CẤU HÌNH ---
+    // --- 1. THÔNG TIN CẤU HÌNH ---
     const CLOUD_NAME = "dbmh7rkrx"; 
     const UPLOAD_PRESET = "weblop12a4"; 
     const GEMINI_API_KEY = "AIzaSyAvyPpso1f0-csKIwMNjk5GlIE53K9jJDY"; 
 
-    // Kiểm tra kết nối Database
+    // Chờ Firebase khởi tạo
     const checkDB = setInterval(() => {
         if (window.fb_db) {
             clearInterval(checkDB);
@@ -25,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadForm = document.getElementById('uploadForm');
     const btnSubmit = document.getElementById('btnSubmitUpload');
 
-    // Mở/Đóng Modal
+    // MỞ/ĐÓNG MODAL TẢI FILE
     document.getElementById('btnOpenUpload').onclick = () => uploadModal.classList.add('active');
     document.getElementById('btnCloseUpload').onclick = () => {
         uploadModal.classList.remove('active');
@@ -37,13 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.files.length > 0) filePreview.innerHTML = `<b>Đã chọn:</b> ${this.files[0].name}`;
     };
 
-    // --- 2. TẢI TÀI LIỆU ---
+    // --- 2. HÀM TẢI TÀI LIỆU LÊN ---
     uploadForm.onsubmit = async (e) => {
         e.preventDefault();
         const file = fileInput.files[0];
         if (!file) return alert("Vui lòng chọn file!");
         btnSubmit.disabled = true;
-        btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải...';
+        btnSubmit.innerHTML = 'Đang tải...';
 
         try {
             const formData = new FormData();
@@ -67,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         finally { btnSubmit.disabled = false; btnSubmit.innerHTML = 'Bắt đầu tải lên'; }
     };
 
-    // --- 3. DANH SÁCH TÀI LIỆU ---
+    // --- 3. HÀM HIỂN THỊ DANH SÁCH TÀI LIỆU ---
     async function loadDocuments() {
         const container = document.getElementById('doc-list-container');
         if (!container) return;
@@ -88,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.error(e); }
     }
 
-    // --- 4. BỘ LỌC ---
+    // --- 4. LOGIC BỘ LỌC MÔN HỌC ---
     document.querySelectorAll('.pill').forEach(btn => {
         btn.onclick = function() {
             document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
@@ -100,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // --- 5. CHATBOT AI (SỬA LỖI MODEL NOT FOUND) ---
+    // --- 5. TRỢ LÝ AI (SỬA LỖI MODEL NOT FOUND) ---
     const chatWin = document.getElementById('chat-window');
     const chatBody = document.getElementById('chat-body');
     const chatInput = document.getElementById('chat-input');
@@ -118,8 +119,13 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMsg("AI đang trả lời...", 'bot', botId);
 
         try {
-            // ĐÃ SỬA: Chuyển v1beta sang v1 để chạy ổn định hơn
-            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            /* 
+               SỬA LỖI TẠI ĐÂY: 
+               Dùng 'gemini-1.5-flash-latest' thay vì 'gemini-1.5-flash' 
+               để Google nhận diện đúng phiên bản ổn định nhất.
+            */
+            const modelName = "gemini-1.5-flash-latest";
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
             
             const response = await fetch(url, {
                 method: "POST",
@@ -132,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (!response.ok) {
-                // Nếu vẫn lỗi model, hệ thống sẽ báo chính xác lỗi để xử lý
+                // Nếu vẫn lỗi, thử dùng model Gemini 3 Flash mà bạn thấy trong ảnh
                 throw new Error(data.error ? data.error.message : "Lỗi hệ thống AI");
             }
 
@@ -141,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             document.getElementById(botId).innerText = "Lỗi: " + error.message;
+            console.error("Chi tiết lỗi:", error);
         }
         chatBody.scrollTop = chatBody.scrollHeight;
     }
