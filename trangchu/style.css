@@ -1,76 +1,131 @@
-/* --- COPY TOÀN BỘ CSS CŨ CỦA BẠN VÀO ĐÂY --- */
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap');
-
+/* --- BIẾN TOÀN CỤC --- */
 :root {
-    --primary-color: #4facfe; --secondary-color: #00f2fe; --accent-color: #ff0080;
-    --text-color: #333; --bg-color: #f0f2f5; --card-bg: rgba(255, 255, 255, 0.8);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.5); --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    --font-main: 'Montserrat', sans-serif; --font-hand: 'Dancing Script', cursive;
+    --primary: #2dd4bf; 
+    --secondary: #0ea5e9;
+    --dark-bg: #0f172a;
+    --glass: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-light: #f8fafc;
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body.dark-mode {
-    --text-color: #fff; --bg-color: #0f172a; --card-bg: rgba(30, 41, 59, 0.7);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.1); --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { 
+    font-family: 'Montserrat', sans-serif; 
+    background: #f0f4f8; 
+    color: #1e293b; 
+    overflow-x: hidden;
+    transition: var(--transition);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
-body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
+body.dark-mode { 
+    background: var(--dark-bg); 
+    color: var(--text-light); 
+}
 
-/* INTRO */
-#intro-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, #1a1a2e, #16213e); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s; }
-.intro-content { text-align: center; color: white; animation: fadeInUp 1s ease forwards; }
-.intro-logo { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--secondary-color); margin-bottom: 20px; object-fit: cover; }
-.intro-title span { font-family: var(--font-hand); color: var(--secondary-color); font-size: 3.5rem; }
-.btn-enter { padding: 12px 35px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); border: none; border-radius: 30px; color: white; cursor: pointer; font-weight: 700; margin-top: 20px; }
+/* --- NỀN ĐỘNG --- */
+.bg-shape {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+}
+body.dark-mode .bg-shape {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+}
 
-/* HERO */
-.hero-section { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
-.hero-bg-wrapper { position: absolute; inset: 0; z-index: -1; }
-.hero-bg-img { width: 100%; height: 100%; object-fit: cover; }
-.hero-content { z-index: 2; padding: 20px; }
-.hero-title { font-size: 3rem; font-weight: 900; margin-bottom: 15px; color: #fff; }
-.gradient-text-bright { background: linear-gradient(90deg, #00f2fe, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.btn-primary-glow { padding: 15px 40px; background: white; color: var(--primary-color); border: none; border-radius: 50px; cursor: pointer; font-weight: 800; margin-top: 20px; }
+/* --- MÀN HÌNH CHÀO --- */
+#intro-overlay {
+    position: fixed; inset: 0; background: #0f172a; z-index: 10000;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 0.8s ease;
+}
+.intro-content { text-align: center; color: white; }
+.intro-logo { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 20px; }
 
-/* FEATURES */
-.features-section { padding: 80px 20px; background: var(--bg-color); }
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-.tilt-card { background: var(--card-bg); border: var(--glass-border); padding: 40px 20px; border-radius: 20px; text-align: center; box-shadow: var(--shadow); cursor: pointer; transition: 0.3s; }
-.tilt-card:hover { transform: translateY(-10px); }
-.card-icon { font-size: 3rem; margin-bottom: 20px; }
-.color-1 i { color: #ff512f; } .color-2 i { color: #f09819; } .color-3 i { color: #11998e; }
+/* --- HERO SECTION --- */
+.hero-section {
+    height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 20px;
+}
+.hero-logo-large {
+    width: 150px; margin-bottom: 20px;
+    filter: drop-shadow(0 0 20px rgba(45, 212, 191, 0.4));
+}
+.hero-title {
+    font-size: clamp(3rem, 10vw, 6rem);
+    font-weight: 900; letter-spacing: -2px; line-height: 1;
+    background: linear-gradient(to bottom, #2dd4bf, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+}
+.hero-subtitle {
+    font-size: 1.2rem; margin: 20px 0 30px;
+    max-width: 600px; opacity: 0.8;
+}
 
-/* CONTROLS */
-.top-controls { position: fixed; top: 20px; right: 20px; z-index: 100; }
-.btn-float { width: 50px; height: 50px; border-radius: 50%; border: none; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); color: var(--text-color); cursor: pointer; }
+/* --- NÚT BẤM --- */
+.btn-glow {
+    padding: 14px 35px;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    color: white; border: none; border-radius: 50px;
+    font-weight: 700; cursor: pointer; transition: var(--transition);
+    text-decoration: none; display: inline-block;
+}
+.btn-glow:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(14, 165, 233, 0.4); }
 
-/* MODAL */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; }
-.modal-overlay.active { opacity: 1; visibility: visible; }
-.modal-content { background: var(--bg-color); padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
-.btn-confirm { background: var(--primary-color); color: white; padding: 10px 20px; border:none; border-radius: 8px; cursor: pointer; }
-.btn-cancel { background: #ccc; padding: 10px 20px; border:none; border-radius: 8px; cursor: pointer; margin-right: 10px; }
+/* --- CARDS --- */
+.cards-container {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px; max-width: 1100px; margin: 50px auto; padding: 20px;
+}
+.glass-card {
+    background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3); padding: 40px 20px;
+    border-radius: 24px; text-align: center; transition: var(--transition); cursor: pointer;
+}
+body.dark-mode .glass-card { background: rgba(30, 41, 59, 0.5); border: 1px solid var(--glass-border); }
+.glass-card:hover { transform: translateY(-10px); background: white; }
+.glass-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 15px; }
 
-/* --- CSS MỚI CHO CHATBOX CỦA BẠN --- */
-.bot-area { position: fixed; bottom: 30px; right: 30px; z-index: 200; }
-.chatbot-float { width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 1.5rem; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 172, 254, 0.5); }
-
-.chat-card {
-    position: fixed; bottom: 100px; right: 30px; width: 320px; height: 450px;
-    background: var(--card-bg); backdrop-filter: blur(15px); border-radius: 20px;
-    box-shadow: var(--shadow); border: var(--glass-border);
+/* --- CHATBOT --- */
+.bot-trigger {
+    position: fixed; bottom: 30px; right: 30px;
+    width: 65px; height: 65px; background: linear-gradient(45deg, var(--primary), var(--secondary));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.8rem; cursor: pointer; z-index: 1000;
+}
+.chat-window {
+    position: fixed; bottom: 110px; right: 30px;
+    width: 380px; height: 500px; max-width: 90vw;
+    background: white; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     display: flex; flex-direction: column; overflow: hidden;
-    transform: scale(0); transition: 0.3s; transform-origin: bottom right; z-index: 9999;
+    transform: scale(0); transform-origin: bottom right; transition: var(--transition); z-index: 1000;
 }
-.chat-card.active { transform: scale(1); }
+.chat-window.active { transform: scale(1); }
+body.dark-mode .chat-window { background: #1e293b; color: white; }
+.chat-header { background: linear-gradient(45deg, var(--primary), var(--secondary)); padding: 20px; color: white; display: flex; justify-content: space-between; }
+.chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.msg { padding: 10px 15px; border-radius: 15px; font-size: 0.9rem; max-width: 80%; }
+.msg.user { background: var(--primary); color: white; align-self: flex-end; }
+.msg.bot { background: #f1f5f9; align-self: flex-start; color: #334155; }
 
-.chat-header { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
-.chat-msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-.msg { padding: 10px; border-radius: 10px; max-width: 80%; word-wrap: break-word; }
-.msg.bot { background: rgba(0,0,0,0.05); align-self: flex-start; }
-.msg.user { background: var(--primary-color); color: white; align-self: flex-end; }
-.dark-mode .msg.bot { background: rgba(255,255,255,0.1); }
+/* --- THEME TOGGLE --- */
+.theme-btn {
+    position: fixed; top: 25px; right: 25px;
+    width: 45px; height: 45px; border-radius: 50%; border: none;
+    background: white; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 100;
+}
 
-.chat-footer { padding: 10px; display: flex; border-top: 1px solid rgba(0,0,0,0.05); }
-#chat-input { flex: 1; padding: 10px; border-radius: 20px; border: none; background: rgba(0,0,0,0.05); outline: none; color: var(--text-color); }
-#chat-send { background: none; border: none; color: var(--primary-color); font-size: 1.2rem; margin-left: 10px; cursor: pointer; }
+/* --- MODAL --- */
+.modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+    display: none; justify-content: center; align-items: center; z-index: 11000;
+}
+.modal.active { display: flex; }
+.modal-content { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 350px; }
+body.dark-mode .modal-content { background: #1e293b; }
