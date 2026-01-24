@@ -1,45 +1,66 @@
-/* --- CHATBOT STYLE --- */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap');
+
+:root {
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Nunito', sans-serif;
+    --font-script: 'Dancing Script', cursive;
+    --primary: #4361ee; --secondary: #3f37c9; --accent: #4895ef;
+    --text-main: #2b2d42; --bg-body: #f8f9fa;
+    --glass-bg: rgba(255, 255, 255, 0.75);
+}
+
+body.dark-mode { --text-main: #edf2f4; --bg-body: #0b0c10; --glass-bg: rgba(20, 25, 40, 0.85); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-body); background: var(--bg-body); color: var(--text-main); overflow-x: hidden; }
+
+/* Intro Overlay */
+#intro-overlay { position: fixed; inset: 0; background: #050505; z-index: 99999; display: flex; justify-content: center; align-items: center; transition: 0.8s; }
+#intro-overlay.hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+.intro-content { text-align: center; color: white; animation: fadeInUp 1s ease-out; }
+.intro-logo { width: 120px; height: 120px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.2); margin-bottom: 20px; }
+.intro-title span { font-family: var(--font-script); color: #4cc9f0; font-size: 3rem; display: block; }
+.btn-enter { background: linear-gradient(45deg, #4361ee, #3f37c9); color: white; border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer; margin-top: 20px; font-weight: bold; }
+
+/* Hero Section */
+.hero-section { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; }
+.hero-bg-wrapper { position: absolute; inset: 0; z-index: -1; }
+.hero-bg-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
+.big-hero-logo { width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; margin-bottom: 20px; animation: float 6s infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.gradient-text-bright { font-family: var(--font-script); font-size: 3rem; background: linear-gradient(to right, #00f260, #4cc9f0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
+.btn-primary-glow { padding: 15px 40px; border-radius: 50px; background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 1rem; }
+
+/* Features */
+.features-section { padding: 60px 20px; background: var(--glass-bg); backdrop-filter: blur(10px); margin-top: -50px; border-radius: 30px 30px 0 0; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+.tilt-card { background: white; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: pointer; transition: 0.3s; }
+.tilt-card:hover { transform: translateY(-10px); }
+.card-icon { width: 60px; height: 60px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; border-radius: 15px; font-size: 24px; }
+.color-1 { background: #e0e7ff; color: #4361ee; } .color-2 { background: #e0f2fe; color: #4895ef; } .color-3 { background: #ccfbf1; color: #2dd4bf; }
+
+/* Controls */
+.top-controls { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px; }
+.btn-float { width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+/* CHATBOT STYLE */
 .bot-area { position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
-
-/* Nút mở chat */
-.chatbot-float {
-    width: 60px; height: 60px; background: var(--primary); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; color: white;
-    font-size: 26px; cursor: pointer; box-shadow: 0 10px 25px rgba(67, 97, 238, 0.5);
-    transition: 0.3s; position: relative;
-}
-.chatbot-float:hover { transform: scale(1.1) rotate(-10deg); }
-
-/* Cửa sổ chat */
-.chat-card {
-    position: absolute; bottom: 80px; right: 0; width: 350px; height: 500px;
-    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px);
-    border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-    display: flex; flex-direction: column; overflow: hidden;
-    transform: scale(0); opacity: 0; transform-origin: bottom right;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(255,255,255,0.8);
-}
+.chatbot-float { width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; cursor: pointer; box-shadow: 0 10px 25px rgba(67, 97, 238, 0.5); transition: 0.3s; }
+.chatbot-float:hover { transform: scale(1.1); }
+.chat-card { position: absolute; bottom: 80px; right: 0; width: 320px; height: 450px; background: white; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); display: flex; flex-direction: column; overflow: hidden; transform: scale(0); opacity: 0; transform-origin: bottom right; transition: 0.4s; }
 .chat-card.active { transform: scale(1); opacity: 1; }
-
-/* Header */
-.chat-header {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center;
-}
-.chat-header h4 { margin: 0; font-size: 1.1rem; }
-.chat-header p { margin: 0; font-size: 0.8rem; opacity: 0.9; }
+.chat-header { background: var(--primary); padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
 #close-chat { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+.chat-msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f8f9fa; }
+.msg { max-width: 80%; padding: 10px; border-radius: 10px; font-size: 0.9rem; }
+.msg.bot { background: white; border: 1px solid #eee; align-self: flex-start; }
+.msg.user { background: var(--primary); color: white; align-self: flex-end; }
+.chat-footer { padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px; }
+#chat-input { flex: 1; padding: 10px; border-radius: 20px; border: 1px solid #ddd; }
+#chat-send { width: 40px; height: 40px; background: var(--primary); color: white; border: none; border-radius: 50%; cursor: pointer; }
 
-/* Body tin nhắn */
-.chat-msgs { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background: #f8f9fa; }
-.msg { max-width: 80%; padding: 10px 15px; border-radius: 15px; font-size: 0.95rem; line-height: 1.5; word-wrap: break-word; }
-.msg.bot { background: white; color: #333; border-bottom-left-radius: 2px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05); align-self: flex-start; }
-.msg.user { background: var(--primary); color: white; border-bottom-right-radius: 2px; box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3); align-self: flex-end; }
-
-/* Footer nhập liệu */
-.chat-footer { padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
-#chat-input { flex: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid #ddd; outline: none; transition: 0.3s; }
-#chat-input:focus { border-color: var(--primary); }
-#chat-send { width: 40px; height: 40px; background: var(--primary); color: white; border: none; border-radius: 50%; cursor: pointer; transition: 0.3s; }
-#chat-send:hover { background: var(--secondary); transform: scale(1.1); }
+/* Modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 10000; }
+.modal-overlay.active { display: flex; }
+.modal-content { background: white; padding: 30px; border-radius: 20px; text-align: center; max-width: 300px; }
+.modal-actions button { margin: 5px; padding: 10px 20px; border-radius: 20px; border: none; cursor: pointer; }
+.btn-confirm { background: var(--primary); color: white; }
