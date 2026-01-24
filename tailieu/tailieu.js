@@ -1,17 +1,21 @@
-/* tailieu.js - GIỮ NGUYÊN FIREBASE + TÍCH HỢP AI GEMINI */
+/* 
+   tailieu.js - TRẠM SẠC TRI THỨC 12A4 
+   Tính năng: Quản lý tài liệu (Firebase + Cloudinary) & Trợ lý AI (Gemini 1.5 Flash)
+*/
 
 import { collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. THÔNG TIN CẤU HÌNH (DÀNH RIÊNG CHO BẠN - GIỮ NGUYÊN) ---
+    // --- 1. THÔNG TIN CẤU HÌNH (GIỮ NGUYÊN TỪ BẢN GỐC) ---
     const CLOUD_NAME = "dbmh7rkrx"; 
     const UPLOAD_PRESET = "weblop12a4"; 
+    const GEMINI_API_KEY = "AIzaSyDFP8Hi3KOeXqOLQ1KK4Q782eNvNJMHF7k"; // Key của bạn
 
-    // Chờ Firebase khởi tạo xong
+    // Chờ Firebase khởi tạo (Biến fb_db được định nghĩa ở file HTML)
     const checkDB = setInterval(() => {
         if (window.fb_db) {
             clearInterval(checkDB);
-            console.log("Kết nối Database lớp thành công!");
+            console.log("Kết nối Database thành công!");
             loadDocuments(); 
         }
     }, 500);
@@ -22,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadForm = document.getElementById('uploadForm');
     const btnSubmit = document.getElementById('btnSubmitUpload');
 
-    // 1. XỬ LÝ ĐÓNG/MỞ MODAL
+    // MỞ/ĐÓNG MODAL TẢI FILE
     document.getElementById('btnOpenUpload').onclick = () => uploadModal.classList.add('active');
     document.getElementById('btnCloseUpload').onclick = () => {
         uploadModal.classList.remove('active');
@@ -30,26 +34,26 @@ document.addEventListener('DOMContentLoaded', () => {
         filePreview.innerHTML = "";
     };
 
-    // 2. HIỂN THỊ TÊN FILE KHI CHỌN
     fileInput.onchange = function() {
         if (this.files.length > 0) {
             filePreview.innerHTML = `<b>Đã chọn:</b> ${this.files[0].name}`;
         }
     };
 
-    // 3. HÀM TẢI TÀI LIỆU LÊN (Dùng Cloudinary + Firebase - GIỮ NGUYÊN)
+    // --- 2. HÀM TẢI TÀI LIỆU LÊN (CLOUDINARY + FIREBASE) ---
     uploadForm.onsubmit = async (e) => {
         e.preventDefault();
         const file = fileInput.files[0];
         const title = uploadForm.title.value;
         const category = uploadForm.category.value;
 
-        if (!file) return alert("Vui lòng chọn file trước khi tải lên!");
+        if (!file) return alert("Vui lòng chọn file!");
 
         btnSubmit.disabled = true;
-        btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+        btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải lên...';
 
         try {
+            // Bước A: Gửi lên Cloudinary
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', UPLOAD_PRESET);
@@ -60,10 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const cloudData = await cloudRes.json();
 
-            if (!cloudData.secure_url) {
-                throw new Error("Lỗi Cloudinary: Hãy kiểm tra Upload Preset.");
-            }
+            if (!cloudData.secure_url) throw new Error("Cloudinary chưa được cấu hình Unsigned.");
 
+            // Bước B: Lưu vào Firebase Firestore
             await addDoc(collection(window.fb_db, "documents"), {
                 title: title || file.name,
                 category: category,
@@ -73,25 +76,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 uploader: "Thành viên 12A4"
             });
 
-            alert("Chúc mừng! Tài liệu đã được đăng thành công.");
+            alert("Đăng tài liệu thành công!");
             uploadModal.classList.remove('active');
             uploadForm.reset();
-            loadDocuments(); 
+            loadDocuments(); // Tải lại danh sách
 
         } catch (err) {
-            console.error("Lỗi:", err);
-            alert("Không tải lên được: " + err.message);
+            console.error(err);
+            alert("Lỗi tải lên: " + err.message);
         } finally {
             btnSubmit.disabled = false;
             btnSubmit.innerHTML = 'Bắt đầu tải lên';
         }
     };
 
-    // 4. HÀM TẢI DANH SÁCH TÀI LIỆU (GIỮ NGUYÊN)
+    // --- 3. HÀM HIỂN THỊ DANH SÁCH TÀI LIỆU ---
     async function loadDocuments() {
         const container = document.getElementById('doc-list-container');
         if (!container) return;
-        container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Đang lấy dữ liệu tài liệu...</p>';
+        container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Đang tải dữ liệu...</p>';
 
         try {
             const q = query(collection(window.fb_db, "documents"), orderBy("createdAt", "desc"));
@@ -107,6 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const d = doc.data();
                 let icon = 'fa-file-alt';
                 if (d.title.toLowerCase().includes('pdf')) icon = 'fa-file-pdf';
+                else if (d.title.toLowerCase().includes('doc')) icon = 'fa-file-word';
+
                 container.innerHTML += `
                 <div class="doc-card" data-category="${d.category}">
                     <div class="file-icon"><i class="fas ${icon}"></i></div>
@@ -117,11 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`;
             });
         } catch (e) {
-            container.innerHTML = "Lỗi khi kết nối Database.";
+            container.innerHTML = "Lỗi kết nối Database.";
         }
     }
 
-    // 5. LOGIC LỌC THEO MÔN HỌC (GIỮ NGUYÊN)
+    // --- 4. LOGIC BỘ LỌC (FILTER) ---
     document.querySelectorAll('.pill').forEach(btn => {
         btn.onclick = function() {
             document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
@@ -133,38 +138,41 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // 6. CHATBOT AI GEMINI 1.5 FLASH (ĐÃ CẬP NHẬT KEY MỚI)
-    const GEMINI_API_KEY = "AIzaSyDFP8Hi3KOeXqOLQ1KK4Q782eNvNJMHF7k"; 
+    // --- 5. TRỢ LÝ AI GEMINI 1.5 FLASH ---
     const chatWin = document.getElementById('chat-window');
     const chatBody = document.getElementById('chat-body');
     const chatInput = document.getElementById('chat-input');
     const btnSend = document.getElementById('chat-send');
 
-    document.getElementById('chatbot-toggle').onclick = () => chatWin.classList.toggle('active');
+    // Mở/đóng khung chat
+    document.getElementById('chatbot-toggle').onclick = () => {
+        chatWin.classList.toggle('active');
+        if(chatWin.classList.contains('active')) chatInput.focus();
+    };
 
     async function handleChat() {
         const userText = chatInput.value.trim();
         if (!userText) return;
 
-        // 1. Hiện tin nhắn của bạn
+        // Hiện tin nhắn người dùng
         appendMsg(userText, 'user');
         chatInput.value = "";
 
-        // 2. Hiện tin nhắn chờ từ AI
+        // Tạo bong bóng tin nhắn cho Bot (trạng thái chờ)
         const botMsgId = "bot-" + Date.now();
-        appendMsg("Đang suy nghĩ...", 'bot', botMsgId);
+        appendMsg("Trợ lý 12A4 đang suy nghĩ...", 'bot', botMsgId);
         chatBody.scrollTop = chatBody.scrollHeight;
 
         try {
-            // 3. Gọi AI Gemini
+            // GỌI API GOOGLE GEMINI
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     contents: [{
                         parts: [{
-                            text: `Bạn là trợ lý học tập thông minh 12A4 Nam Hà. 
-                                   Hãy trả lời học sinh thật thân thiện và súc tích. 
+                            text: `Bạn là trợ lý học tập thông minh cho lớp 12A4 trường THPT Nam Hà. 
+                                   Hãy trả lời thân thiện, ngắn gọn và hữu ích.
                                    Câu hỏi: ${userText}`
                         }]
                     }]
@@ -172,25 +180,35 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const data = await response.json();
-            const aiText = data.candidates[0].content.parts[0].text;
 
-            // 4. Thay thế nội dung "Đang suy nghĩ" bằng kết quả thật
+            if (!response.ok) {
+                throw new Error(data.error ? data.error.message : "Lỗi API");
+            }
+
+            // Lấy kết quả văn bản từ AI
+            const aiText = data.candidates[0].content.parts[0].text;
             document.getElementById(botMsgId).innerText = aiText;
 
         } catch (error) {
-            document.getElementById(botMsgId).innerText = "Lỗi kết nối AI. Bạn thử lại nhé!";
+            console.error("Lỗi AI:", error);
+            document.getElementById(botMsgId).innerText = "Xin lỗi, mình gặp lỗi kết nối. Hãy kiểm tra lại API Key hoặc mạng nhé!";
         }
+        
+        // Cuộn xuống tin nhắn mới nhất
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
+    // Hàm thêm tin nhắn vào giao diện
     function appendMsg(text, sender, id = "") {
-        const div = document.createElement('div');
-        if (id) div.id = id;
-        div.className = `msg ${sender}`;
-        div.innerText = text;
-        chatBody.appendChild(div);
+        const msgDiv = document.createElement('div');
+        if (id) msgDiv.id = id;
+        msgDiv.className = `msg ${sender}`;
+        msgDiv.innerText = text;
+        chatBody.appendChild(msgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
     }
 
+    // Gửi khi bấm nút hoặc nhấn Enter
     btnSend.onclick = handleChat;
     chatInput.onkeypress = (e) => { if (e.key === "Enter") handleChat(); };
 });
