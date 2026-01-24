@@ -1,22 +1,21 @@
 /* 
    tailieu.js - TRẠM SẠC TRI THỨC 12A4 
-   Sử dụng Key cũ: AIzaSyCV2gSLbuNLVKrS1cEjaDC2AdO0PH6Q1g
+   Sử dụng API Key mới: AIzaSyAvyPpso1f0-csKIwMNjk5GlIE53K9jJDY
 */
 
 import { collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. THÔNG TIN CẤU HÌNH ---
+    // --- 1. CẤU HÌNH (GIỮ NGUYÊN CLOUDINARY + KEY MỚI) ---
     const CLOUD_NAME = "dbmh7rkrx"; 
     const UPLOAD_PRESET = "weblop12a4"; 
-    // SỬ DỤNG LẠI KEY CŨ CỦA BẠN
-    const GEMINI_API_KEY = "AIzaSyCV2gSLbuNLVKrS1cEjaDC2AdO0PH6Q1g"; 
+    const GEMINI_API_KEY = "AIzaSyAvyPpso1f0-csKIwMNjk5GlIE53K9jJDY"; 
 
-    // Chờ Firebase khởi tạo từ file HTML
+    // Kiểm tra kết nối Database
     const checkDB = setInterval(() => {
         if (window.fb_db) {
             clearInterval(checkDB);
-            console.log("Database 12A4 đã sẵn sàng!");
+            console.log("Kết nối Database thành công!");
             loadDocuments(); 
         }
     }, 500);
@@ -27,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadForm = document.getElementById('uploadForm');
     const btnSubmit = document.getElementById('btnSubmitUpload');
 
-    // XỬ LÝ MODAL TẢI FILE
+    // Mở/Đóng Modal
     document.getElementById('btnOpenUpload').onclick = () => uploadModal.classList.add('active');
     document.getElementById('btnCloseUpload').onclick = () => {
         uploadModal.classList.remove('active');
@@ -36,22 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     fileInput.onchange = function() {
-        if (this.files.length > 0) {
-            filePreview.innerHTML = `<b>Đã chọn:</b> ${this.files[0].name}`;
-        }
+        if (this.files.length > 0) filePreview.innerHTML = `<b>Đã chọn:</b> ${this.files[0].name}`;
     };
 
     // --- 2. HÀM TẢI TÀI LIỆU (CLOUDINARY + FIREBASE) ---
     uploadForm.onsubmit = async (e) => {
         e.preventDefault();
         const file = fileInput.files[0];
-        const title = uploadForm.title.value;
-        const category = uploadForm.category.value;
-
         if (!file) return alert("Vui lòng chọn file!");
 
         btnSubmit.disabled = true;
-        btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải lên...';
+        btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải...';
 
         try {
             const formData = new FormData();
@@ -65,43 +59,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const cloudData = await cloudRes.json();
 
             await addDoc(collection(window.fb_db, "documents"), {
-                title: title || file.name,
-                category: category,
+                title: uploadForm.title.value || file.name,
+                category: uploadForm.category.value,
                 file_url: cloudData.secure_url,
                 file_size: (file.size / 1024).toFixed(1) + " KB",
                 createdAt: new Date(),
                 uploader: "Thành viên 12A4"
             });
 
-            alert("Đăng tài liệu thành công!");
+            alert("Tải lên thành công!");
             uploadModal.classList.remove('active');
             uploadForm.reset();
             loadDocuments(); 
-
         } catch (err) {
-            alert("Lỗi tải lên: " + err.message);
+            alert("Lỗi tải file: " + err.message);
         } finally {
             btnSubmit.disabled = false;
             btnSubmit.innerHTML = 'Bắt đầu tải lên';
         }
     };
 
-    // --- 3. HÀM HIỂN THỊ DANH SÁCH TÀI LIỆU ---
+    // --- 3. HIỂN THỊ DANH SÁCH TÀI LIỆU ---
     async function loadDocuments() {
         const container = document.getElementById('doc-list-container');
         if (!container) return;
-        container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Đang lấy dữ liệu...</p>';
-
         try {
             const q = query(collection(window.fb_db, "documents"), orderBy("createdAt", "desc"));
             const querySnapshot = await getDocs(q);
             container.innerHTML = "";
-            
-            if (querySnapshot.empty) {
-                container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Chưa có tài liệu nào.</p>';
-                return;
-            }
-
             querySnapshot.forEach((doc) => {
                 const d = doc.data();
                 container.innerHTML += `
@@ -116,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.error(e); }
     }
 
-    // --- 4. LOGIC LỌC MÔN HỌC ---
+    // --- 4. BỘ LỌC MÔN HỌC ---
     document.querySelectorAll('.pill').forEach(btn => {
         btn.onclick = function() {
             document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
@@ -128,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // --- 5. TRỢ LÝ AI GEMINI (KEY CŨ) ---
+    // --- 5. CHATBOT AI GEMINI (MODEL FLASH 1.5 - KEY MỚI) ---
     const chatWin = document.getElementById('chat-window');
     const chatBody = document.getElementById('chat-body');
     const chatInput = document.getElementById('chat-input');
@@ -144,18 +129,18 @@ document.addEventListener('DOMContentLoaded', () => {
         chatInput.value = "";
 
         const botMsgId = "bot-" + Date.now();
-        appendMsg("Trợ lý đang suy nghĩ...", 'bot', botMsgId);
+        appendMsg("AI 12A4 đang suy nghĩ...", 'bot', botMsgId);
         chatBody.scrollTop = chatBody.scrollHeight;
 
         try {
-            // Sử dụng model ổn định nhất để tránh lỗi kết nối
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     contents: [{
                         parts: [{
-                            text: `Bạn là trợ lý học tập 12A4 Nam Hà. Trả lời ngắn gọn, thân thiện. Câu hỏi: ${userText}`
+                            text: `Bạn là trợ lý học tập cho lớp 12A4 Nam Hà. 
+                                   Hãy trả lời thật thông minh, ngắn gọn. Câu hỏi: ${userText}`
                         }]
                     }]
                 })
@@ -163,16 +148,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
 
+            if (!response.ok) {
+                const errorDetail = data.error ? data.error.message : "Lỗi không xác định";
+                document.getElementById(botMsgId).innerText = "Lỗi AI: " + errorDetail;
+                return;
+            }
+
             if (data.candidates && data.candidates[0].content) {
                 const aiText = data.candidates[0].content.parts[0].text;
                 document.getElementById(botMsgId).innerText = aiText;
             } else {
-                throw new Error("Không nhận được phản hồi");
+                document.getElementById(botMsgId).innerText = "AI không có phản hồi phù hợp.";
             }
 
         } catch (error) {
-            document.getElementById(botMsgId).innerText = "Lỗi kết nối. Hãy đảm bảo API Key đã được kích hoạt trong AI Studio!";
-            console.error("Lỗi:", error);
+            document.getElementById(botMsgId).innerText = "Không thể kết nối mạng tới Google AI!";
+            console.error(error);
         }
         chatBody.scrollTop = chatBody.scrollHeight;
     }
