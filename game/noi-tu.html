@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nối Từ Sinh Tồn - Tramsactrithuc</title>
+    <!-- ĐÃ SỬA: Liên kết tới file noitu.css -->
+    <link rel="stylesheet" href="noitu.css">
+</head>
+<body>
+
+    <!-- Nút quay về trang Hub -->
+    <a href="../index.html" class="btn-home">⬅ Kho Game</a>
+
+    <div class="game-card">
+        <h1>Nối Từ Sinh Tồn</h1>
+        
+        <div class="score" id="score">0</div>
+
+        <!-- Thanh đếm ngược -->
+        <div class="timer-container">
+            <div class="timer-bar" id="timerBar"></div>
+        </div>
+
+        <div class="word-area">
+            <!-- Ô hiển thị từ của máy -->
+            <div class="box">
+                <span id="currentWord" style="font-size: 22px; font-weight: bold;">...</span>
+                <span class="label">Từ trước</span>
+            </div>
+
+            <!-- Ô người chơi nhập -->
+            <div class="box highlight-box">
+                <input type="text" id="userInput" placeholder="Nhập từ..." autocomplete="off">
+                <span class="label">Lượt bạn</span>
+            </div>
+        </div>
+
+        <button class="btn-action" id="btnSubmit">Gửi Trả Lời</button>
+        <button class="btn-action btn-restart" id="btnRestart">Chơi Lại</button>
+
+        <div id="message">Bạn có 15 giây cho mỗi lượt!</div>
+    </div>
+
+    <!-- ĐÃ SỬA: Liên kết tới file noitu.js -->
+    <script src="noitu.js"></script>
+</body>
+</html>
