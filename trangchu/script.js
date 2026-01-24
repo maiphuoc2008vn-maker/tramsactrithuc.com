@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 5. BACKGROUND SLIDESHOW (CHẠY ẢNH NHƯ FILE CŨ) ---
     const bgImages = [];
-    for (let i = 1; i <= 10; i++) { 
+    for (let i = 1; i <= 27; i++) { 
         bgImages.push(`../images/bg${i}.jpg`);
     }
 
