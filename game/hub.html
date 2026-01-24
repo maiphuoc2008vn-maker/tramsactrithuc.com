@@ -6,15 +6,13 @@
     <title>Trung Tâm Giải Trí - STEAM 12A4</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- LIÊN KẾT FILE CSS RIÊNG -->
     <link rel="stylesheet" href="style_hub.css">
 </head>
 <body>
 
-    <!-- Header / Navbar Mới -->
+    <!-- Header / Navbar -->
     <header class="header">
         <div class="logo-area" onclick="location.href='../trangchu/index.html'">
-            <!-- Logo trường -->
             <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             <div class="logo-text">
                 <h2>Trạm Sạc Tri Thức</h2>
@@ -22,7 +20,6 @@
             </div>
         </div>
 
-        <!-- Menu Desktop -->
         <nav class="desktop-nav">
             <a href="#" class="nav-link active"><i class="fas fa-gamepad"></i> Kho Game</a>
             <a href="../trangchu/index.html" class="nav-link"><i class="fas fa-home"></i> Trang Chủ</a>
@@ -30,23 +27,16 @@
         </nav>
 
         <div class="header-actions">
-            <!-- User Info (Desktop only) -->
             <div class="user-chip" id="user-info-desktop" style="display: none;">
                 <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="User">
                 <span id="display-username">User</span>
             </div>
-
-            <!-- Nút đổi theme -->
             <button id="theme-toggle" class="theme-btn" title="Chế độ Sáng/Tối">
                 <i class="fas fa-moon"></i>
             </button>
-
-            <!-- Nút Logout (Desktop) -->
             <button class="logout-btn desktop-only" onclick="confirmLogout()" title="Đăng xuất">
                 <i class="fas fa-sign-out-alt"></i>
             </button>
-
-            <!-- Nút Hamburger (Mobile Only) -->
             <button class="hamburger-btn" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars"></i>
             </button>
@@ -63,7 +53,6 @@
                 <small>● Online</small>
             </div>
         </div>
-        
         <div class="mobile-nav-list">
             <a href="#" class="mobile-link active"><i class="fas fa-gamepad"></i> Kho Game</a>
             <a href="../trangchu/index.html" class="mobile-link"><i class="fas fa-home"></i> Trang Chủ</a>
@@ -120,13 +109,23 @@
                 </div>
             </div>
 
-            <!-- GAME 5: ĐẤM BỐC TIN HỌC (MỚI THÊM) -->
+            <!-- GAME 5 -->
             <div class="game-card card-db" onclick="window.location.href='damboc.html'">
                 <div class="card-icon"><i class="fas fa-hand-fist"></i></div>
                 <div class="card-info">
                     <h3>Tranh Tài</h3>
                     <p>Trả lời đúng để tung cú đấm đo ván đối thủ.</p>
                     <span class="btn-play">Đấu Ngay</span>
+                </div>
+            </div>
+
+            <!-- GAME 6: NỐI TỪ (MỚI THÊM) -->
+            <div class="game-card card-nt" onclick="window.location.href='noitu.html'">
+                <div class="card-icon"><i class="fas fa-link"></i></div>
+                <div class="card-info">
+                    <h3>Nối Từ Sinh Tồn</h3>
+                    <p>Nối các từ tiếng Việt thật nhanh trước khi hết giờ.</p>
+                    <span class="btn-play">Chơi Ngay</span>
                 </div>
             </div>
         </div>
