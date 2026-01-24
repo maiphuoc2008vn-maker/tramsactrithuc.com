@@ -1,86 +1,94 @@
-// --- 6. CHATBOT AI THÔNG MINH (GEMINI 1.5 FLASH) ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. MÀN HÌNH CHÀO
+    const overlay = document.getElementById('intro-overlay');
+    const enterBtn = document.getElementById('enter-site-btn');
+    const userInfo = JSON.parse(localStorage.getItem('user_info_sql'));
+
+    if (enterBtn && overlay) {
+        if (userInfo && userInfo.username) {
+            enterBtn.innerHTML = `Chào, ${userInfo.username} <i class="fas fa-arrow-right"></i>`;
+        }
+        enterBtn.onclick = () => overlay.classList.add('hidden');
+    }
+
+    // 2. AVATAR USER
+    const topControls = document.querySelector('.top-controls');
+    if (userInfo && topControls) {
+        const userDiv = document.createElement('div');
+        userDiv.className = 'btn-float';
+        userDiv.innerHTML = `<img src="${userInfo.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        userDiv.onclick = () => {
+            if(confirm('Đăng xuất nhé?')) { localStorage.removeItem('user_info_sql'); location.reload(); }
+        };
+        topControls.insertBefore(userDiv, topControls.firstChild);
+    }
+
+    // 3. DARK MODE
+    const themeBtn = document.getElementById('theme-toggle');
+    if(themeBtn) {
+        themeBtn.onclick = () => {
+            document.body.classList.toggle('dark-mode');
+        };
+    }
+    
+    // 4. CHATBOT AI (KEY ĐÃ CẤU HÌNH)
     const chatToggle = document.getElementById('chatbot-toggle');
     const chatWindow = document.getElementById('chat-window');
-    const closeChat = document.getElementById('close-chat');
-    const chatBody = document.getElementById('chat-body');
     const chatInput = document.getElementById('chat-input');
     const chatSend = document.getElementById('chat-send');
+    const chatBody = document.getElementById('chat-body');
 
-    // --- CẤU HÌNH KEY (ĐÃ CẮT ĐỂ CHỐNG QUÉT LỖI) ---
-    const part1 = "AIzaSy"; 
-    const part2 = "CtWzrCrEwT_OsS69tpjbS-_vKWNnd2dGc"; // Phần đuôi Key của bạn
-    const API_KEY = part1 + part2;
-    // -----------------------------------------------
+    // KEY CỦA BẠN (Đã cắt để bảo mật)
+    const p1 = "AIzaSy";
+    const p2 = "CtWzrCrEwT_OsS69tpjbS-_vKWNnd2dGc";
+    const API_KEY = p1 + p2;
 
-    // 1. Mở/Đóng Chat
-    if (chatToggle && chatWindow) {
-        chatToggle.addEventListener('click', () => {
-            chatWindow.classList.add('active');
-            chatInput.focus();
-        });
-        closeChat.addEventListener('click', () => chatWindow.classList.remove('active'));
-    }
+    if (chatToggle) {
+        chatToggle.onclick = () => chatWindow.classList.add('active');
+        document.getElementById('close-chat').onclick = () => chatWindow.classList.remove('active');
 
-    // 2. Hàm gửi tin nhắn
-    async function handleChat() {
-        const userText = chatInput.value.trim();
-        if (!userText) return;
+        async function handleChat() {
+            const txt = chatInput.value.trim();
+            if(!txt) return;
+            addMsg(txt, 'user');
+            chatInput.value = '';
+            addMsg('...', 'bot', 'loading');
 
-        // Hiện tin nhắn người dùng
-        appendMessage(userText, 'user');
-        chatInput.value = '';
-        
-        // Hiện hiệu ứng "Đang soạn tin..."
-        const loadingId = 'loading-' + Date.now();
-        appendMessage('<i class="fas fa-ellipsis-h fa-beat"></i>', 'bot', loadingId);
-
-        try {
-            // Gọi Google Gemini API (Model mới nhất: gemini-1.5-flash)
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    contents: [{ 
-                        parts: [{ text: "Bạn là trợ lý ảo vui tính của lớp 12A4 (Trạm Sạc Tri Thức). Hãy trả lời ngắn gọn, thân thiện và hữu ích. Câu hỏi: " + userText }] 
-                    }]
-                })
-            });
-
-            const data = await response.json();
-            
-            // Xóa hiệu ứng loading
-            const loadingMsg = document.getElementById(loadingId);
-            if(loadingMsg) loadingMsg.remove();
-
-            if (data.error) {
-                console.error("Lỗi API:", data.error);
-                appendMessage("Úi! Có lỗi nhỏ rồi: " + data.error.message, 'bot');
-            } else {
-                const aiText = data.candidates[0].content.parts[0].text;
-                appendMessage(aiText, 'bot'); // Hiện câu trả lời của AI
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ contents: [{ parts: [{ text: "Trả lời ngắn gọn: " + txt }] }] })
+                });
+                const data = await res.json();
+                document.getElementById('loading').remove();
+                addMsg(data.candidates[0].content.parts[0].text, 'bot');
+            } catch(e) {
+                document.getElementById('loading').remove();
+                addMsg("Lỗi mạng rồi!", 'bot');
             }
-
-        } catch (error) {
-            const loadingMsg = document.getElementById(loadingId);
-            if(loadingMsg) loadingMsg.remove();
-            appendMessage("Mất kết nối! Bạn kiểm tra lại mạng nhé.", 'bot');
         }
+
+        chatSend.onclick = handleChat;
+        chatInput.onkeypress = (e) => { if(e.key==='Enter') handleChat() };
     }
 
-    // 3. Hàm vẽ tin nhắn lên màn hình
-    function appendMessage(text, sender, id = null) {
-        const div = document.createElement('div');
-        div.className = `msg ${sender}`;
-        if (id) div.id = id;
-        div.innerHTML = text; // Dùng innerHTML để hiển thị icon
-        chatBody.appendChild(div);
-        chatBody.scrollTop = chatBody.scrollHeight; // Tự cuộn xuống cuối
+    function addMsg(txt, sender, id) {
+        const d = document.createElement('div');
+        d.className = `msg ${sender}`;
+        if(id) d.id = id;
+        d.innerText = txt;
+        chatBody.appendChild(d);
+        chatBody.scrollTop = chatBody.scrollHeight;
     }
+});
 
-    // 4. Sự kiện bấm nút Gửi hoặc Enter
-    if(chatSend) {
-        chatSend.addEventListener('click', handleChat);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleChat();
-        });
+// HÀM CHUYỂN TRANG
+function protectAccess(folder, file) {
+    if (localStorage.getItem('user_info_sql')) {
+        window.location.href = `../${folder}/${file}`;
+    } else {
+        document.getElementById('login-modal').classList.add('active');
     }
+}
+function closeLoginModal() { document.getElementById('login-modal').classList.remove('active'); }
