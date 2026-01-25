@@ -3,83 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kho Tài Liệu 12A4 - Trạm Sạc Tri Thức</title>
+    <title>Tài Liệu - Trạm Sạc Tri Thức</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="tailieu.css">
 </head>
 <body>
 
-    <!-- Nền nghệ thuật động -->
+    <!-- Nền loang màu cũ của bạn -->
     <div class="bg-art">
-        <div class="blob b1"></div>
-        <div class="blob b2"></div>
+        <div class="circle c1"></div>
+        <div class="circle c2"></div>
     </div>
 
-    <!-- Header / Navbar -->
     <header class="main-nav">
-        <div class="nav-container">
+        <div class="nav-wrapper">
+            <!-- LOGO GỐC CỦA BẠN -->
             <div class="logo">
-                <div class="logo-icon"><i class="fas fa-book-reader"></i></div>
-                <div class="logo-text">12A4 <span>Library</span></div>
+                <img src="../images/logotruongdung.jpg" alt="Logo" class="logo-img">
+                <div class="logo-text">Trạm Sạc Tri Thức</div>
             </div>
-            <nav class="nav-links">
-                <a href="../trangchu/index.html"><i class="fas fa-home"></i></a>
-                <a href="../game/vinhdanh.html"><i class="fas fa-trophy"></i></a>
-                <a href="#" class="active"><i class="fas fa-folder-open"></i></a>
+            
+            <nav>
+                <a href="../trangchu/index.html">Trang chủ</a>
+                <a href="../game/vinhdanh.html">Vinh danh</a>
+                <a href="#" class="active">Tài liệu</a>
             </nav>
         </div>
     </header>
 
-    <main class="content-wrapper">
-        <!-- Phần chào mừng -->
-        <section class="hero-section">
-            <h1>Kho Tri Thức <span class="highlight">Số</span></h1>
-            <p>Chia sẻ đề thi, bài giảng và bí kíp ôn thi THPTQG.</p>
+    <main class="content-area">
+        <section class="welcome-box">
+            <h1>Chào bạn <span>Học gì hôm nay?</span></h1>
+            <p>Tìm kiếm và chia sẻ tài liệu ôn thi của lớp 12A4.</p>
         </section>
 
-        <!-- Thanh tìm kiếm & Upload -->
-        <div class="action-bar">
-            <div class="search-box">
+        <!-- Thanh tìm kiếm -->
+        <div class="search-bar-container">
+            <div class="search-input-group">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Tìm kiếm tài liệu...">
+                <input type="text" id="searchInput" placeholder="Tìm đề thi...">
             </div>
-            <button class="btn-upload" id="btnOpenUpload">
-                <i class="fas fa-cloud-upload-alt"></i> <span>Đóng góp</span>
+            <button class="upload-trigger" id="btnOpenUpload">
+                <i class="fas fa-plus"></i> Đóng góp file
             </button>
         </div>
 
         <!-- Bộ lọc -->
-        <div class="filter-scroll">
-            <div class="filter-group">
-                <button class="pill active" data-filter="all">Tất cả</button>
-                <button class="pill" data-filter="toan">Toán</button>
-                <button class="pill" data-filter="ly">Vật Lý</button>
-                <button class="pill" data-filter="hoa">Hóa Học</button>
-                <button class="pill" data-filter="anh">Tiếng Anh</button>
-                <button class="pill" data-filter="van">Ngữ Văn</button>
-                <button class="pill" data-filter="khac">Khác</button>
-            </div>
+        <div class="filter-pills">
+            <button class="pill active" data-filter="all">Tất cả</button>
+            <button class="pill" data-filter="toan">Toán học</button>
+            <button class="pill" data-filter="ly">Vật lý</button>
+            <button class="pill" data-filter="hoa">Hóa học</button>
+            <button class="pill" data-filter="anh">Tiếng Anh</button>
+            <button class="pill" data-filter="van">Ngữ văn</button>
         </div>
 
         <!-- Danh sách tài liệu -->
-        <div id="loading-spinner" class="spinner-area"><div class="spinner"></div></div>
-        <div class="doc-grid" id="doc-list-container"></div>
+        <div class="doc-container" id="doc-list-container">
+            <!-- JS sẽ load dữ liệu vào đây -->
+        </div>
     </main>
 
-    <!-- Modal Upload -->
-    <div id="upload-modal" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Upload Tài Liệu</h3>
-                <button id="btnCloseUpload" class="btn-close"><i class="fas fa-times"></i></button>
+    <!-- Modal Upload (Giữ nguyên) -->
+    <div id="upload-modal" class="modal-blur">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h3>Đóng góp tài liệu</h3>
+                <span id="btnCloseUpload" style="cursor:pointer; float:right; font-size:1.5rem;">&times;</span>
             </div>
             <form id="uploadForm">
-                <div class="form-group">
+                <div class="field">
                     <label>Tên tài liệu</label>
-                    <input type="text" name="title" required placeholder="VD: Đề thi thử Toán lần 1...">
+                    <input type="text" name="title" required placeholder="VD: Đề cương...">
                 </div>
-                <div class="form-group">
+                <div class="field">
                     <label>Môn học</label>
                     <select name="category" required>
                         <option value="toan">Toán học</option>
@@ -90,47 +88,17 @@
                         <option value="khac">Khác</option>
                     </select>
                 </div>
-                <div class="upload-area" id="dropZone">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>Chạm để chọn file</p>
+                <div class="upload-zone" id="dropZone" onclick="document.getElementById('docFile').click()">
                     <input type="file" id="docFile" name="file" required hidden>
-                    <div id="fileNameDisplay"></div>
+                    <p><i class="fas fa-cloud-upload-alt"></i> Chọn file tải lên</p>
+                    <div id="fileListPreview"></div>
                 </div>
-                <button type="submit" id="btnSubmitUpload" class="btn-submit">Tải lên ngay</button>
+                <button type="submit" id="btnSubmitUpload" class="btn-main">Tải lên</button>
             </form>
         </div>
     </div>
 
-    <!-- Chatbot AI -->
-    <div class="chatbot-container">
-        <div id="chat-window" class="chat-interface">
-            <div class="chat-header">
-                <div class="bot-info">
-                    <div class="bot-avatar"><i class="fas fa-robot"></i></div>
-                    <div>
-                        <h4>Trợ lý AI 12A4</h4>
-                        <span>Online</span>
-                    </div>
-                </div>
-                <button onclick="document.getElementById('chat-window').classList.remove('active')"><i class="fas fa-chevron-down"></i></button>
-            </div>
-            <div id="chat-body" class="chat-content">
-                <div class="msg bot">Chào bạn! Mình có thể giúp gì về học tập không?</div>
-            </div>
-            <div class="chat-input-area">
-                <input type="text" id="chat-input" placeholder="Nhập câu hỏi...">
-                <button id="chat-send"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
-        <button id="chatbot-toggle" class="btn-float-chat">
-            <i class="fas fa-comment-dots"></i>
-        </button>
-    </div>
-
-    <!-- Thông báo -->
-    <div id="toast-container"></div>
-
-    <!-- Script chính (Module) -->
+    <!-- Giữ nguyên phần script -->
     <script type="module" src="tailieu.js"></script>
 </body>
 </html>
