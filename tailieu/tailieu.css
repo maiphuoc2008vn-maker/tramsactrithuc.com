@@ -1,178 +1,138 @@
-/* --- CẤU HÌNH CƠ BẢN --- */
+/* --- CODE CŨ (GIỮ NGUYÊN) --- */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-    --primary: #6366f1; /* Indigo */
-    --primary-dark: #4f46e5;
-    --accent: #06b6d4; /* Cyan */
-    --bg-color: #f3f4f6;
-    --card-bg: #ffffff;
-    --text-main: #111827;
-    --text-sub: #6b7280;
-    --shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-    --radius: 16px;
+    --primary: #4f46e5;
+    --accent: #06b6d4;
+    --bg: #f8fafc;
+    --text: #0f172a;
+    --gray: #64748b;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-body { font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg-color); color: var(--text-main); line-height: 1.6; padding-bottom: 80px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-/* --- BACKGROUND ĐỘNG --- */
-.bg-art { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
-.blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.6; animation: float 10s infinite alternate; }
-.b1 { width: 300px; height: 300px; background: #c7d2fe; top: -50px; left: -50px; }
-.b2 { width: 400px; height: 400px; background: #a5f3fc; bottom: -100px; right: -50px; animation-delay: -5s; }
-@keyframes float { from { transform: translate(0,0); } to { transform: translate(30px, 50px); } }
+/* Nền nghệ thuật */
+.bg-art { position: fixed; inset: 0; z-index: -1; filter: blur(80px); opacity: 0.5; }
+.circle { position: absolute; border-radius: 50%; width: 500px; height: 500px; }
+.c1 { background: var(--primary); top: -10%; left: -10%; }
+.c2 { background: var(--accent); bottom: -10%; right: -10%; }
 
-/* --- HEADER --- */
-.main-nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+/* Main Nav (Desktop) */
+.main-nav { 
+    position: sticky; top: 0; width: 100%; height: 70px; 
+    background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+    z-index: 1000; border-bottom: 1px solid #e2e8f0;
+    display: flex; align-items: center;
 }
-.nav-container {
-    max-width: 1200px; margin: 0 auto; padding: 12px 20px;
-    display: flex; justify-content: space-between; align-items: center;
+.nav-wrapper { 
+    max-width: 1200px; margin: 0 auto; width: 100%; 
+    display: flex; justify-content: space-between; align-items: center; padding: 0 20px; 
 }
-.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; color: var(--primary-dark); }
-.logo-icon { width: 35px; height: 35px; background: var(--primary); color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-.logo-text span { color: var(--accent); }
 
-.nav-links { display: flex; gap: 5px; }
-.nav-links a {
-    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-    border-radius: 50%; color: var(--text-sub); transition: 0.3s; text-decoration: none; font-size: 1.1rem;
+/* Style cho Logo Cũ */
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-img { 
+    width: 40px; height: 40px; border-radius: 50%; 
+    object-fit: cover; border: 2px solid var(--primary); 
 }
-.nav-links a.active, .nav-links a:hover { background: var(--primary); color: white; shadow: var(--shadow); }
+.logo-text { 
+    font-weight: 800; font-size: 1.2rem; color: var(--primary); 
+    line-height: 1.2; white-space: nowrap; 
+}
 
-/* --- CONTENT --- */
-.content-wrapper { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+nav a { text-decoration: none; color: var(--gray); font-weight: 600; margin-left: 20px; transition: 0.2s; }
+nav a.active, nav a:hover { color: var(--primary); }
 
-.hero-section { text-align: center; margin-bottom: 30px; }
-.hero-section h1 { font-size: 2rem; margin-bottom: 10px; }
-.hero-section p { color: var(--text-sub); }
-.highlight { color: var(--primary); }
+/* Content */
+.content-area { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+.welcome-box { text-align: center; margin-bottom: 40px; }
+.welcome-box h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
 
-/* --- SEARCH & ACTIONS --- */
-.action-bar { display: flex; gap: 15px; margin-bottom: 25px; }
-.search-box {
-    flex: 1; position: relative;
-    background: white; border-radius: var(--radius);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+/* Search Bar (Desktop) */
+.search-bar-container { display: flex; gap: 15px; margin-bottom: 30px; }
+.search-input-group { flex: 1; position: relative; }
+.search-input-group i { position: absolute; left: 20px; top: 18px; color: var(--gray); }
+.search-input-group input { 
+    width: 100%; padding: 15px 20px 15px 50px; border-radius: 15px; 
+    border: 1px solid #e2e8f0; font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
-.search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-sub); }
-.search-box input {
-    width: 100%; padding: 14px 15px 14px 45px; border: none; background: transparent;
-    font-size: 1rem; border-radius: var(--radius);
-}
-.btn-upload {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white; border: none; padding: 0 25px; border-radius: var(--radius);
-    font-weight: 600; cursor: pointer; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.4);
-    display: flex; align-items: center; gap: 8px; transition: 0.2s; white-space: nowrap;
-}
-.btn-upload:active { transform: scale(0.95); }
 
-/* --- FILTER --- */
-.filter-scroll { overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; -webkit-overflow-scrolling: touch; }
-.filter-group { display: flex; gap: 10px; }
-.pill {
-    padding: 8px 16px; border-radius: 20px; border: 1px solid #e5e7eb;
-    background: white; color: var(--text-sub); font-weight: 500; cursor: pointer; white-space: nowrap; transition: 0.2s;
+.upload-trigger { 
+    background: var(--primary); color: #fff; border: none; padding: 0 25px; 
+    border-radius: 15px; font-weight: 700; cursor: pointer; white-space: nowrap;
 }
-.pill.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3); }
 
-/* --- DOC GRID (RESPONSIVE) --- */
-.doc-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Tự động chia cột */
-    gap: 20px;
+/* Filter */
+.filter-pills { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 30px; }
+.pill { 
+    padding: 8px 20px; border-radius: 20px; border: 1px solid #e2e8f0; 
+    background: white; color: var(--gray); font-weight: 600; cursor: pointer; white-space: nowrap;
 }
-.doc-card {
-    background: white; padding: 20px; border-radius: var(--radius);
-    box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.03);
-    transition: 0.3s; position: relative; display: flex; flex-direction: column;
-}
-.doc-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-.doc-icon {
-    width: 45px; height: 45px; background: #e0e7ff; color: var(--primary);
-    border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 15px;
-}
-.doc-card h3 { font-size: 1.1rem; margin-bottom: 8px; line-height: 1.4; flex-grow: 1; }
-.doc-info { font-size: 0.85rem; color: var(--text-sub); margin-bottom: 15px; display: flex; gap: 10px; }
-.btn-download {
-    text-align: center; background: #f3f4f6; color: var(--text-main);
-    padding: 10px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: 0.2s;
-}
-.btn-download:hover { background: var(--primary); color: white; }
+.pill.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-/* --- MODAL --- */
-.modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
-    z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px;
-}
-.modal-overlay.active { display: flex; animation: fadeIn 0.2s; }
-.modal-card {
-    background: white; width: 100%; max-width: 450px; border-radius: 20px;
-    padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: zoomUp 0.3s;
-}
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.btn-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-sub); }
-.form-group { margin-bottom: 15px; }
-.form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
-.form-group input, .form-group select {
-    width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #d1d5db; font-size: 1rem;
-}
-.upload-area {
-    border: 2px dashed #cbd5e1; padding: 20px; text-align: center;
-    border-radius: 15px; margin-bottom: 20px; cursor: pointer; color: var(--text-sub);
-}
-.btn-submit { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; }
+/* Doc Card */
+.doc-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.doc-card { background: white; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.doc-card h3 { margin: 10px 0; font-size: 1.1rem; }
+.doc-meta { font-size: 0.85rem; color: var(--gray); margin-bottom: 15px; }
+.btn-dl { display: block; text-align: center; background: #f1f5f9; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: 700; color: var(--text); }
 
-/* --- CHATBOT --- */
-.btn-float-chat {
-    position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px;
-    background: var(--primary); color: white; border-radius: 50%; border: none;
-    font-size: 1.5rem; box-shadow: 0 10px 25px rgba(99, 102, 241, 0.5); cursor: pointer; z-index: 900;
-    transition: 0.3s;
-}
-.btn-float-chat:hover { transform: scale(1.1) rotate(10deg); }
+/* Modal */
+.modal-blur { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+.modal-blur.active { display: flex; }
+.modal-box { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 450px; }
+.field { margin-bottom: 15px; }
+.field input, .field select { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ccc; }
+.upload-zone { border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 20px; cursor: pointer; }
+.btn-main { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: bold; }
 
-.chat-interface {
-    position: fixed; bottom: 95px; right: 25px; width: 350px; height: 500px;
-    background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-    z-index: 900; display: none; flex-direction: column; overflow: hidden;
-    transform-origin: bottom right;
-}
-.chat-interface.active { display: flex; animation: openChat 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
 
-.chat-header { background: var(--primary); padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
-.bot-info { display: flex; gap: 10px; align-items: center; }
-.bot-avatar { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-.chat-content { flex: 1; padding: 15px; overflow-y: auto; background: #f9fafb; display: flex; flex-direction: column; gap: 10px; }
-.msg { padding: 10px 15px; border-radius: 15px; font-size: 0.95rem; max-width: 80%; }
-.msg.bot { background: white; align-self: flex-start; border: 1px solid #e5e7eb; border-bottom-left-radius: 4px; }
-.msg.user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-.chat-input-area { padding: 10px; border-top: 1px solid #e5e7eb; display: flex; gap: 10px; }
-.chat-input-area input { flex: 1; padding: 10px; border: 1px solid #d1d5db; border-radius: 20px; }
-.chat-input-area button { width: 40px; background: var(--primary); color: white; border: none; border-radius: 50%; cursor: pointer; }
+/* ====================================================
+   PHẦN CHỈNH SỬA CHO ĐIỆN THOẠI (FIX LỖI CỦA BẠN)
+   ==================================================== */
+@media (max-width: 768px) {
+    /* 1. Sửa Header: Cho Menu xuống dòng để không đè Logo */
+    .main-nav {
+        height: auto; /* Chiều cao tự động */
+        padding: 10px 0;
+    }
+    .nav-wrapper {
+        flex-direction: column; /* Xếp dọc */
+        gap: 15px;
+    }
+    
+    .logo {
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+    }
+    .logo-text {
+        font-size: 1.4rem; /* Chữ to rõ ràng hơn */
+    }
 
-/* LOADING */
-.spinner-area { display: flex; justify-content: center; padding: 20px; }
-.spinner { width: 30px; height: 30px; border: 3px solid #e5e7eb; border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    /* Menu dãn cách đều */
+    nav {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    nav a { margin: 0; font-size: 0.95rem; }
 
-/* TOAST */
-#toast-container { position: fixed; top: 20px; right: 20px; z-index: 2000; }
-.toast { background: rgba(30,30,30,0.9); color: white; padding: 12px 20px; border-radius: 10px; margin-bottom: 10px; animation: fadeIn 0.3s; }
+    /* 2. Sửa Thanh Tìm Kiếm: Xếp dọc */
+    .search-bar-container {
+        flex-direction: column; /* Input trên, Nút dưới */
+        gap: 10px;
+    }
+    .upload-trigger {
+        width: 100%; /* Nút full chiều ngang */
+        padding: 12px;
+    }
 
-/* ANIMATIONS */
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes zoomUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-@keyframes openChat { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* MOBILE RESPONSIVE FIX */
-@media (max-width: 600px) {
-    .action-bar { flex-direction: column; }
-    .btn-upload { width: 100%; justify-content: center; padding: 12px; }
-    .chat-interface { width: calc(100% - 40px); bottom: 90px; right: 20px; height: 60vh; }
-    .doc-grid { grid-template-columns: 1fr; } /* 1 cột trên điện thoại */
-    .hero-section h1 { font-size: 1.6rem; }
+    /* 3. Tiêu đề chào mừng nhỏ lại chút */
+    .welcome-box h1 { font-size: 1.8rem; }
+    
+    /* 4. Thẻ tài liệu */
+    .doc-container { grid-template-columns: 1fr; } /* 1 cột duy nhất */
 }
