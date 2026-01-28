@@ -1,6 +1,4 @@
-// =========================================================================
-// 1. CẤU HÌNH ÂM THANH
-// =========================================================================
+/* --- FILE: script_altp.js --- */
 const sounds = {
     bg: new Audio('sounds/bg.mp3'),
     correct: new Audio('sounds/correct.mp3'),
@@ -11,9 +9,6 @@ const sounds = {
 sounds.bg.loop = true; 
 sounds.bg.volume = 0.4;
 
-// =========================================================================
-// 2. DỮ LIỆU CÂU HỎI
-// =========================================================================
 const questionData = {
     "10": [
         { q: "Thiết bị nào sau đây là thiết bị NHẬP?", a: ["Màn hình", "Máy in", "Bàn phím", "Loa"], c: 2, m: "200.000" },
@@ -68,15 +63,36 @@ const questionData = {
     ]
 };
 
-// =========================================================================
-// 3. LOGIC XỬ LÝ GAME
-// =========================================================================
 let currentQuestions = [];
 let currIdx = 0;
 let isPlaying = false;
 let timer;
 let timeLeft = 30;
 let modalCallback = null;
+
+// --- HÀM LƯU ĐIỂM (QUY ĐỔI TIỀN -> ĐIỂM) ---
+function saveAndExit(prizeString) {
+    let rawScore = prizeString.replace(/\./g, "").replace(" VNĐ", "").trim();
+    let money = parseInt(rawScore);
+    if (isNaN(money)) money = 0;
+
+    // Quy đổi: 50.000 VNĐ = 1 điểm (Ví dụ 150tr = 3000 điểm)
+    let points = Math.floor(money / 50000); 
+
+    if (typeof window.saveScoreToFirebase === "function") {
+        window.saveScoreToFirebase(points);
+    }
+
+    setTimeout(() => {
+        location.reload();
+    }, 2000);
+}
+
+function getSafePrize(index) {
+    if (index >= 10) return "22.000.000";
+    if (index >= 5) return "2.000.000";
+    return "0";
+}
 
 function startGame() {
     const grade = document.getElementById("grade-select").value;
@@ -90,9 +106,15 @@ function startGame() {
 }
 
 function loadQuestion() {
-    // Nếu vượt qua 15 câu
+    // WIN ALL
     if (currIdx >= currentQuestions.length) {
-        showSupportModal("CHÚC MỪNG!", "BẠN LÀ TRIỆU PHÚ!<br>Bạn đã vượt qua 15 câu hỏi của chương trình.", "fa-trophy", "win", () => location.reload());
+        showSupportModal(
+            "CHÚC MỪNG!", 
+            "BẠN LÀ TRIỆU PHÚ!<br>Bạn đã vượt qua 15 câu hỏi của chương trình.", 
+            "fa-trophy", 
+            "win", 
+            () => saveAndExit("150.000.000") 
+        );
         return;
     }
 
@@ -101,7 +123,6 @@ function loadQuestion() {
     document.getElementById("q-index").innerText = "CÂU HỎI " + (currIdx + 1);
     document.getElementById("money-val").innerText = data.m + " VNĐ";
     
-    // Reset các nút đáp án
     for(let i=0; i<4; i++) {
         let btn = document.getElementById("btn-" + i);
         btn.querySelector(".text").innerText = data.a[i];
@@ -125,7 +146,16 @@ function startTimer() {
             clearInterval(timer);
             isPlaying = false;
             sounds.wrong.play();
-            showSupportModal("HẾT GIỜ!", "Bạn đã hết thời gian suy nghĩ.", "fa-hourglass-end", "lose", () => location.reload());
+            
+            let safePrize = getSafePrize(currIdx);
+            
+            showSupportModal(
+                "HẾT GIỜ!", 
+                `Bạn đã hết thời gian suy nghĩ.<br>Tiền thưởng nhận được: ${safePrize} VNĐ`, 
+                "fa-hourglass-end", 
+                "lose", 
+                () => saveAndExit(safePrize)
+            );
         }
     }, 1000);
 }
@@ -141,7 +171,6 @@ function chooseAnswer(index) {
     let btn = document.getElementById("btn-" + index);
     btn.classList.add("selected");
 
-    // Tạo độ trễ kịch tính 2 giây
     setTimeout(() => {
         sounds.wait.pause();
         sounds.wait.currentTime = 0;
@@ -155,7 +184,6 @@ function checkResult(index) {
     let btnCorrect = document.getElementById("btn-" + correct);
 
     if(index === correct) {
-        // ĐÚNG
         btnSelected.classList.add("correct");
         sounds.correct.play();
         setTimeout(() => {
@@ -164,16 +192,11 @@ function checkResult(index) {
             loadQuestion();
         }, 2000);
     } else {
-        // SAI
         btnSelected.classList.add("wrong");
         btnCorrect.classList.add("correct");
         sounds.wrong.play();
         
-        // Tính tiền thưởng theo mốc
-        let prize = "0";
-        if (currIdx >= 10) prize = "22.000.000";
-        else if (currIdx >= 5) prize = "2.000.000";
-        else prize = "0";
+        let prize = getSafePrize(currIdx);
 
         setTimeout(() => {
             showSupportModal(
@@ -186,15 +209,11 @@ function checkResult(index) {
                 </div>`, 
                 "fa-times-circle", 
                 "lose", 
-                () => location.reload()
+                () => saveAndExit(prize)
             );
         }, 2000);
     }
 }
-
-// =========================================================================
-// 4. QUYỀN TRỢ GIÚP
-// =========================================================================
 
 function use5050() {
     if(!isPlaying) return;
@@ -205,7 +224,6 @@ function use5050() {
     let wrongIndices = [0,1,2,3].filter(i => i !== correct);
     wrongIndices.sort(() => Math.random() - 0.5);
     
-    // Ẩn 2 đáp án sai
     document.getElementById("btn-" + wrongIndices[0]).querySelector(".text").innerText = "";
     document.getElementById("btn-" + wrongIndices[0]).disabled = true;
     document.getElementById("btn-" + wrongIndices[1]).querySelector(".text").innerText = "";
@@ -260,9 +278,6 @@ function useCrowd() {
     showSupportModal("Ý KIẾN KHÁN GIẢ", html, "fa-users");
 }
 
-// =========================================================================
-// 5. HỆ THỐNG MODAL
-// =========================================================================
 function showSupportModal(title, content, icon, type, callback) {
     const modal = document.getElementById("support-modal");
     document.getElementById("modal-title").innerText = title;
