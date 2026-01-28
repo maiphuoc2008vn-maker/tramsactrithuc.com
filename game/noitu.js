@@ -1,5 +1,4 @@
-/* --- noitu.js --- */
-
+/* --- FILE: noitu.js --- */
 const dictionary = {
     10: [
         "Máy tính", "Tính toán", "Toán học", "Học tập", "Tập tin", "Tin học", "Học hỏi", "Hỏi đáp", "Đáp án", "Án bản",
@@ -73,7 +72,6 @@ let timeLeft = 15;
 let timerInterval;
 let isPlaying = false;
 
-// DOM Elements
 const elScore = document.getElementById("score");
 const elCurrentWord = document.getElementById("currentWord");
 const elInput = document.getElementById("userInput");
@@ -82,7 +80,6 @@ const elTimerBar = document.getElementById("timerBar");
 const btnSubmit = document.getElementById("btnSubmit");
 const btnRestart = document.getElementById("btnRestart");
 
-// Lắng nghe nút chọn lớp
 document.querySelectorAll(".btn-lvl").forEach(btn => {
     btn.addEventListener("click", function() {
         if (isPlaying && score > 0) {
@@ -163,7 +160,6 @@ function checkAnswer() {
     usedWords.push(userWord.toLowerCase());
     elInput.value = "";
 
-    // MÁY PHẢN CÔNG
     const lastPartUser = parts[parts.length - 1].toLowerCase();
     const machineResponse = findMachineWord(lastPartUser);
 
@@ -177,9 +173,9 @@ function checkAnswer() {
         score += 5;
         elScore.innerText = score;
         
-        // --- MÁY THUA -> BẠN THẮNG & LƯU ĐIỂM ---
-        if (typeof window.saveGameScore === "function") {
-            window.saveGameScore("Vua Nối Từ", score);
+        // --- THẮNG MÁY -> CỘNG ĐIỂM ---
+        if (typeof window.saveScoreToFirebase === "function") {
+            window.saveScoreToFirebase(score);
         }
         
         gameOver("Bạn thắng! Máy đã chịu thua. +5 điểm!");
@@ -199,14 +195,15 @@ function getLastName(word) {
 
 function gameOver(msg) {
     clearInterval(timerInterval);
-    isPlaying = false;
     
-    // --- LƯU ĐIỂM KHI THUA ---
-    if (typeof window.saveGameScore === "function") {
-        window.saveGameScore("Vua Nối Từ", score);
+    // --- LƯU ĐIỂM NẾU CHƯA LƯU ---
+    if (isPlaying && score > 0) {
+         if (typeof window.saveScoreToFirebase === "function") {
+            window.saveScoreToFirebase(score);
+        }
     }
-    // -------------------------
 
+    isPlaying = false;
     elInput.disabled = true;
     elMessage.innerText = msg + ` - Điểm: ${score}`;
     elMessage.className = "text-error";
@@ -218,5 +215,4 @@ btnSubmit.addEventListener("click", checkAnswer);
 btnRestart.addEventListener("click", initGame);
 elInput.addEventListener("keypress", (e) => { if (e.key === "Enter") checkAnswer(); });
 
-// Tự động chạy khi load trang
-initGame(); 
+initGame();
