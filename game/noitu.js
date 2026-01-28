@@ -176,6 +176,12 @@ function checkAnswer() {
     } else {
         score += 5;
         elScore.innerText = score;
+        
+        // --- MÁY THUA -> BẠN THẮNG & LƯU ĐIỂM ---
+        if (typeof window.saveGameScore === "function") {
+            window.saveGameScore("Vua Nối Từ", score);
+        }
+        
         gameOver("Bạn thắng! Máy đã chịu thua. +5 điểm!");
     }
 }
@@ -194,6 +200,13 @@ function getLastName(word) {
 function gameOver(msg) {
     clearInterval(timerInterval);
     isPlaying = false;
+    
+    // --- LƯU ĐIỂM KHI THUA ---
+    if (typeof window.saveGameScore === "function") {
+        window.saveGameScore("Vua Nối Từ", score);
+    }
+    // -------------------------
+
     elInput.disabled = true;
     elMessage.innerText = msg + ` - Điểm: ${score}`;
     elMessage.className = "text-error";
@@ -206,4 +219,4 @@ btnRestart.addEventListener("click", initGame);
 elInput.addEventListener("keypress", (e) => { if (e.key === "Enter") checkAnswer(); });
 
 // Tự động chạy khi load trang
-initGame();
+initGame(); 
