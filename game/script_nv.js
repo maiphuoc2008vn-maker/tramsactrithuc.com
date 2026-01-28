@@ -1,6 +1,4 @@
 /* --- FILE: script_nv.js --- */
-
-// 1. CƠ SỞ DỮ LIỆU ĐÁP ÁN
 const database = {
     "10": [
         "CPU", "RAM", "ROM", "HDD", "SSD", "Bàn phím", "Chuột", "Windows", "Linux", "Word", 
@@ -22,7 +20,6 @@ const database = {
     ]
 };
 
-// 2. BIẾN TOÀN CỤC
 let currentGrade = "10";
 let currentIndices = [];
 let currentIndexPtr = 0;
@@ -31,12 +28,9 @@ let currentAudio = new Audio();
 let isPlaying = false;
 let modalCallback = null; 
 
-// 3. CÁC HÀM XỬ LÝ CHÍNH
 function startGame() {
     currentGrade = document.getElementById('grade-select').value;
-    // Tạo mảng chỉ số từ 0 đến 39
     let indices = Array.from({length: 40}, (_, i) => i);
-    // Xáo trộn câu hỏi
     currentIndices = indices.sort(() => Math.random() - 0.5);
     
     currentIndexPtr = 0;
@@ -58,7 +52,6 @@ function playQuestionAudio() {
     }
 
     let realIndex = currentIndices[currentIndexPtr];
-    // Đường dẫn file âm thanh: sounds/10_5.mp3 (Ví dụ)
     let audioPath = `sounds/${currentGrade}_${realIndex}.mp3`;
     
     currentAudio.src = audioPath;
@@ -113,17 +106,12 @@ function checkAnswer() {
 
 function nextQuestion() {
     currentIndexPtr++;
-    
-    // Kiểm tra nếu đã hết 40 câu hỏi
     if (currentIndexPtr >= 40) {
         
-        // --- TÍCH HỢP LƯU ĐIỂM (SCORE SAVER) ---
-        if (typeof window.saveGameScore === "function") {
-            window.saveGameScore("Thánh Nghe Viết", score);
-        } else {
-            console.warn("Chưa tải được score-saver.js");
+        // --- LƯU ĐIỂM ---
+        if (typeof window.saveScoreToFirebase === "function") {
+            window.saveScoreToFirebase(score);
         }
-        // ----------------------------------------
 
         showModal("win", "HOÀN THÀNH!", `Chúc mừng bạn đã hoàn thành tất cả câu hỏi!<br>Tổng điểm: <b>${score}</b>`, "Chơi Lại", () => {
             location.reload();
@@ -131,7 +119,6 @@ function nextQuestion() {
         return;
     }
 
-    // Reset giao diện cho câu tiếp theo
     document.getElementById('level-display').innerText = `Khối ${currentGrade} (Câu ${currentIndexPtr + 1}/40)`;
     document.getElementById('answer-input').value = "";
     document.getElementById('answer-input').focus();
@@ -141,7 +128,6 @@ function nextQuestion() {
     document.getElementById('visualizer').classList.remove('playing');
 }
 
-// 4. HỆ THỐNG MODAL & SỰ KIỆN
 function showModal(type, title, msg, btnText = "Đóng", callback = null) {
     const modal = document.getElementById('custom-modal');
     const box = document.getElementById('modal-box-content');
@@ -173,7 +159,6 @@ function closeModal() {
     }
 }
 
-// Xử lý phím Enter để gửi đáp án
 document.getElementById('answer-input').addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault();
