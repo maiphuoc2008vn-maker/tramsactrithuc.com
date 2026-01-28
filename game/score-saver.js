@@ -1,32 +1,54 @@
-// File: game/score-saver.js
 import { db } from "../firebase-config.js";
-import { doc, updateDoc, increment, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { doc, updateDoc, increment, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // Hàm này sẽ được gọi từ các file game khác
 window.saveScoreToFirebase = async function(points) {
+    // 1. Lấy thông tin user đang đăng nhập
     const userStr = localStorage.getItem('user_info_sql');
-    if (!userStr) return; // Chưa đăng nhập thì không lưu
+    
+    if (!userStr) {
+        console.warn("Chưa đăng nhập, không lưu được điểm.");
+        return; 
+    }
 
     const user = JSON.parse(userStr);
     const userRef = doc(db, "users", user.uid);
 
     try {
-        // Cộng điểm vào Database (dùng increment để cộng dồn an toàn)
-        await updateDoc(userRef, {
-            score: increment(points)
-        });
-        console.log(`Đã cộng ${points} điểm lên Firebase!`);
+        // 2. Kiểm tra xem user đã có trong database chưa
+        const userSnap = await getDoc(userRef);
         
-        // Kiểm tra thăng hạng (Optional)
+        if (!userSnap.exists()) {
+            // Nếu chưa có thì tạo mới
+            await setDoc(userRef, {
+                username: user.displayName || user.email,
+                email: user.email,
+                score: points,
+                title: "Tân Binh",
+                photoURL: user.photoURL || ""
+            });
+        } else {
+            // 3. Nếu có rồi thì cộng dồn điểm (increment)
+            await updateDoc(userRef, {
+                score: increment(points)
+            });
+        }
+
+        console.log(`Đã cộng ${points} điểm lên hệ thống!`);
+        
+        // 4. Kiểm tra thăng hạng sau khi cộng điểm
         const snap = await getDoc(userRef);
         const newScore = snap.data().score;
-        let title = "Tân Binh";
-        if(newScore > 5000) title = "Cao Thủ";
-        if(newScore > 10000) title = "Huyền Thoại";
+        let newTitle = "Tân Binh";
         
-        if(snap.data().title !== title) {
-            updateDoc(userRef, { title: title });
-            alert(`Chúc mừng! Bạn đã thăng hạng: ${title}`);
+        if(newScore >= 1000) newTitle = "Tập Sự";
+        if(newScore >= 5000) newTitle = "Cao Thủ";
+        if(newScore >= 10000) newTitle = "Huyền Thoại";
+        
+        // Nếu danh hiệu thay đổi thì cập nhật
+        if(snap.data().title !== newTitle) {
+            await updateDoc(userRef, { title: newTitle });
+            alert(`🎉 CHÚC MỪNG! Bạn đã thăng hạng: ${newTitle}`);
         }
 
     } catch (e) {
