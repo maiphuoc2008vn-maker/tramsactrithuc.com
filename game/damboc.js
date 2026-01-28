@@ -11,10 +11,9 @@ function play(name) {
     snd[name].play().catch(() => {});
 }
 
-// BỘ CÂU HỎI 40 CÂU (Đã chia theo khối lớp)
+// BỘ CÂU HỎI 40 CÂU
 const questions = {
     10: [
-        // --- CƠ BẢN & PHẦN CỨNG ---
         { q: "Thiết bị nào là 'não bộ' của máy tính?", a: ["RAM", "CPU", "Chuột", "Loa"], c: 1 },
         { q: "1 Byte bằng bao nhiêu bit?", a: ["4", "8", "16", "32"], c: 1 },
         { q: "Phím tắt để Copy là gì?", a: ["Ctrl+V", "Ctrl+C", "Ctrl+X", "Ctrl+Z"], c: 1 },
@@ -32,7 +31,6 @@ const questions = {
         { q: "Thiết bị nào dùng để kết nối mạng Internet?", a: ["Modem/Router", "Máy in", "Loa", "Màn hình"], c: 0 }
     ],
     11: [
-        // --- LẬP TRÌNH & CƠ SỞ DỮ LIỆU ---
         { q: "Trong CSDL, 'Khóa chính' dùng để làm gì?", a: ["Bảo mật", "Xác định duy nhất bản ghi", "Sắp xếp tên", "Tạo màu sắc"], c: 1 },
         { q: "SQL là viết tắt của gì?", a: ["Structured Query Language", "Strong Quick Link", "Simple Question List", "System Quality Level"], c: 0 },
         { q: "Kiểu dữ liệu số nguyên trong Python là?", a: ["float", "int", "string", "bool"], c: 1 },
@@ -48,7 +46,6 @@ const questions = {
         { q: "File CSDL Access có đuôi mở rộng là gì?", a: [".docx", ".xlsx", ".accdb", ".pptx"], c: 2 }
     ],
     12: [
-        // --- MẠNG, HTML & CÔNG NGHỆ MỚI ---
         { q: "AI là viết tắt của công nghệ gì?", a: ["Thực tế ảo", "Trí tuệ nhân tạo", "Dữ liệu lớn", "Điện toán đám mây"], c: 1 },
         { q: "IoT có nghĩa là gì?", a: ["Internet of Things", "Input of Tech", "Intel of Time", "Index of Text"], c: 0 },
         { q: "HTML dùng để làm gì?", a: ["Lập trình game", "Tạo trang web", "Xử lý ảnh", "Soạn thảo văn bản"], c: 1 },
@@ -66,21 +63,13 @@ const questions = {
 
 let pHP = 5, eHP = 5, currentQs = [], qIdx = 0;
 
-// HÀM ĐẢO CÂU HỎI (Thuật toán Fisher-Yates Shuffle) - Đảm bảo ngẫu nhiên tuyệt đối
 function shuffleArray(array) {
     let currentIndex = array.length, randomIndex;
-
-    // Trong khi vẫn còn phần tử để đảo
     while (currentIndex != 0) {
-        // Lấy một phần tử còn lại ngẫu nhiên
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
-
-        // Và hoán đổi nó với phần tử hiện tại
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
-
     return array;
 }
 
@@ -88,13 +77,10 @@ function startGame(lv) {
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('quiz-area').style.display = 'block';
     
-    // Nếu khối lớp chọn không có câu hỏi hoặc rỗng, lấy mặc định lớp 10 để tránh lỗi
     let qs = questions[lv];
     if (!qs || qs.length === 0) qs = questions[10];
 
-    // GỌI HÀM ĐẢO CÂU HỎI TẠI ĐÂY
     currentQs = shuffleArray([...qs]);
-    
     qIdx = 0; pHP = 5; eHP = 5;
     
     resetHP();
@@ -180,18 +166,26 @@ function showResult(status) {
     const resultTitle = document.getElementById('result-title');
     const resultMsg = document.getElementById('result-msg');
 
+    // TÍNH ĐIỂM SỐ
+    let finalScore = (5 - eHP) * 20; 
+    if(status === "win") finalScore = 100;
+
+    // --- LƯU ĐIỂM ---
+    if (typeof window.saveGameScore === "function") {
+        window.saveGameScore("Đấm Bốc Kiểu Úc", finalScore);
+    }
+    // ----------------
+
     if (status === "win") {
         play('win');
         resultTitle.innerText = "BẠN CHIẾN THẮNG!";
-        // Ảnh Học sinh (.jpeg)
         resultImg.src = "../images/hocsinh.jpeg";
-        resultMsg.innerText = "HỌC SINH ĐÃ ĐÁNH BẠI ROBOT!";
+        resultMsg.innerText = `HỌC SINH ĐÃ ĐÁNH BẠI ROBOT! (+${finalScore} điểm)`;
     } else {
         play('lose');
         resultTitle.innerText = "THẤT BẠI!";
-        // Ảnh Robot (.jpeg)
         resultImg.src = "../images/robot.jpeg";
-        resultMsg.innerText = "ROBOT ĐÃ CHIẾN THẮNG!";
+        resultMsg.innerText = `ROBOT ĐÃ CHIẾN THẮNG! (Bạn được ${finalScore} điểm)`;
     }
     screen.style.display = "flex";
 }
