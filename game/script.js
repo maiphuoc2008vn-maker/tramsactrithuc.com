@@ -1,4 +1,4 @@
-/* 1. KHO DỮ LIỆU CÂU HỎI ĐỒ SỘ */
+/* --- FILE: script.js (Đuổi hình bắt chữ) --- */
 const questionDatabase = {
     "10a1": [
         { image: "../images/10.jpg", answer: "BANPHIM", hint: "Thiết bị nhập liệu chính (7 ký tự)" },
@@ -38,7 +38,6 @@ const questionDatabase = {
     ]
 };
 
-/* 2. CÁC BIẾN ĐIỀU KHIỂN */
 let currentQuestions = [];
 let currentIndex = 0;
 let userAnswer = [];
@@ -56,7 +55,6 @@ const els = {
     timer: document.getElementById("timer")
 };
 
-/* 3. HÀM KHỞI TẠO */
 function init() {
     score = 0;
     if(els.score) els.score.innerText = score;
@@ -68,7 +66,6 @@ function init() {
 
 function loadGrade(grade) {
     if (!questionDatabase[grade]) return;
-    // Xáo trộn thứ tự câu hỏi để mỗi lần chơi mỗi khác
     currentQuestions = [...questionDatabase[grade]].sort(() => Math.random() - 0.5);
     currentIndex = 0;
     loadQuestion();
@@ -89,7 +86,6 @@ function loadQuestion() {
     renderKeyboard();
     startTimer();
 
-    // Hiển thị ảnh với hiệu ứng mờ dần
     if(els.img) {
         els.img.style.opacity = 0;
         els.img.src = q.image;
@@ -101,7 +97,6 @@ function loadQuestion() {
     }
 }
 
-/* 4. VẼ GIAO DIỆN */
 function renderSlots() {
     els.slots.innerHTML = "";
     userAnswer.forEach((char, i) => {
@@ -131,7 +126,6 @@ function renderKeyboard() {
         els.keyboard.appendChild(btn);
     });
 
-    // Nút Xóa
     const del = document.createElement("button");
     del.innerHTML = "Xóa";
     del.className = "key-btn";
@@ -144,7 +138,6 @@ function renderKeyboard() {
     els.keyboard.appendChild(del);
 }
 
-/* 5. XỬ LÝ THẮNG/THUA */
 function checkWin() {
     const correct = currentQuestions[currentIndex].answer;
     if (userAnswer.join("") === correct) {
@@ -171,6 +164,12 @@ function startTimer() {
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             canPlay = false;
+            
+            // --- LƯU ĐIỂM (TIMEOUT) ---
+            if (typeof window.saveScoreToFirebase === "function") {
+                window.saveScoreToFirebase(score);
+            }
+            
             showModal('lose', 'HẾT GIỜ!', `Bạn đã đạt được ${score} điểm`, 'Chơi lại', () => location.reload());
         }
     }, 1000);
@@ -192,6 +191,11 @@ window.showCurrentHint = function() {
 }
 
 function endGame() {
+    // --- LƯU ĐIỂM (WIN ALL) ---
+    if (typeof window.saveScoreToFirebase === "function") {
+        window.saveScoreToFirebase(score);
+    }
+
     showModal('win', 'XUẤT SẮC!', `Bạn đã hoàn thành tất cả câu hỏi với ${score} điểm!`, 'Về Menu', () => {
         window.location.href = 'hub.html';
     });
